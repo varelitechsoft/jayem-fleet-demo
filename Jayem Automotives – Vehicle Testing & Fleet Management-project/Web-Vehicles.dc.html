@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Vehicle Management</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,select,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Vehicle Management" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Operations · Vehicle master</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Vehicle management</h1>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap">
+          <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; color: #0c0a09; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">Import CSV</button>
+          <button type="button" onClick="{{openAdd}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">+ Add vehicle</button>
+        </div>
+      </div>
+
+      <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+        <div role="status" style="padding: 10px 14px; border-radius: 8px; background: #ecfdf3; border: 1px solid #a7e3bd; color: #14532d; font-size: 13px">{{toast}}</div>
+      </sc-if>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+        <sc-for list="{{fuelTabs}}" as="f" hint-placeholder-count="4">
+          <button type="button" onClick="{{f.pick}}" aria-pressed="{{f.pressed}}" style="border: 1px solid {{f.border}}; background: {{f.bg}}; color: {{f.color}}; border-radius: 9999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500">{{f.label}}</button>
+        </sc-for>
+        <span style="flex: 1"></span>
+        <label style="font-size: 12.5px; color: #57534e; display: flex; gap: 6px; align-items: center">Location
+          <select style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 5px 8px; font-size: 13px; background: #ffffff"><option>All</option><option>Chennai HO</option><option>Pune · Chakan</option><option>Pune · Talegaon</option><option>Pune · Ranjangaon</option><option>Hyderabad</option></select>
+        </label>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; align-items: start">
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; overflow-x: auto">
+          <table style="width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13px">
+            <thead>
+              <tr style="text-align: left; color: #78716c; font-size: 12px; background: #fafaf9">
+                <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5">Registration</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Model</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Fuel</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Project</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Site</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5; text-align: right">Odometer</th>
+                <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="v" hint-placeholder-count="12">
+                <tr style="background: {{v.bg}}">
+                  <td style="padding: 10px 14px; border-bottom: 1px solid #f0efee"><button type="button" onClick="{{v.pick}}" style="border: 0; background: transparent; padding: 0; text-align: left; color: #0c0a09"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{v.reg}}</span><span style="font-size: 11.5px; color: #78716c">{{v.temp}}</span></span></button></td>
+                  <td style="padding: 10px; border-bottom: 1px solid #f0efee">{{v.model}}</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #f0efee"><span style="font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: {{v.fWash}}; color: {{v.fC}}">{{v.fuel}}</span></td>
+                  <td style="padding: 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{v.project}}</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{v.site}}</td>
+                  <td style="padding: 10px; border-bottom: 1px solid #f0efee; text-align: right; font-variant-numeric: tabular-nums">{{v.odo}}</td>
+                  <td style="padding: 10px 14px; border-bottom: 1px solid #f0efee"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px"><span style="width: 7px; height: 7px; border-radius: 9999px; background: {{v.sC}}"></span>{{v.status}}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; font-size: 12.5px; color: #78716c">
+            <span>Showing {{count}} of 150 vehicles</span>
+            <span style="display: flex; gap: 6px"><button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 6px; padding: 4px 10px; font-size: 12.5px">Previous</button><button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 6px; padding: 4px 10px; font-size: 12.5px">Next</button></span>
+          </div>
+        </section>
+
+        <aside style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-direction: column">
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 20px; font-weight: 500">{{sel.reg}}</span>
+            <span style="font-size: 12.5px; color: #78716c">{{sel.model}} · {{sel.maker}}</span>
+          </div>
+          <dl style="margin: 0; display: grid; grid-template-columns: 120px 1fr; gap: 6px 10px; font-size: 12.5px">
+            <dt style="color: #78716c">Temp. reg. no.</dt><dd style="margin: 0">{{sel.temp}}</dd>
+            <dt style="color: #78716c">VIN / Chassis</dt><dd style="margin: 0; font-family: ui-monospace, monospace; font-size: 12px">{{sel.vin}}</dd>
+            <dt style="color: #78716c">Engine / Motor</dt><dd style="margin: 0; font-family: ui-monospace, monospace; font-size: 12px">{{sel.eng}}</dd>
+            <dt style="color: #78716c">Category</dt><dd style="margin: 0">{{sel.cat}}</dd>
+            <dt style="color: #78716c">Testing window</dt><dd style="margin: 0">{{sel.window}}</dd>
+            <dt style="color: #78716c">GPS device</dt><dd style="margin: 0; font-weight: 600">{{gps}}</dd>
+          </dl>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <button type="button" onClick="{{reassign}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 6px 12px; font-size: 12.5px; font-weight: 500">Reassign GPS device</button>
+            <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 6px 12px; font-size: 12.5px; font-weight: 500">Edit</button>
+            <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 6px 12px; font-size: 12.5px; font-weight: 500; color: #b91c1c">Mark scrapped</button>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid #f0efee">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.4px; color: #78716c">ASSIGNMENT &amp; DEVICE HISTORY</span>
+            <sc-for list="{{history}}" as="h" hint-placeholder-count="4">
+              <div style="display: flex; gap: 10px">
+                <span style="width: 8px; height: 8px; margin-top: 6px; border-radius: 9999px; background: {{h.c}}; flex: 0 0 8px"></span>
+                <div style="display: flex; flex-direction: column"><span style="font-size: 13px; font-weight: 500">{{h.t}}</span><span style="font-size: 12px; color: #78716c">{{h.d}}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <sc-if value="{{adding}}" hint-placeholder-val="{{false}}">
+      <div style="position: fixed; inset: 0; background: rgba(12,10,9,0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 10">
+        <div role="dialog" aria-label="Add vehicle" style="width: 620px; max-width: 100%; background: #ffffff; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 12px 45px rgba(17,12,46,0.2)">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 20px">Add test vehicle</h2>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+            <sc-for list="{{formFields}}" as="ff" hint-placeholder-count="10">
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #57534e">{{ff.label}}
+                <input value="{{ff.v}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #0c0a09">
+              </label>
+            </sc-for>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 8px">
+            <button type="button" onClick="{{closeAdd}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">Cancel</button>
+            <button type="button" onClick="{{saveAdd}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">Save vehicle</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { fuel: 'All', sel: 0, adding: false, toast: '', gpsSwap: false, extra: [] }; }
+  renderVals() {
+    const s = this.state;
+    const ST = { Running: '#15803d', Idle: '#b45309', Stopped: '#a8a29e', Maintenance: '#1d4ed8', Offline: '#78716c', Completed: '#7e22ce' };
+    const FU = { EV: ['#1d4ed8', '#eef3fe'], Diesel: ['#44403c', '#f1f0ef'], Petrol: ['#9a3412', '#fff1e6'] };
+    const base = [
+      ['TN 09 AB 4521', 'TN09 TMP 4521', 'Nexon EV Max', 'Tata Motors', 'EV', 'EV-2026-014', 'Pune · Chakan', 18432, 'Running', 'Passenger car', 'MAT6274XXP4521', 'PMSM-EM45-0912', 'JGT-PN-0142'],
+      ['MH 14 TC 2087', 'MH14 TC 2087', 'Ecomet 1615', 'Ashok Leyland', 'Diesel', 'CV-2026-007', 'Pune · Chakan', 62118, 'Running', 'ICV truck', 'MB1ECM16XX2087', 'H4-BS6-552087', 'JGT-PN-0088'],
+      ['MH 12 TMP 6612', 'MH12 TMP 6612', 'Ace EV', 'Tata Motors', 'EV', 'CV-2026-009', 'Pune · Ranjangaon', 2210, 'Offline', 'Small commercial', 'MAT4458XXE6612', 'PMSM-AC27-6612', 'JGT-PN-0131'],
+      ['TS 07 TR 1193', 'TS07 TMP 1193', 'Bolero Pik-Up', 'Mahindra', 'Diesel', 'CV-2026-012', 'Hyderabad', 14980, 'Running', 'Pick-up', 'MA1ZP2BOXX1193', 'M2DICR-1193', 'JGT-HY-0217'],
+      ['MH 14 TC 3310', 'MH14 TC 3310', 'XUV 3XO', 'Mahindra', 'Petrol', 'MH-2026-011', 'Pune · Talegaon', 8890, 'Idle', 'SUV', 'MA1NE2XUXX3310', 'mStallion-3310', 'JGT-PN-0104'],
+      ['TN 22 TR 8841', 'TN22 TMP 8841', 'Harrier', 'Tata Motors', 'Diesel', 'TT-2026-003', 'Chennai HO', 21420, 'Running', 'SUV', 'MAT6312HAXX8841', 'KRYO20-8841', 'JGT-CH-0056'],
+      ['MH 12 TC 7720', 'MH12 TC 7720', 'Dost+', 'Ashok Leyland', 'Diesel', 'CV-2026-007', 'Pune · Chakan', 37340, 'Stopped', 'LCV', 'MB1DST3XXX7720', 'ZD30-7720', 'JGT-PN-0091'],
+      ['MH 14 TMP 0459', 'MH14 TMP 0459', 'Punch EV', 'Tata Motors', 'EV', 'EV-2026-014', 'Pune · Chakan', 4880, 'Maintenance', 'Passenger car', 'MAT5520PUXX0459', 'PMSM-PE25-0459', 'JGT-PN-0150'],
+      ['TN 09 TR 5512', 'TN09 TMP 5512', 'Thar Roxx', 'Mahindra', 'Diesel', 'MH-2026-015', 'Chennai HO', 6860, 'Running', 'SUV', 'MA1TR4XRXX5512', 'mHawk-5512', 'JGT-CH-0061'],
+      ['MH 14 TC 1988', 'MH14 TC 1988', 'Intra V50', 'Tata Motors', 'Diesel', 'CV-2026-004', 'Pune · Chakan', 33000, 'Completed', 'Pick-up', 'MAT4421INXX1988', 'DI-1.5-1988', 'JGT-PN-0077'],
+      ['TS 08 TC 4410', 'TS08 TC 4410', 'Boss 1215', 'Ashok Leyland', 'Diesel', 'CV-2026-007', 'Hyderabad', 71250, 'Running', 'ICV truck', 'MB1BOS12XX4410', 'H4-BS6-554410', 'JGT-HY-0204'],
+      ['TS 07 TMP 2276', 'TS07 TMP 2276', 'Ace EV', 'Tata Motors', 'EV', 'CV-2026-009', 'Hyderabad', 3120, 'Running', 'Small commercial', 'MAT4458XXE2276', 'PMSM-AC27-2276', 'JGT-HY-0230']
+    ].concat(s.extra);
+    const fmt = n => n.toLocaleString('en-IN');
+    const list = base.filter(v => s.fuel === 'All' || v[4] === s.fuel);
+    const rows = list.map(v => {
+      const idx = base.indexOf(v);
+      return { reg: v[0], temp: v[1], model: v[3] + ' ' + v[2], fuel: v[4], fC: FU[v[4]][0], fWash: FU[v[4]][1], project: v[5], site: v[6], odo: fmt(v[7]) + ' km', status: v[8], sC: ST[v[8]], bg: idx === s.sel ? '#fff7ed' : '#ffffff', pick: () => this.setState({ sel: idx, gpsSwap: false }) };
+    });
+    const v = base[s.sel] || base[0];
+    const sel = { reg: v[0], temp: v[1], model: v[2], maker: v[3], cat: v[9], vin: v[10], eng: v[11], window: '02 Sep 2026 – 15 Jan 2027' };
+    const gps = s.gpsSwap ? 'JGT-PN-0199 (new)' : v[12];
+    const history = (s.gpsSwap ? [{ t: 'GPS device reassigned', d: v[12] + ' → JGT-PN-0199 · just now · by Arvind Raman', c: '#c2410c' }] : []).concat([
+      { t: 'Allocated to ' + v[5], d: '02 Sep 2026 · Supervisor Suresh Kumar', c: '#15803d' },
+      { t: 'Registration changed', d: 'Trade plate ' + v[1] + ' → ' + v[0] + ' · 28 Aug 2026', c: '#1d4ed8' },
+      { t: 'GPS device ' + v[12] + ' installed', d: '26 Aug 2026 · replaced JGT-PN-0035 (faulty)', c: '#78716c' },
+      { t: 'Received at site', d: '24 Aug 2026 · from ' + v[3] + ' R&D', c: '#a8a29e' }
+    ]);
+    const fuelTabs = ['All', 'EV', 'Diesel', 'Petrol'].map(f => ({ label: f === 'All' ? 'All fuel types' : f, pressed: s.fuel === f ? 'true' : 'false', bg: s.fuel === f ? '#1c1917' : '#ffffff', color: s.fuel === f ? '#ffffff' : '#0c0a09', border: s.fuel === f ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ fuel: f }) }));
+    const formFields = [['Registration no.', 'MH 14 TC 4402'], ['Temporary reg. no.', 'MH14 TMP 4402'], ['Manufacturer', 'Tata Motors'], ['Model', 'Curvv EV'], ['VIN / Chassis no.', 'MAT7731CVXX4402'], ['Engine / Motor no.', 'PMSM-CV55-4402'], ['Fuel type', 'EV'], ['Project', 'EV-2026-014'], ['Site', 'Pune · Chakan'], ['GPS device ID', 'JGT-PN-0201']].map(([label, val]) => ({ label, v: val }));
+    return {
+      rows, count: rows.length, sel, gps, history, fuelTabs, formFields, adding: s.adding, toast: s.toast,
+      openAdd: () => this.setState({ adding: true }), closeAdd: () => this.setState({ adding: false }),
+      saveAdd: () => this.setState({ adding: false, toast: 'MH 14 TC 4402 (Tata Curvv EV) added to Pune · Chakan and linked to GPS device JGT-PN-0201.', extra: s.extra.concat([['MH 14 TC 4402', 'MH14 TMP 4402', 'Curvv EV', 'Tata Motors', 'EV', 'EV-2026-014', 'Pune · Chakan', 12, 'Idle', 'SUV', 'MAT7731CVXX4402', 'PMSM-CV55-4402', 'JGT-PN-0201']]) }),
+      reassign: () => this.setState({ gpsSwap: true, toast: 'GPS device moved to ' + v[0] + '. Old device history kept.' })
+    };
+  }
+}
+</script>
+</body>
+</html>

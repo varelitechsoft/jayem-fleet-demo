@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Driver Management</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,select,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Driver Management" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Operations · Driver master</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Driver management</h1>
+        </div>
+        <button type="button" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">+ Add driver</button>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+        <label style="flex: 1 1 260px; max-width: 360px; display: flex; align-items: center; gap: 8px; border: 1px solid #d6d3d1; border-radius: 6px; padding: 7px 10px; background: #ffffff; color: #78716c">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"></path></svg>
+          <input type="search" aria-label="Search drivers" placeholder="Name or employee ID" value="{{q}}" onInput="{{onQ}}" style="border: 0; outline: 0; flex: 1; min-width: 0; font-size: 13px; background: transparent; color: #0c0a09">
+        </label>
+        <sc-for list="{{avail}}" as="a" hint-placeholder-count="4">
+          <button type="button" onClick="{{a.pick}}" aria-pressed="{{a.pressed}}" style="border: 1px solid {{a.border}}; background: {{a.bg}}; color: {{a.color}}; border-radius: 9999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500">{{a.label}} <span style="opacity: 0.7">{{a.n}}</span></button>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; align-items: start">
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; overflow-x: auto">
+          <table style="width: 100%; border-collapse: collapse; min-width: 760px; font-size: 13px">
+            <thead>
+              <tr style="text-align: left; color: #78716c; font-size: 12px; background: #fafaf9">
+                <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5">Driver</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Mobile</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Location</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Supervisor</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Current vehicle</th>
+                <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5; text-align: right">Total km</th>
+                <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5">Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{rows}}" as="d" hint-placeholder-count="12">
+                <tr style="background: {{d.bg}}">
+                  <td style="padding: 9px 14px; border-bottom: 1px solid #f0efee">
+                    <button type="button" onClick="{{d.pick}}" style="border: 0; background: transparent; padding: 0; display: flex; gap: 10px; align-items: center; text-align: left; color: #0c0a09">
+                      <span style="width: 30px; height: 30px; border-radius: 9999px; background: #f5f5f4; color: #44403c; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">{{d.ini}}</span>
+                      <span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{d.name}}</span><span style="font-size: 11.5px; color: #78716c">{{d.id}}</span></span>
+                    </button>
+                  </td>
+                  <td style="padding: 9px 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{d.phone}}</td>
+                  <td style="padding: 9px 10px; border-bottom: 1px solid #f0efee">{{d.loc}}</td>
+                  <td style="padding: 9px 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{d.sup}}</td>
+                  <td style="padding: 9px 10px; border-bottom: 1px solid #f0efee">{{d.veh}}</td>
+                  <td style="padding: 9px 10px; border-bottom: 1px solid #f0efee; text-align: right; font-variant-numeric: tabular-nums">{{d.km}}</td>
+                  <td style="padding: 9px 14px; border-bottom: 1px solid #f0efee"><span style="font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: {{d.wash}}; color: {{d.c}}">{{d.avail}}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; font-size: 12.5px; color: #78716c">
+            <span>{{pageLabel}}</span>
+            <span style="display: flex; gap: 6px"><button type="button" onClick="{{prev}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 6px; padding: 4px 10px; font-size: 12.5px">Previous</button><button type="button" onClick="{{next}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 6px; padding: 4px 10px; font-size: 12.5px">Next</button></span>
+          </div>
+        </section>
+
+        <aside style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; gap: 12px; align-items: center">
+            <span style="width: 48px; height: 48px; border-radius: 9999px; background: #1c1917; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 600">{{sel.ini}}</span>
+            <div style="display: flex; flex-direction: column"><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 20px; font-weight: 500">{{sel.name}}</span><span style="font-size: 12.5px; color: #78716c">{{sel.id}} · {{sel.loc}}</span></div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+            <sc-for list="{{sel.metrics}}" as="m" hint-placeholder-count="6">
+              <div style="padding: 10px; border: 1px solid #f0efee; border-radius: 8px; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">{{m.l}}</span><span style="font-weight: 600; font-size: 15px">{{m.v}}</span></div>
+            </sc-for>
+          </div>
+          <dl style="margin: 0; display: grid; grid-template-columns: 120px 1fr; gap: 6px 10px; font-size: 12.5px">
+            <dt style="color: #78716c">Licence</dt><dd style="margin: 0">{{sel.lic}}</dd>
+            <dt style="color: #78716c">Licence class</dt><dd style="margin: 0">LMV, HMV (Transport)</dd>
+            <dt style="color: #78716c">Valid till</dt><dd style="margin: 0">{{sel.valid}}</dd>
+            <dt style="color: #78716c">Employment</dt><dd style="margin: 0">Permanent · since 2019</dd>
+            <dt style="color: #78716c">Supervisor</dt><dd style="margin: 0">{{sel.sup}}</dd>
+          </dl>
+          <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid #f0efee">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.4px; color: #78716c">RECENT TRIPS</span>
+            <sc-for list="{{sel.trips}}" as="t" hint-placeholder-count="3">
+              <a href="Web-TripDetail.dc.html" style="display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: #0c0a09; text-decoration: none; padding: 6px 0; border-bottom: 1px solid #f5f5f4"><span>{{t.d}} · {{t.v}}</span><span style="font-weight: 600">{{t.km}}</span></a>
+            </sc-for>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { q: '', avail: 'All', page: 0, sel: 0 }; }
+  drivers() {
+    if (this._d) return this._d;
+    const first = ['Rahul', 'Imran', 'Ganesh', 'Venkat', 'Sachin', 'Karthik', 'Amol', 'Dinesh', 'Rohit', 'Srinivas', 'Nikhil', 'Mahesh', 'Murugan', 'Prakash', 'Vijay', 'Anil', 'Suraj', 'Ravi', 'Kiran', 'Manoj', 'Arjun', 'Santosh', 'Ramesh', 'Yogesh', 'Balaji', 'Harish', 'Naveen', 'Pradeep', 'Sandeep', 'Ajay'];
+    const last = ['Kumar', 'Shaikh', 'Pawar', 'Reddy', 'Jadhav', 'S', 'Kale', 'Babu', 'More', 'Rao', 'Patil', 'Goud', 'P', 'Naidu', 'Shinde', 'Iyer', 'Gaikwad', 'Yadav', 'Chavan', 'Pillai'];
+    const locs = [['Pune · Chakan', 'Suresh Kumar'], ['Pune · Talegaon', 'Vikram Joshi'], ['Pune · Ranjangaon', 'Sunil Bhosale'], ['Chennai HO', 'Senthil Murugan'], ['Hyderabad', 'Ravi Teja']];
+    const vehs = ['TN 09 AB 4521', 'MH 14 TC 2087', 'TS 07 TR 1193', 'TN 22 TR 8841', 'MH 14 TC 3310', 'TN 09 TR 5512', 'TS 08 TC 4410', 'MH 12 TC 9014'];
+    const out = [];
+    for (let i = 0; i < 400; i++) {
+      const name = i === 0 ? 'Rahul Kumar' : first[(i * 7) % first.length] + ' ' + last[(i * 13 + 3) % last.length];
+      const L = locs[i === 0 ? 0 : (i * 3) % locs.length];
+      const r = (i * 37) % 100;
+      const avail = i === 0 ? 'On trip' : (r < 42 ? 'On trip' : r < 70 ? 'Available' : r < 88 ? 'Off duty' : 'On leave');
+      out.push({ name, id: 'JAY-DR-' + String(142 + i).padStart(4, '0'), phone: '+91 9' + String(8410023567 + i * 7919).slice(-9).replace(/(\d{4})(\d{5})/, '$1 $2'), loc: L[0], sup: L[1], veh: avail === 'On trip' ? vehs[i % vehs.length] : '—', km: 18000 + (i * 7331) % 90000, avail, score: (3.4 + ((i * 17) % 16) / 10).toFixed(1) });
+    }
+    this._d = out; return out;
+  }
+  renderVals() {
+    const s = this.state, all = this.drivers();
+    const AV = { 'On trip': ['#15803d', '#ecfdf3'], Available: ['#1d4ed8', '#eef3fe'], 'Off duty': ['#57534e', '#f1f0ef'], 'On leave': ['#b45309', '#fef6e7'] };
+    const q = s.q.trim().toLowerCase();
+    const f = all.filter(d => (s.avail === 'All' || d.avail === s.avail) && (!q || (d.name + ' ' + d.id).toLowerCase().indexOf(q) >= 0));
+    const per = 12, pages = Math.max(1, Math.ceil(f.length / per)), page = Math.min(s.page, pages - 1);
+    const fmt = n => n.toLocaleString('en-IN');
+    const rows = f.slice(page * per, page * per + per).map(d => {
+      const idx = all.indexOf(d);
+      return Object.assign({}, d, { km: fmt(d.km), ini: d.name.split(' ').map(w => w[0]).join(''), c: AV[d.avail][0], wash: AV[d.avail][1], bg: idx === s.sel ? '#fff7ed' : '#ffffff', pick: () => this.setState({ sel: idx }) });
+    });
+    const d = all[s.sel];
+    const sel = {
+      name: d.name, id: d.id, loc: d.loc, sup: d.sup, ini: d.name.split(' ').map(w => w[0]).join(''),
+      lic: 'MH12 ' + (20190000000 + s.sel * 1311), valid: '14 Mar 2031',
+      metrics: [{ l: 'Score', v: d.score + ' / 5' }, { l: 'Total km', v: fmt(d.km) }, { l: 'Trips', v: String(120 + s.sel % 90) }, { l: 'Overspeed', v: String(s.sel % 5) }, { l: 'Idle hrs (Nov)', v: (2 + s.sel % 7) + ' h' }, { l: 'Tickets', v: String(s.sel % 3) }],
+      trips: [{ d: '18 Nov', v: 'TN 09 AB 4521', km: '286.4 km' }, { d: '17 Nov', v: 'TN 09 AB 4521', km: '301.2 km' }, { d: '16 Nov', v: 'MH 14 TC 3310', km: '244.0 km' }]
+    };
+    const avail = ['All', 'On trip', 'Available', 'Off duty', 'On leave'].map(a => ({ label: a === 'All' ? 'All drivers' : a, n: a === 'All' ? all.length : all.filter(x => x.avail === a).length, pressed: s.avail === a ? 'true' : 'false', bg: s.avail === a ? '#1c1917' : '#ffffff', color: s.avail === a ? '#ffffff' : '#0c0a09', border: s.avail === a ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ avail: a, page: 0 }) }));
+    return {
+      rows, sel, avail, q: s.q, onQ: e => this.setState({ q: e.target.value, page: 0 }),
+      pageLabel: f.length ? (page * per + 1) + '–' + Math.min(f.length, page * per + per) + ' of ' + f.length + ' drivers' : 'No drivers match',
+      prev: () => this.setState({ page: Math.max(0, page - 1) }), next: () => this.setState({ page: Math.min(pages - 1, page + 1) })
+    };
+  }
+}
+</script>
+</body>
+</html>

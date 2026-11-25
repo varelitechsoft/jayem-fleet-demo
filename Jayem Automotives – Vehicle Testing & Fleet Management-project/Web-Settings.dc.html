@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Settings</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Settings" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 12px; color: #78716c">Administration · Super Admin only</span>
+        <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Settings</h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <nav aria-label="Settings sections" style="flex: 0 1 220px; display: flex; flex-direction: column; gap: 2px">
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+            <button type="button" onClick="{{t.pick}}" aria-current="{{t.cur}}" style="text-align: left; border: 0; border-radius: 8px; padding: 9px 12px; font-size: 13.5px; font-weight: 500; background: {{t.bg}}; color: {{t.color}}">{{t.label}}</button>
+          </sc-for>
+        </nav>
+        <section style="flex: 999 1 560px; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 16px">
+          <sc-if value="{{isLoc}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <div style="display: flex; justify-content: space-between; align-items: center"><h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">Locations &amp; testing sites</h2><button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 6px 14px; font-size: 12.5px; font-weight: 500">+ Add site</button></div>
+              <sc-for list="{{sites}}" as="x" hint-placeholder-count="5">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #e8e6e5; border-radius: 10px">
+                  <div style="flex: 1 1 220px; display: flex; flex-direction: column"><span style="font-weight: 600">{{x.n}}</span><span style="font-size: 12px; color: #78716c">{{x.t}}</span></div>
+                  <span style="font-size: 12.5px; color: #57534e; width: 110px">{{x.v}} vehicles</span>
+                  <span style="font-size: 12.5px; color: #57534e; width: 110px">{{x.d}} drivers</span>
+                  <span style="font-size: 12.5px; color: #57534e; flex: 1 1 140px">Supervisor: {{x.s}}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{isGps}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <div style="display: flex; justify-content: space-between; align-items: center"><h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">GPS devices</h2><button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 6px 14px; font-size: 12.5px; font-weight: 500">+ Register device</button></div>
+              <p style="margin: 0; font-size: 12.5px; color: #57534e">Devices are registered on their own and can move between vehicles. Every move is kept in device and vehicle history. This prototype uses simulated GPS data.</p>
+              <div style="overflow-x: auto">
+                <table style="width: 100%; border-collapse: collapse; min-width: 600px; font-size: 13px">
+                  <thead><tr style="text-align: left; color: #78716c; font-size: 12px"><th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Device ID</th><th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Model</th><th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">IMEI</th><th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Fitted on</th><th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Last ping</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{devices}}" as="d" hint-placeholder-count="6">
+                      <tr><td style="padding: 9px 8px; border-bottom: 1px solid #f0efee; font-weight: 600">{{d.id}}</td><td style="padding: 9px 8px; border-bottom: 1px solid #f0efee">{{d.m}}</td><td style="padding: 9px 8px; border-bottom: 1px solid #f0efee; font-family: ui-monospace, monospace; font-size: 12px; color: #57534e">{{d.imei}}</td><td style="padding: 9px 8px; border-bottom: 1px solid #f0efee">{{d.v}}</td><td style="padding: 9px 8px; border-bottom: 1px solid #f0efee; color: {{d.c}}">{{d.p}}</td></tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{isThr}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 14px">
+              <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">Thresholds &amp; rules</h2>
+              <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+                <sc-for list="{{thr}}" as="t" hint-placeholder-count="6">
+                  <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #57534e">{{t.l}}
+                    <span style="display: flex; align-items: center; gap: 8px"><input type="number" value="{{t.v}}" style="flex: 1; border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 400; color: #0c0a09"><span style="font-weight: 400; color: #78716c; width: 60px">{{t.u}}</span></span>
+                  </label>
+                </sc-for>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center">
+                <button type="button" onClick="{{saveThr}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">Save thresholds</button>
+                <sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><span role="status" style="font-size: 13px; color: #15803d">Saved. New alerts use these values.</span></sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { tab: 'loc', saved: false }; }
+  renderVals() {
+    const s = this.state;
+    const tabs = [['loc', 'Locations & sites'], ['gps', 'GPS devices'], ['thr', 'Thresholds & rules']].map(([id, label]) => ({ label, cur: s.tab === id ? 'page' : 'false', bg: s.tab === id ? '#fff1e6' : 'transparent', color: s.tab === id ? '#9a3412' : '#0c0a09', pick: () => this.setState({ tab: id, saved: false }) }));
+    const sites = [['Chennai · Head Office', 'Oragadam test facility + HO', 40, 110, 'Senthil Murugan'], ['Pune · Chakan', 'Testing site 1 · oval track', 22, 96, 'Suresh Kumar'], ['Pune · Talegaon', 'Testing site 2 · mileage loop', 16, 54, 'Vikram Joshi'], ['Pune · Ranjangaon', 'Testing site 3 · gradient + EV', 12, 40, 'Sunil Bhosale'], ['Hyderabad', 'Testing operations · Medchal', 60, 100, 'Ravi Teja']].map(x => ({ n: x[0], t: x[1], v: x[2], d: x[3], s: x[4] }));
+    const devices = [['JGT-PN-0142', 'Teltonika FMC130', '356307042441142', 'TN 09 AB 4521', 'a few seconds ago', '#15803d'], ['JGT-PN-0088', 'Teltonika FMC130', '356307042440088', 'MH 14 TC 2087', 'a few seconds ago', '#15803d'], ['JGT-PN-0131', 'iTriangle TS101', '868204051310131', 'MH 12 TMP 6612', '2 h ago', '#b91c1c'], ['JGT-HY-0217', 'iTriangle TS101', '868204052170217', 'TS 07 TR 1193', '12 s ago', '#15803d'], ['JGT-PN-0199', 'Teltonika FMC130', '356307042440199', 'In stock', '—', '#78716c'], ['JGT-PN-0035', 'iTriangle TS101', '868204050350035', 'Faulty · returned', '26 Aug', '#78716c']].map(d => ({ id: d[0], m: d[1], imei: d[2], v: d[3], p: d[4], c: d[5] }));
+    const thr = [['Overspeed limit (test track)', 80, 'km/h'], ['Overspeed limit (highway)', 90, 'km/h'], ['Idle alert after', 20, 'min'], ['GPS lost after', 15, 'min'], ['Unusual stop after', 10, 'min'], ['Max daily driving per driver', 9, 'hours']].map(t => ({ l: t[0], v: t[1], u: t[2] }));
+    return { tabs, sites, devices, thr, isLoc: s.tab === 'loc', isGps: s.tab === 'gps', isThr: s.tab === 'thr', saved: s.saved, saveThr: () => this.setState({ saved: true }) };
+  }
+}
+</script>
+</body>
+</html>

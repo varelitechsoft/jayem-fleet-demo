@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Alerts &amp; Notifications</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Alerts &amp; Notifications" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Monitoring · {{openCount}} need attention</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Alerts &amp; notifications</h1>
+        </div>
+        <div style="display: flex; gap: 8px">
+          <div role="tablist" aria-label="View" style="display: flex; gap: 4px; padding: 3px; border: 1px solid #e8e6e5; border-radius: 9999px; background: #ffffff">
+            <sc-for list="{{views}}" as="v" hint-placeholder-count="2">
+              <button type="button" role="tab" aria-selected="{{v.sel}}" onClick="{{v.pick}}" style="border: 0; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 500; background: {{v.bg}}; color: {{v.color}}">{{v.label}}</button>
+            </sc-for>
+          </div>
+          <button type="button" onClick="{{ackAll}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 7px 14px; font-size: 13px; font-weight: 500">Acknowledge all</button>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <sc-for list="{{types}}" as="t" hint-placeholder-count="8">
+          <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="display: flex; align-items: center; gap: 6px; border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.color}}; border-radius: 9999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500"><span style="width: 7px; height: 7px; border-radius: 9999px; background: {{t.dot}}"></span>{{t.label}}</button>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; align-items: start">
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 8px 16px">
+          <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}">
+            <p style="margin: 0; padding: 40px 0; text-align: center; color: #78716c; font-size: 13px">No alerts here. All caught up.</p>
+          </sc-if>
+          <sc-for list="{{rows}}" as="a" hint-placeholder-count="10">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0efee; opacity: {{a.op}}">
+              <span style="font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 9999px; background: {{a.w}}; color: {{a.c}}; white-space: nowrap; min-width: 92px; text-align: center">{{a.type}}</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-weight: 500; font-size: 13.5px">{{a.title}}</span><span style="font-size: 12px; color: #78716c">{{a.meta}}</span></div>
+              <span style="font-size: 12px; color: #78716c; white-space: nowrap">{{a.time}}</span>
+              <sc-if value="{{a.open}}" hint-placeholder-val="{{true}}">
+                <button type="button" onClick="{{a.ack}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 4px 12px; font-size: 12px; font-weight: 500">Acknowledge</button>
+              </sc-if>
+              <sc-if value="{{a.done}}" hint-placeholder-val="{{false}}">
+                <span style="font-size: 12px; color: #15803d; white-space: nowrap">✓ {{a.by}}</span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </section>
+
+        <section style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 17px">Alert rules</h2>
+          <sc-for list="{{rules}}" as="r" hint-placeholder-count="7">
+            <div style="display: flex; flex-direction: column; gap: 4px; padding: 8px 0; border-bottom: 1px solid #f5f5f4">
+              <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 500; font-size: 13px">{{r.l}}</span><span style="font-size: 12px; color: #78716c">{{r.th}}</span></div>
+              <div style="display: flex; gap: 14px; font-size: 12px; color: #57534e">
+                <label style="display: flex; gap: 5px; align-items: center"><input type="checkbox" checked="{{true}}" style="accent-color: #c2410c">Dashboard</label>
+                <label style="display: flex; gap: 5px; align-items: center"><input type="checkbox" checked="{{r.email}}" style="accent-color: #c2410c">Email</label>
+              </div>
+            </div>
+          </sc-for>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { view: 'live', type: 'All', acked: {} }; }
+  renderVals() {
+    const s = this.state;
+    const T = { Overspeed: ['#b91c1c', '#fdeeee'], Idle: ['#b45309', '#fef6e7'], 'Geofence entry': ['#15803d', '#ecfdf3'], 'Geofence exit': ['#c2410c', '#fff1e6'], 'GPS lost': ['#57534e', '#f1f0ef'], 'Unusual stop': ['#7e22ce', '#f6effe'], Offline: ['#78716c', '#f1f0ef'] };
+    const live = [
+      [1, 'Overspeed', 'MH 14 TC 2087 at 94 km/h', 'Imran Shaikh · NH 60 near Chakan · limit 80', '2 min ago'],
+      [2, 'Idle', 'MH 14 TC 3310 idling 24 min', 'Sachin Jadhav · Gate 3, Chakan', '6 min ago'],
+      [3, 'Geofence exit', 'TS 07 TR 1193 left Chakan Test Zone A', 'Venkat Reddy · Talegaon road', '9 min ago'],
+      [4, 'GPS lost', 'MH 12 TMP 6612 · no GPS for 2 h', 'Device JGT-PN-0131 · Ranjangaon', '2 h ago'],
+      [5, 'Unusual stop', 'TN 09 TR 5512 stopped on highway shoulder', 'Dinesh Babu · NH 48 km 31 · 11 min', '14 min ago'],
+      [6, 'Offline', 'MH 14 TMP 0459 offline', 'Under maintenance · ignition off', '3 h ago'],
+      [7, 'Geofence entry', 'MH 14 TC 2087 entered Endurance Corridor B', 'Imran Shaikh', '38 min ago']
+    ];
+    const hist = [
+      [11, 'Overspeed', 'TN 09 AB 4521 at 86 km/h', 'Rahul Kumar · 18 Nov', '09:48', 'Suresh Kumar'],
+      [12, 'Idle', 'TN 09 AB 4521 idle 24 min', 'Rahul Kumar · 18 Nov', '10:18', 'Suresh Kumar'],
+      [13, 'GPS lost', 'TS 08 TC 4410 no GPS 18 min', 'Tunnel section · 17 Nov', '15:02', 'Ravi Teja'],
+      [14, 'Geofence exit', 'MH 12 TC 7720 left Corridor B', 'Amol Kale · 17 Nov', '09:58', 'Suresh Kumar']
+    ];
+    const isLive = s.view === 'live';
+    const src = isLive ? live : hist;
+    const rows = src.filter(a => s.type === 'All' || a[1] === s.type).map(a => {
+      const done = !isLive || !!s.acked[a[0]];
+      return { type: a[1], title: a[2], meta: a[3], time: a[4], c: T[a[1]][0], w: T[a[1]][1], open: !done, done, by: isLive ? 'You' : a[5], op: done && isLive ? '0.55' : '1', ack: () => this.setState({ acked: Object.assign({}, s.acked, { [a[0]]: true }) }) };
+    });
+    const types = ['All'].concat(Object.keys(T)).map(k => ({ label: k === 'All' ? 'All types' : k, dot: k === 'All' ? '#0c0a09' : T[k][0], pressed: s.type === k ? 'true' : 'false', bg: s.type === k ? '#1c1917' : '#ffffff', color: s.type === k ? '#ffffff' : '#0c0a09', border: s.type === k ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ type: k }) }));
+    const views = [['live', 'Live'], ['hist', 'History']].map(([id, label]) => ({ label, sel: s.view === id ? 'true' : 'false', bg: s.view === id ? '#1c1917' : 'transparent', color: s.view === id ? '#ffffff' : '#57534e', pick: () => this.setState({ view: id }) }));
+    const rules = [['Overspeeding', '> 80 km/h for 10 s', true], ['Vehicle idle', 'Engine on, 0 km/h > 20 min', true], ['Geofence entry', 'Permitted zones', false], ['Geofence exit', 'All zones', true], ['GPS disconnected', 'No ping > 15 min', true], ['Unusual stoppage', 'Stop outside depot > 10 min', false], ['Vehicle offline', 'No data > 60 min', false]].map(r => ({ l: r[0], th: r[1], email: r[2] }));
+    const all = {}; live.forEach(a => { all[a[0]] = true; });
+    return { rows, noRows: rows.length === 0, types, views, rules, openCount: live.filter(a => !s.acked[a[0]]).length, ackAll: () => this.setState({ acked: all }) };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Dashboard</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#fafaf9}
+a{color:#c2410c}a:hover{color:#9a3412}
+button{font-family:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+
+  <!-- SIDEBAR -->
+  <nav aria-label="Main" style="flex: 1 1 248px; max-width: 100%; background: #0f1c36; color: #c3cad8; padding: 20px 14px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 8px">
+      <div style="width: 34px; height: 34px; border-radius: 8px; background: #c2410c; display: flex; align-items: center; justify-content: center; color: #ffffff; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px">J</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 16px; color: #ffffff; letter-spacing: -0.2px">Jayem Automotives</span>
+        <span style="font-size: 11px; color: #8592ab; letter-spacing: 0.4px">TESTING &amp; FLEET PORTAL</span>
+      </div>
+    </div>
+    <sc-for list="{{navGroups}}" as="group" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0 10px 6px; font-size: 11px; font-weight: 500; letter-spacing: 0.6px; color: #8592ab">
+          <span>{{group.label}}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8592ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+        </div>
+        <sc-for list="{{group.items}}" as="item" hint-placeholder-count="3">
+          <a href="{{item.href}}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; text-decoration: none; font-size: 13.5px; color: {{item.color}}; background: {{item.bg}}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{item.d}}"></path></svg>
+            <span style="flex: 1">{{item.label}}</span>
+            <sc-if value="{{item.badge}}" hint-placeholder-val="{{false}}">
+              <span style="font-size: 11px; font-weight: 600; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 1px 7px">{{item.badge}}</span>
+            </sc-if>
+          </a>
+        </sc-for>
+      </div>
+    </sc-for>
+  </nav>
+
+  <!-- CONTENT -->
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <!-- top bar -->
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 28px; background: #ffffff; border-bottom: 1px solid #e8e6e5">
+      <label style="flex: 1 1 260px; display: flex; align-items: center; gap: 8px; border: 1px solid #d6d3d1; border-radius: 6px; padding: 7px 10px; max-width: 420px; color: #78716c">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"></path></svg>
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search</span>
+        <input type="search" placeholder="Search vehicle, driver, project or ticket ID" style="border: 0; outline: 0; flex: 1; font: inherit; font-size: 13px; color: #0c0a09; background: transparent; min-width: 0">
+      </label>
+      <div style="flex: 1"></div>
+      <button type="button" aria-label="Notifications, 7 unread" style="position: relative; width: 40px; height: 40px; border-radius: 9999px; border: 1px solid #e8e6e5; background: #ffffff; display: flex; align-items: center; justify-content: center; color: #0c0a09">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8zM10 20a2 2 0 0 0 4 0"></path></svg>
+        <span style="position: absolute; top: 7px; right: 8px; width: 8px; height: 8px; border-radius: 9999px; background: #c2410c"></span>
+      </button>
+      <div style="display: flex; align-items: center; gap: 10px; padding-left: 4px">
+        <div style="width: 36px; height: 36px; border-radius: 9999px; background: #1c1917; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">{{user.initials}}</div>
+        <div style="display: flex; flex-direction: column; line-height: 1.3">
+          <span style="font-weight: 500; font-size: 13px">{{user.name}}</span>
+          <span style="font-size: 12px; color: #78716c">{{user.role}}</span>
+        </div>
+      </div>
+    </header>
+
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 20px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <!-- title row -->
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; justify-content: space-between">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Thursday, 19 November 2026 · Shift A (06:00–14:00)</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">{{pageTitle}}</h1>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center">
+          <div role="group" aria-label="Location" style="display: flex; gap: 4px; padding: 3px; border: 1px solid #e8e6e5; border-radius: 9999px; background: #ffffff">
+            <sc-for list="{{locations}}" as="loc" hint-placeholder-count="4">
+              <button type="button" onClick="{{loc.pick}}" aria-pressed="{{loc.pressed}}" style="border: 0; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 500; background: {{loc.bg}}; color: {{loc.color}}">{{loc.label}}</button>
+            </sc-for>
+          </div>
+          <button type="button" style="display: flex; align-items: center; gap: 6px; border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"></path></svg>
+            Export report
+          </button>
+        </div>
+      </div>
+
+      <!-- role switcher -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 12px; border: 1px dashed #d6d3d1; border-radius: 10px; background: #ffffff">
+        <span style="font-size: 12px; font-weight: 500; color: #78716c; padding-right: 4px">DEMO · VIEW AS</span>
+        <sc-for list="{{roles}}" as="r" hint-placeholder-count="4">
+          <button type="button" onClick="{{r.pick}}" aria-pressed="{{r.pressed}}" style="border: 1px solid {{r.border}}; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 500; background: {{r.bg}}; color: {{r.color}}">{{r.label}}</button>
+        </sc-for>
+        <span style="font-size: 12px; color: #78716c; margin-left: auto">{{roleScope}}</span>
+      </div>
+
+      <!-- KPIs -->
+      <section aria-label="Key figures" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px">
+        <sc-for list="{{kpis}}" as="k" hint-placeholder-count="10">
+          <div style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+              <span style="font-size: 12.5px; color: #78716c">{{k.label}}</span>
+              <span style="width: 8px; height: 8px; border-radius: 9999px; background: {{k.dot}}"></span>
+            </div>
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 500; letter-spacing: -0.6px; line-height: 1.15">{{k.value}}</span>
+            <span style="font-size: 12px; color: {{k.deltaColor}}">{{k.delta}}</span>
+          </div>
+        </sc-for>
+      </section>
+
+      <!-- row: chart + fleet status -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px">
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline">
+            <div style="display: flex; flex-direction: column; gap: 2px">
+              <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px; letter-spacing: -0.2px">Kilometres driven · last 7 days</h2>
+              <span style="font-size: 12.5px; color: #78716c">All projects · {{locLabel}}</span>
+            </div>
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 22px; font-weight: 500">{{weekTotal}} km</span>
+          </div>
+          <div style="display: flex; align-items: flex-end; gap: 14px; height: 200px; padding-top: 8px; border-bottom: 1px solid #e8e6e5">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+              <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px">
+                <span style="font-size: 11.5px; color: #57534e">{{b.label}}</span>
+                <div style="width: 100%; max-width: 54px; height: {{b.h}}; border-radius: 6px 6px 0 0; background: {{b.fill}}"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 14px; margin-top: -8px">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="7">
+              <span style="flex: 1; text-align: center; font-size: 12px; color: #78716c">{{b.day}}</span>
+            </sc-for>
+          </div>
+        </section>
+
+        <section style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px; letter-spacing: -0.2px">Fleet status now</h2>
+          <div style="display: flex; height: 12px; border-radius: 9999px; overflow: hidden; gap: 2px">
+            <sc-for list="{{fleet}}" as="f" hint-placeholder-count="5">
+              <div style="flex: {{f.n}}; background: {{f.c}}"></div>
+            </sc-for>
+          </div>
+          <div style="display: flex; flex-direction: column">
+            <sc-for list="{{fleet}}" as="f" hint-placeholder-count="5">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f0efee">
+                <span style="width: 10px; height: 10px; border-radius: 3px; background: {{f.c}}"></span>
+                <span style="flex: 1">{{f.label}}</span>
+                <span style="font-weight: 600">{{f.n}}</span>
+                <span style="width: 44px; text-align: right; color: #78716c; font-size: 12.5px">{{f.pct}}</span>
+              </div>
+            </sc-for>
+          </div>
+          <a href="Web-Tracking.dc.html" style="align-self: flex-start; font-size: 13px; font-weight: 500; text-decoration: none">Open live map →</a>
+        </section>
+      </div>
+
+      <!-- row: projects + alerts -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px">
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 22px 8px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+            <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px; letter-spacing: -0.2px">Project progress</h2>
+            <a href="Web-Projects.dc.html" style="font-size: 13px; font-weight: 500; text-decoration: none">All 8 projects</a>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; min-width: 640px; font-size: 13px">
+              <thead>
+                <tr style="text-align: left; color: #78716c; font-size: 12px">
+                  <th style="font-weight: 500; padding: 8px 8px 8px 0; border-bottom: 1px solid #e8e6e5">Project</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Client</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Site</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5; width: 34%">Achieved / target km</th>
+                  <th style="font-weight: 500; padding: 8px 0 8px 8px; border-bottom: 1px solid #e8e6e5">Vehicles</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{projects}}" as="p" hint-placeholder-count="5">
+                  <tr>
+                    <td style="padding: 12px 8px 12px 0; border-bottom: 1px solid #f0efee">
+                      <div style="display: flex; flex-direction: column">
+                        <span style="font-weight: 500">{{p.name}}</span>
+                        <span style="font-size: 12px; color: #78716c">{{p.id}} · {{p.type}}</span>
+                      </div>
+                    </td>
+                    <td style="padding: 12px 8px; border-bottom: 1px solid #f0efee">{{p.client}}</td>
+                    <td style="padding: 12px 8px; border-bottom: 1px solid #f0efee; color: #57534e">{{p.site}}</td>
+                    <td style="padding: 12px 8px; border-bottom: 1px solid #f0efee">
+                      <div style="display: flex; flex-direction: column; gap: 6px">
+                        <div style="display: flex; justify-content: space-between; font-size: 12px"><span>{{p.done}} / {{p.target}}</span><span style="font-weight: 600">{{p.pct}}</span></div>
+                        <div style="height: 6px; border-radius: 9999px; background: #f0efee; overflow: hidden"><div style="height: 100%; width: {{p.pct}}; background: {{p.bar}}; border-radius: 9999px"></div></div>
+                      </div>
+                    </td>
+                    <td style="padding: 12px 0 12px 8px; border-bottom: 1px solid #f0efee">{{p.vehicles}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline">
+            <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px; letter-spacing: -0.2px">Live alerts</h2>
+            <span style="font-size: 12px; color: #78716c">{{openAlerts}} open</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <sc-for list="{{alerts}}" as="a" hint-placeholder-count="5">
+              <div style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid #e8e6e5; border-radius: 8px; align-items: flex-start; opacity: {{a.opacity}}">
+                <span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: {{a.wash}}; color: {{a.c}}; white-space: nowrap">{{a.type}}</span>
+                <div style="flex: 1; display: flex; flex-direction: column; min-width: 0">
+                  <span style="font-weight: 500; font-size: 13px">{{a.vehicle}}</span>
+                  <span style="font-size: 12px; color: #78716c">{{a.detail}}</span>
+                </div>
+                <button type="button" onClick="{{a.ack}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 4px 10px; font-size: 12px; color: #0c0a09; white-space: nowrap">{{a.ackLabel}}</button>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { role: 'admin', loc: 'All', acked: {} }; }
+  renderVals() {
+    const s = this.state;
+    const P = {
+      dash: 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z',
+      pin: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+      act: 'M3 12h4l3-8 4 16 3-8h4',
+      car: 'M3 12l2-6h14l2 6v4H3zM5 16v3h2v-3M17 16v3h2v-3M7.5 12.5h.01M16.5 12.5h.01',
+      user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+      folder: 'M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+      cal: 'M4 5h16v16H4zM4 10h16M8 3v4M16 3v4M9 15l2 2 4-4',
+      route: 'M6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 15V9a4 4 0 0 1 4-4h6M18 9v6a4 4 0 0 1-4 4H8',
+      ticket: 'M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4zM10 5v14',
+      fuel: 'M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M4 10h10M14 8h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V9l-3-3',
+      geo: 'M12 3l8 4.5v9L12 21l-8-4.5v-9z',
+      chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+      bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8zM10 20a2 2 0 0 0 4 0',
+      users: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M22 21a7 7 0 0 0-4-6.3',
+      shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+      set: 'M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4'
+    };
+    const HREF = { 'Dashboard': 'Main.dc.html', 'Vehicle Tracking': 'Web-Tracking.dc.html', 'Live Trips': 'Web-LiveTrips.dc.html', 'Vehicle Management': 'Web-Vehicles.dc.html', 'Driver Management': 'Web-Drivers.dc.html', 'Project Management': 'Web-Projects.dc.html', 'Vehicle Allocation': 'Web-Allocation.dc.html', 'Trip Management': 'Web-Trips.dc.html', 'Issues & Tickets': 'Web-Tickets.dc.html', 'Fuel & Energy': 'Web-Fuel.dc.html', 'Geofence & Routes': 'Web-Geofence.dc.html', 'Alerts': 'Web-Alerts.dc.html', 'Reports & Analytics': 'Web-Reports.dc.html', 'User Management': 'Web-Users.dc.html', 'Roles & Permissions': 'Web-Roles.dc.html', 'Settings': 'Web-Settings.dc.html' };
+    const it = (label, d, opts) => Object.assign({ label, d, href: HREF[label] || '#', badge: null, color: '#c3cad8', bg: 'transparent' }, opts || {});
+    const allGroups = [
+      { label: 'OVERVIEW', items: [it('Dashboard', P.dash, { color: '#ffffff', bg: '#1d2f55' }), it('Vehicle Tracking', P.pin, { href: 'Web-Tracking.dc.html' }), it('Live Trips', P.act, { badge: '96' })] },
+      { label: 'OPERATIONS', items: [it('Vehicle Management', P.car), it('Driver Management', P.user), it('Project Management', P.folder), it('Vehicle Allocation', P.cal), it('Trip Management', P.route)] },
+      { label: 'MONITORING', items: [it('Issues & Tickets', P.ticket, { badge: '12' }), it('Fuel & Energy', P.fuel), it('Geofence & Routes', P.geo), it('Alerts', P.bell, { badge: '7' })] },
+      { label: 'INSIGHTS', items: [it('Reports & Analytics', P.chart)] },
+      { label: 'ADMINISTRATION', items: [it('User Management', P.users), it('Roles & Permissions', P.shield), it('Settings', P.set)] }
+    ];
+    // role-based nav trimming
+    const hide = {
+      admin: [],
+      pm: ['Vehicle Allocation', 'Geofence & Routes', 'User Management', 'Roles & Permissions', 'Settings'],
+      sup: ['Project Management', 'User Management', 'Roles & Permissions', 'Settings', 'Geofence & Routes'],
+      mgmt: ['Vehicle Allocation', 'Trip Management', 'Issues & Tickets', 'Geofence & Routes', 'User Management', 'Roles & Permissions', 'Settings', 'Vehicle Management', 'Driver Management']
+    }[s.role];
+    const navGroups = allGroups.map(g => ({ label: g.label, items: g.items.filter(i => hide.indexOf(i.label) < 0) })).filter(g => g.items.length);
+
+    const G = '#15803d', A = '#b45309', R = '#b91c1c', B = '#1d4ed8', S = '#57534e', O = '#c2410c';
+    const up = '#15803d', mute = '#78716c', down = '#b91c1c';
+    const K = (label, value, delta, dot, deltaColor) => ({ label, value, delta, dot, deltaColor: deltaColor || mute });
+    const kpiSets = {
+      admin: [K('Total vehicles', '150', 'Chennai 40 · Pune 50 · Hyd 60', S), K('Active vehicles', '122', '81% online', G), K('Under testing', '96', '+6 vs yesterday', O, up), K('Idle', '12', 'Idle > 20 min', A), K('Under maintenance', '14', '3 back by Fri', B), K('Total drivers', '400', '12 on leave today', S), K('Active drivers', '168', 'Shift A on duty', G), K('Ongoing projects', '8', '2 closing this month', O), K('Open tickets', '12', '4 high priority', R, down), K('Total km travelled', '4,82,640', '+92,520 this week', O, up)],
+      pm: [K('Vehicles on my projects', '64', 'EV-2026-014 · CV-2026-007 · MH-2026-011', S), K('Active testing vehicles', '51', '80% of assigned', G), K('Completed testing', '9', 'Ready for handover', B), K('Target km', '2,20,000', 'Across 3 projects', S), K('Achieved km', '1,51,620', '68.9% of target', O, up), K('Remaining km', '68,380', 'At 9,800 km/day: 7 days', A), K('Active drivers', '58', 'Shift A + B', G), K('Open / pending tickets', '5 / 2', '2 waiting for your review', R, down)],
+      sup: [K('Drivers assigned today', '42', 'Pune · Chakan site', S), K('Drivers available', '6', 'Ready for allocation', G), K('Vehicles allocated', '38', '2 not yet started', O), K('Running now', '31', 'Live on map', G), K('Idle', '5', '> 20 min stopped', A), K('Completed trips', '17', 'Since 06:00', B), K('Open tickets', '4', 'Assigned to you', R, down), K('Pending resolution', '2', 'Parts awaited', A), K('Overspeed alerts', '3', 'Limit 80 km/h on track', R, down), K('Idle alerts', '6', 'Since 06:00', A)],
+      mgmt: [K('Vehicles under testing', '96', 'of 150 in fleet', O), K('Project completion', '63%', 'Weighted by target km', G, up), K('Km achieved (FY)', '18.4 L', '+11% vs last quarter', O, up), K('Vehicle utilisation', '78%', 'Target 80%', A), K('Driver performance', '4.3 / 5', 'Avg. across 400 drivers', G), K('Fuel used (Nov)', '21,480 L', 'Avg. 11.6 km/L', S), K('EV energy (Nov)', '38,920 kWh', 'Avg. 6.8 km/kWh', B), K('Open issues', '12', 'Breakdowns down 18%', R, up)]
+    };
+    const scope = { admin: 'Full access · all locations', pm: 'Assigned projects only · no system config', sup: 'Pune · Chakan site · own drivers and vehicles', mgmt: 'Read-only · downloads allowed' }[s.role];
+    const title = { admin: 'Operations overview', pm: 'My projects', sup: 'Today at Chakan site', mgmt: 'Testing performance' }[s.role];
+    const user = { admin: { name: 'Arvind Raman', role: 'Super Admin · Chennai HO', initials: 'AR' }, pm: { name: 'Priya Deshmukh', role: 'Project Manager', initials: 'PD' }, sup: { name: 'Suresh Kumar', role: 'Supervisor · Pune', initials: 'SK' }, mgmt: { name: 'Tata Motors – Viewer', role: 'Management / Client', initials: 'TM' } }[s.role];
+
+    const roles = [['admin', 'Super Admin'], ['pm', 'Project Manager'], ['sup', 'Supervisor'], ['mgmt', 'Management']].map(([id, label]) => {
+      const on = s.role === id;
+      return { label, pressed: on ? 'true' : 'false', bg: on ? '#1c1917' : '#ffffff', color: on ? '#ffffff' : '#0c0a09', border: on ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ role: id }) };
+    });
+    const locations = ['All', 'Chennai', 'Pune', 'Hyderabad'].map(l => {
+      const on = s.loc === l;
+      return { label: l, pressed: on ? 'true' : 'false', bg: on ? '#fff1e6' : 'transparent', color: on ? '#9a3412' : '#57534e', pick: () => this.setState({ loc: l }) };
+    });
+    const factor = { All: 1, Chennai: 0.24, Pune: 0.36, Hyderabad: 0.4 }[s.loc];
+    const raw = [['Fri', 13240], ['Sat', 14880], ['Sun', 9620], ['Mon', 12610], ['Tue', 15420], ['Wed', 16090], ['Thu', 10660]];
+    const max = 16090;
+    const fmt = n => Math.round(n).toLocaleString('en-IN');
+    const bars = raw.map(([day, v], i) => ({ day: i === 6 ? 'Today' : day, label: fmt(v * factor), h: Math.round(v / max * 150) + 'px', fill: i === 6 ? '#c2410c' : '#fdba8c' }));
+    const weekTotal = fmt(raw.reduce((a, r) => a + r[1], 0) * factor);
+
+    const fleetRaw = [['Running', 84, G], ['Idle', 12, A], ['Stopped', 26, '#a8a29e'], ['Under maintenance', 14, B], ['Offline', 14, S]];
+    const fleet = fleetRaw.map(([label, n, c]) => ({ label, n, c, pct: Math.round(n / 150 * 100) + '%' }));
+
+    const pr = (id, name, client, site, type, done, target, vehicles) => {
+      const pct = Math.round(done / target * 100);
+      return { id, name, client, site, type, done: fmt(done), target: fmt(target), pct: pct + '%', vehicles, bar: pct >= 75 ? G : '#c2410c' };
+    };
+    const projects = [
+      pr('EV-2026-014', 'EV Endurance – Nexon EV Max', 'Tata Motors', 'Pune · Chakan', 'Endurance', 38420, 60000, 12),
+      pr('CV-2026-007', 'Ecomet 1615 Durability', 'Ashok Leyland', 'Hyderabad', 'Road testing', 81300, 120000, 18),
+      pr('MH-2026-011', 'XUV 3XO Real-world Mileage', 'Mahindra', 'Pune · Talegaon', 'Mileage', 31900, 40000, 8),
+      pr('TT-2026-003', 'Radial Tyre Wear Cycle', 'Tata Motors', 'Chennai · Oragadam', 'Wheel / Tyre', 9840, 25000, 6),
+      pr('CV-2026-009', 'Ace EV Gradeability', 'Tata Motors', 'Pune · Ranjangaon', 'EV testing', 14210, 18000, 5)
+    ];
+
+    const al = (id, type, vehicle, detail, c, wash) => {
+      const done = !!s.acked[id];
+      return { type, vehicle, detail, c, wash, opacity: done ? '0.5' : '1', ackLabel: done ? 'Acknowledged' : 'Acknowledge', ack: () => this.setState({ acked: Object.assign({}, s.acked, { [id]: true }) }) };
+    };
+    const alerts = [
+      al(1, 'Overspeed', 'MH 14 TC 2087 · Ecomet', '94 km/h on Chakan test loop · 2 min ago', R, '#fdeeee'),
+      al(2, 'Idle', 'TN 09 AB 4521 · Nexon EV', 'Engine on, stopped 24 min · Gate 3', A, '#fef6e7'),
+      al(3, 'Geofence exit', 'TS 07 TR 1193 · Bolero Pik-Up', 'Left Medchal testing zone · 6 min ago', O, '#fff1e6'),
+      al(4, 'GPS lost', 'MH 12 TMP 6612 · Ace EV', 'Last ping 09:12 · Ranjangaon', S, '#f1f0ef'),
+      al(5, 'New ticket', 'JAY-TKT-2026-0012', 'Battery issue raised by Rahul Kumar', B, '#eef3fe')
+    ];
+    const openAlerts = alerts.filter((a, i) => !s.acked[i + 1]).length;
+
+    return { navGroups, kpis: kpiSets[s.role], roleScope: scope, pageTitle: title, user, roles, locations, locLabel: s.loc === 'All' ? 'All locations' : s.loc, bars, weekTotal, fleet, projects, alerts, openAlerts };
+  }
+}
+</script>
+</body>
+</html>

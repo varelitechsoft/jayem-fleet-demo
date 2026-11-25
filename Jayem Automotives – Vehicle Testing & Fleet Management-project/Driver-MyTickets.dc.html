@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Driver app – My tickets</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}a{color:#c2410c}a:hover{color:#9a3412}button{font-family:inherit;cursor:pointer}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #fafaf9; font-family: Inter, system-ui, sans-serif; color: #0c0a09; font-size: 14px; line-height: 1.5; display: flex; flex-direction: column; overflow: hidden">
+  <header style="padding: 22px 18px 10px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 26px; letter-spacing: -0.6px">My tickets</h1>
+      <a href="Driver-Issue.dc.html" style="font-size: 13px; font-weight: 600; text-decoration: none">+ New</a>
+    </div>
+    <div role="tablist" aria-label="Filter" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 3px; border: 1px solid #e8e6e5; border-radius: 9999px; background: #ffffff">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+        <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="border: 0; border-radius: 9999px; padding: 7px; font-size: 13px; font-weight: 500; background: {{t.bg}}; color: {{t.color}}">{{t.label}}</button>
+      </sc-for>
+    </div>
+  </header>
+  <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 4px 18px 12px; display: flex; flex-direction: column; gap: 10px">
+    <sc-for list="{{tickets}}" as="t" hint-placeholder-count="4">
+      <article style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 600">{{t.id}}</span><span style="font-size: 11.5px; font-weight: 600; padding: 1px 9px; border-radius: 9999px; background: {{t.w}}; color: {{t.c}}">{{t.status}}</span></div>
+        <div style="display: flex; flex-direction: column"><span style="font-weight: 500">{{t.cat}}</span><span style="font-size: 12.5px; color: #78716c">{{t.reg}} · raised {{t.date}} · {{t.sup}}</span></div>
+        <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px">
+          <sc-for list="{{t.bars}}" as="b" hint-placeholder-count="5"><span style="height: 4px; border-radius: 9999px; background: {{b}}"></span></sc-for>
+        </div>
+        <sc-if value="{{t.res}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 10px 12px; background: #ecfdf3; border-radius: 10px; font-size: 13px; color: #14532d"><strong>Resolution:</strong> {{t.res}}</p>
+        </sc-if>
+      </article>
+    </sc-for>
+  </div>
+  <dc-import name="DriverNav" active="My Tickets" hint-size="390px,72px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { tab: 'open' }; }
+  renderVals() {
+    const st = ['Open', 'Assigned', 'In Progress', 'Resolved', 'Closed'];
+    const C = { Open: ['#b91c1c', '#fdeeee'], Assigned: ['#9a3412', '#fff1e6'], 'In Progress': ['#1d4ed8', '#eef3fe'], Resolved: ['#15803d', '#ecfdf3'], Closed: ['#57534e', '#f1f0ef'] };
+    const T = [
+      ['JAY-TKT-2026-0012', 'Battery Issue', 'TN 09 AB 4521', '18 Nov', 'Suresh Kumar', 'In Progress', ''],
+      ['JAY-TKT-2026-0001', 'Tyre / Wheel Issue', 'TN 09 AB 4521', '03 Nov', 'Suresh Kumar', 'Resolved', 'Rear-left tyre replaced, alignment checked. Waiting for PM to close.'],
+      ['JAY-TKT-2026-0098', 'Troubleshooting Required', 'MH 14 TC 3310', '22 Oct', 'Vikram Joshi', 'Closed', 'Loose infotainment connector re-seated. No parts used.'],
+      ['JAY-TKT-2026-0071', 'Part Replacement Required', 'TN 09 AB 4521', '09 Oct', 'Suresh Kumar', 'Closed', 'Front wiper blades replaced (P/N 88T-112).']
+    ];
+    const open = this.state.tab === 'open';
+    const tickets = T.filter(t => open ? ['Closed'].indexOf(t[5]) < 0 : t[5] === 'Closed').map(t => {
+      const idx = st.indexOf(t[5]);
+      return { id: t[0], cat: t[1], reg: t[2], date: t[3], sup: t[4] ? 'Supervisor ' + t[4] : '', status: t[5], c: C[t[5]][0], w: C[t[5]][1], res: t[6], bars: st.map((x, i) => i <= idx ? '#c2410c' : '#e8e6e5') };
+    });
+    const tabs = [['open', 'Active'], ['closed', 'Closed']].map(([id, label]) => ({ label, sel: this.state.tab === id ? 'true' : 'false', bg: this.state.tab === id ? '#1c1917' : 'transparent', color: this.state.tab === id ? '#ffffff' : '#57534e', pick: () => this.setState({ tab: id }) }));
+    return { tickets, tabs };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Vehicle Tracking</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#fafaf9}
+a{color:#c2410c}a:hover{color:#9a3412}
+button,select,input{font-family:inherit}
+button{cursor:pointer}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5; min-height: 100vh">
+
+  <!-- icon rail -->
+  <nav aria-label="Main" style="flex: 0 0 64px; background: #0f1c36; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px 0; box-sizing: border-box">
+    <a href="Main.dc.html" aria-label="Jayem Automotives home" style="width: 36px; height: 36px; border-radius: 8px; background: #c2410c; display: flex; align-items: center; justify-content: center; color: #ffffff; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px; text-decoration: none; margin-bottom: 14px">J</a>
+    <sc-for list="{{rail}}" as="r" hint-placeholder-count="10">
+      <a href="{{r.href}}" aria-label="{{r.label}}" title="{{r.label}}" style="width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: {{r.color}}; background: {{r.bg}}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{r.d}}"></path></svg>
+      </a>
+    </sc-for>
+  </nav>
+
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <!-- header -->
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 24px; background: #ffffff; border-bottom: 1px solid #e8e6e5">
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 12px; color: #78716c">Monitoring · Simulated GPS feed</span>
+        <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 24px; letter-spacing: -0.5px; line-height: 1.25">Vehicle Tracking</h1>
+      </div>
+      <div role="tablist" aria-label="Tracking view" style="display: flex; gap: 4px; padding: 3px; border: 1px solid #e8e6e5; border-radius: 9999px">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+          <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="border: 0; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 500; background: {{t.bg}}; color: {{t.color}}">{{t.label}}</button>
+        </sc-for>
+      </div>
+      <div style="flex: 1"></div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #57534e">
+        <span style="width: 8px; height: 8px; border-radius: 9999px; background: #15803d"></span>
+        Live · updated {{clock}}
+      </div>
+      <a href="Main.dc.html" style="border: 1px solid #e8e6e5; border-radius: 9999px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: #0c0a09; text-decoration: none">Dashboard</a>
+    </header>
+
+    <div style="display: flex; flex-wrap: wrap; flex: 1; min-height: 0">
+      <!-- left: filters + list -->
+      <aside aria-label="Vehicles and filters" style="flex: 1 1 300px; max-width: 100%; background: #ffffff; border-right: 1px solid #e8e6e5; display: flex; flex-direction: column; box-sizing: border-box">
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #e8e6e5">
+          <label style="display: flex; align-items: center; gap: 8px; border: 1px solid #d6d3d1; border-radius: 6px; padding: 7px 10px; color: #78716c">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4"></path></svg>
+            <input type="search" aria-label="Search vehicle or driver" placeholder="Reg. no. or driver" value="{{q}}" onInput="{{onSearch}}" style="border: 0; outline: 0; flex: 1; min-width: 0; font-size: 13px; background: transparent; color: #0c0a09">
+          </label>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+            <label style="display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; color: #78716c">Location
+              <select style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 6px 8px; font-size: 13px; color: #0c0a09; background: #ffffff"><option>Pune · Chakan</option><option>All locations</option><option>Chennai</option><option>Hyderabad</option></select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; color: #78716c">Project
+              <select style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 6px 8px; font-size: 13px; color: #0c0a09; background: #ffffff"><option>All projects</option><option>EV-2026-014</option><option>CV-2026-007</option><option>MH-2026-011</option></select>
+            </label>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px">
+            <sc-for list="{{chips}}" as="c" hint-placeholder-count="7">
+              <button type="button" onClick="{{c.pick}}" aria-pressed="{{c.pressed}}" style="display: flex; align-items: center; gap: 6px; border: 1px solid {{c.border}}; background: {{c.bg}}; color: {{c.color}}; border-radius: 9999px; padding: 4px 10px; font-size: 12px; font-weight: 500">
+                <span style="width: 7px; height: 7px; border-radius: 9999px; background: {{c.dot}}"></span>{{c.label}} <span style="opacity: 0.7">{{c.n}}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding: 10px 16px 4px; font-size: 12px; color: #78716c">{{listCount}} vehicles</div>
+        <ul style="list-style: none; margin: 0; padding: 0 8px 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; max-height: 640px">
+          <sc-for list="{{list}}" as="v" hint-placeholder-count="8">
+            <li>
+              <button type="button" onClick="{{v.pick}}" style="width: 100%; text-align: left; display: flex; gap: 10px; align-items: center; padding: 10px; border-radius: 8px; border: 1px solid {{v.rowBorder}}; background: {{v.rowBg}}; color: #0c0a09">
+                <span style="width: 32px; height: 32px; flex: 0 0 32px; border-radius: 9999px; background: {{v.wash}}; color: {{v.c}}; display: flex; align-items: center; justify-content: center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{v.icon}}"></path></svg>
+                </span>
+                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+                  <span style="font-weight: 600; font-size: 13px">{{v.reg}}</span>
+                  <span style="font-size: 12px; color: #78716c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{v.model}} · {{v.driver}}</span>
+                </span>
+                <span style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px">
+                  <span style="font-size: 11px; font-weight: 600; color: {{v.c}}">{{v.status}}</span>
+                  <span style="font-size: 12px; color: #57534e">{{v.speedLabel}}</span>
+                </span>
+              </button>
+            </li>
+          </sc-for>
+        </ul>
+      </aside>
+
+      <!-- map -->
+      <section aria-label="Map" style="flex: 999 1 520px; min-width: 0; position: relative; height: 820px; overflow: hidden; background: {{mapBg}}">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%" role="img" aria-label="Simulated map of Chakan testing area with test track, highway and two geofenced zones">
+          <path d="M10 18 L52 16 L56 52 L12 56 Z" fill="{{zoneFill}}" stroke="#ea580c" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"></path>
+          <path d="M64 62 L96 60 L98 92 L66 94 Z" fill="{{zoneFill}}" stroke="#ea580c" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"></path>
+          <path d="M0 78 C20 70 40 66 60 55 S90 30 100 22" fill="none" stroke="{{roadCase}}" stroke-width="11" vector-effect="non-scaling-stroke"></path>
+          <path d="M0 78 C20 70 40 66 60 55 S90 30 100 22" fill="none" stroke="{{roadMain}}" stroke-width="7" vector-effect="non-scaling-stroke"></path>
+          <path d="M45 0 L47 20 L50 40 L54 70 L58 100 M70 100 L72 80 L75 60 L88 59 L100 58 M0 30 L14 35" fill="none" stroke="{{roadCase}}" stroke-width="7" vector-effect="non-scaling-stroke"></path>
+          <path d="M45 0 L47 20 L50 40 L54 70 L58 100 M70 100 L72 80 L75 60 L88 59 L100 58 M0 30 L14 35" fill="none" stroke="{{roadMinor}}" stroke-width="4" vector-effect="non-scaling-stroke"></path>
+          <ellipse cx="30" cy="35" rx="16" ry="10" fill="none" stroke="{{roadCase}}" stroke-width="12" vector-effect="non-scaling-stroke"></ellipse>
+          <ellipse cx="30" cy="35" rx="16" ry="10" fill="none" stroke="{{trackColor}}" stroke-width="8" vector-effect="non-scaling-stroke"></ellipse>
+          <polyline points="{{trail}}" fill="none" stroke="#c2410c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline>
+        </svg>
+        <!-- labels -->
+        <span style="position: absolute; left: 12%; top: 13%; font-size: 12px; font-weight: 600; color: #ffffff; background: #9a3412; padding: 3px 8px; border-radius: 4px">Chakan Test Zone A · geofence</span>
+        <span style="position: absolute; left: 66%; top: 63.5%; font-size: 12px; font-weight: 600; color: #ffffff; background: #9a3412; padding: 3px 8px; border-radius: 4px">Endurance Corridor B</span>
+        <span style="position: absolute; left: 22%; top: 33%; font-size: 11px; font-weight: 600; color: {{labelColor}}; letter-spacing: 0.6px">OVAL TEST TRACK · 3.2 KM</span>
+        <span style="position: absolute; left: 76%; top: 33%; font-size: 11px; font-weight: 600; color: {{labelColor}}; letter-spacing: 0.6px; transform: rotate(-38deg)">NH 60 · PUNE–NASHIK</span>
+
+        <!-- markers -->
+        <sc-for list="{{markers}}" as="m" hint-placeholder-count="10">
+          <button type="button" onClick="{{m.pick}}" aria-label="{{m.reg}}, {{m.status}}" style="position: absolute; left: {{m.x}}%; top: {{m.y}}%; transform: translate(-50%, -50%); border: 0; padding: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 3px">
+            <span style="width: 30px; height: 30px; border-radius: 9999px; background: {{m.c}}; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 {{m.ring}} rgba(255,255,255,0.95), 0 4px 10px rgba(0,0,0,0.35)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{m.icon}}"></path></svg>
+            </span>
+            <span style="font-size: 10.5px; font-weight: 600; background: #ffffff; color: #0c0a09; border-radius: 4px; padding: 1px 5px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.2)">{{m.reg}}</span>
+          </button>
+        </sc-for>
+
+        <!-- map controls -->
+        <div style="position: absolute; top: 14px; left: 14px; display: flex; gap: 4px; padding: 3px; background: #ffffff; border-radius: 9999px; box-shadow: 0 4px 16px rgba(0,0,0,0.12)">
+          <sc-for list="{{mapModes}}" as="mm" hint-placeholder-count="2">
+            <button type="button" onClick="{{mm.pick}}" aria-pressed="{{mm.pressed}}" style="border: 0; border-radius: 9999px; padding: 6px 14px; font-size: 12.5px; font-weight: 500; background: {{mm.bg}}; color: {{mm.color}}">{{mm.label}}</button>
+          </sc-for>
+        </div>
+        <div style="position: absolute; top: 14px; right: {{ctrlRight}}; display: flex; flex-direction: column; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); overflow: hidden">
+          <button type="button" aria-label="Zoom in" style="width: 40px; height: 40px; border: 0; border-bottom: 1px solid #e8e6e5; background: #ffffff; font-size: 18px; color: #0c0a09">+</button>
+          <button type="button" aria-label="Zoom out" style="width: 40px; height: 40px; border: 0; border-bottom: 1px solid #e8e6e5; background: #ffffff; font-size: 18px; color: #0c0a09">−</button>
+          <button type="button" aria-label="Full screen" style="width: 40px; height: 40px; border: 0; background: #ffffff; color: #0c0a09; display: flex; align-items: center; justify-content: center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"></path></svg>
+          </button>
+        </div>
+
+        <!-- history playback -->
+        <sc-if value="{{isHistory}}" hint-placeholder-val="{{false}}">
+          <div style="position: absolute; left: 14px; right: {{ctrlRight}}; bottom: 14px; background: #ffffff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); padding: 12px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px">
+            <span style="font-weight: 600; font-size: 13px">Route playback · {{selReg}}</span>
+            <label style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #57534e">Date <input type="date" value="2026-11-18" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 4px 6px; font-size: 12.5px"></label>
+            <button type="button" onClick="{{togglePlay}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 6px 14px; font-size: 12.5px; font-weight: 500">{{playLabel}}</button>
+            <input type="range" min="0" max="100" value="{{playPos}}" onInput="{{onScrub}}" aria-label="Playback position" style="flex: 1 1 200px; accent-color: #c2410c">
+            <span style="font-size: 12.5px; color: #57534e; min-width: 92px; text-align: right">{{playTime}}</span>
+          </div>
+        </sc-if>
+
+        <!-- alerts -->
+        <sc-if value="{{isLive}}" hint-placeholder-val="{{true}}">
+          <div style="position: absolute; left: 14px; bottom: 14px; width: 300px; max-width: calc(100% - 28px); background: #ffffff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.14); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; justify-content: space-between; align-items: center">
+              <span style="font-weight: 600; font-size: 13px">Live alerts</span>
+              <a href="#" style="font-size: 12px; text-decoration: none">History</a>
+            </div>
+            <sc-for list="{{alerts}}" as="a" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: {{a.opacity}}">
+                <span style="font-weight: 600; padding: 1px 7px; border-radius: 9999px; background: {{a.wash}}; color: {{a.c}}; white-space: nowrap">{{a.type}}</span>
+                <span style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{a.text}}</span>
+                <button type="button" onClick="{{a.ack}}" aria-label="Acknowledge alert" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 2px 8px; font-size: 11.5px; color: #0c0a09">{{a.ackLabel}}</button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- detail panel -->
+        <sc-if value="{{hasSel}}" hint-placeholder-val="{{true}}">
+          <div style="position: absolute; top: 14px; right: 14px; bottom: 14px; width: 330px; max-width: calc(100% - 28px); background: #ffffff; border-radius: 12px; box-shadow: 0 12px 45px rgba(17,12,46,0.18); display: flex; flex-direction: column; overflow: hidden">
+            <div style="padding: 16px 18px; border-bottom: 1px solid #e8e6e5; display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+                <div style="display: flex; flex-direction: column">
+                  <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 20px; font-weight: 500; letter-spacing: -0.3px">{{sel.reg}}</span>
+                  <span style="font-size: 12.5px; color: #78716c">{{sel.model}} · {{sel.cat}} · {{sel.fuel}}</span>
+                </div>
+                <button type="button" onClick="{{closeSel}}" aria-label="Close vehicle panel" style="width: 32px; height: 32px; border-radius: 9999px; border: 1px solid #e8e6e5; background: #ffffff; color: #0c0a09; font-size: 16px; line-height: 1">×</button>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                <span style="font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 9999px; background: {{sel.wash}}; color: {{sel.c}}">{{sel.status}}</span>
+                <span style="font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 9999px; background: #f5f5f4; color: #44403c">Ignition {{sel.ign}}</span>
+                <span style="font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 9999px; background: #f5f5f4; color: #44403c">GPS {{sel.gps}}</span>
+              </div>
+            </div>
+            <div style="padding: 14px 18px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; border-bottom: 1px solid #e8e6e5">
+              <div style="display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Speed</span><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 22px; font-weight: 500; color: {{sel.speedColor}}">{{sel.speed}}</span><span style="font-size: 11px; color: #78716c">km/h</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Today</span><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 22px; font-weight: 500">{{sel.today}}</span><span style="font-size: 11px; color: #78716c">km</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Trip time</span><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 22px; font-weight: 500">{{sel.dur}}</span><span style="font-size: 11px; color: #78716c">h:mm</span></div>
+            </div>
+            <div style="padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid #e8e6e5">
+              <div style="display: flex; justify-content: space-between; font-size: 12.5px"><span style="color: #57534e">Target progress</span><span style="font-weight: 600">{{sel.done}} / {{sel.target}} km</span></div>
+              <div style="height: 6px; border-radius: 9999px; background: #f0efee; overflow: hidden"><div style="height: 100%; width: {{sel.pct}}; background: #c2410c"></div></div>
+              <span style="font-size: 12px; color: #78716c">{{sel.remaining}} km remaining</span>
+            </div>
+            <dl style="margin: 0; padding: 12px 18px; display: grid; grid-template-columns: 104px 1fr; gap: 7px 10px; font-size: 12.5px; overflow-y: auto; flex: 1">
+              <dt style="color: #78716c">Driver</dt><dd style="margin: 0; font-weight: 500">{{sel.driver}}</dd>
+              <dt style="color: #78716c">Contact</dt><dd style="margin: 0">{{sel.phone}}</dd>
+              <dt style="color: #78716c">Project</dt><dd style="margin: 0">{{sel.project}}</dd>
+              <dt style="color: #78716c">Testing type</dt><dd style="margin: 0">{{sel.testType}}</dd>
+              <dt style="color: #78716c">Location</dt><dd style="margin: 0">{{sel.place}}</dd>
+              <dt style="color: #78716c">Last GPS</dt><dd style="margin: 0">{{sel.last}}</dd>
+              <dt style="color: #78716c">GPS device</dt><dd style="margin: 0">{{sel.device}}</dd>
+            </dl>
+            <div style="padding: 12px 18px 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; border-top: 1px solid #e8e6e5">
+              <button type="button" onClick="{{goLive}}" style="grid-column: span 2; border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 9px 14px; font-size: 13px; font-weight: 500">View live trip</button>
+              <button type="button" onClick="{{goHistory}}" style="border: 1px solid #e8e6e5; background: #ffffff; color: #0c0a09; border-radius: 9999px; padding: 7px 10px; font-size: 12.5px; font-weight: 500">Trip history</button>
+              <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; color: #0c0a09; border-radius: 9999px; padding: 7px 10px; font-size: 12.5px; font-weight: 500">Vehicle details</button>
+              <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; color: #0c0a09; border-radius: 9999px; padding: 7px 10px; font-size: 12.5px; font-weight: 500">Driver details</button>
+              <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; color: #0c0a09; border-radius: 9999px; padding: 7px 10px; font-size: 12.5px; font-weight: 500">Tickets ({{sel.tickets}})</button>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { tick: 0, sel: 'TN 09 AB 4521', filter: 'All', q: '', mode: 'sat', tab: 'live', acked: {}, playPos: 35, playing: false };
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      const s = this.state;
+      const next = { tick: s.tick + 1 };
+      if (s.playing) next.playPos = (s.playPos + 1) % 101;
+      this.setState(next);
+    }, 900);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+  route(name) {
+    if (name === 'oval') { const pts = []; for (let i = 0; i <= 48; i++) { const a = i / 48 * Math.PI * 2; pts.push([30 + 16 * Math.cos(a), 35 + 10 * Math.sin(a)]); } return pts; }
+    return {
+      hwy: [[0, 78], [10, 74], [20, 71], [30, 68.5], [40, 66], [50, 61], [60, 55], [70, 47], [80, 38], [90, 29], [100, 22]],
+      r2: [[45, 0], [47, 20], [50, 40], [54, 70], [58, 100]],
+      r3: [[70, 100], [72, 80], [75, 60], [88, 59], [100, 58]]
+    }[name];
+  }
+  at(pts, t) {
+    t = ((t % 1) + 1) % 1;
+    const f = t * (pts.length - 1), i = Math.floor(f), k = f - i;
+    const a = pts[i], b = pts[Math.min(i + 1, pts.length - 1)];
+    return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+  }
+  renderVals() {
+    const s = this.state, T = s.tick;
+    const ICON = {
+      car: 'M3 13l2-5h14l2 5v4H3zM6 17v2M18 17v2M7 13.5h.01M17 13.5h.01',
+      truck: 'M2 6h11v10H2zM13 10h5l4 4v2h-9zM6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+      ev: 'M13 2L4 14h7l-1 8 9-12h-7z'
+    };
+    const ST = {
+      Running: ['#15803d', '#ecfdf3'], Idle: ['#b45309', '#fef6e7'], Stopped: ['#57534e', '#f1f0ef'],
+      Offline: ['#78716c', '#f1f0ef'], Maintenance: ['#1d4ed8', '#eef3fe'], Completed: ['#7e22ce', '#f6effe']
+    };
+    const V = [
+      ['TN 09 AB 4521', 'Tata Nexon EV Max', 'ev', 'Passenger car', 'EV', 'Running', 'Rahul Kumar', '+91 98410 23567', 'EV-2026-014 · EV Endurance', 'Endurance', 'oval', 0.05, 0.012, 46, 1850, 5000, 'JGT-PN-0142', 1],
+      ['MH 14 TC 2087', 'Ashok Leyland Ecomet 1615', 'truck', 'Commercial (ICV)', 'Diesel', 'Running', 'Imran Shaikh', '+91 98220 41873', 'CV-2026-007 · Durability', 'Road testing', 'hwy', 0.2, 0.006, 78, 6120, 10000, 'JGT-PN-0088', 0],
+      ['MH 12 TMP 6612', 'Tata Ace EV', 'ev', 'Small commercial', 'EV', 'Offline', 'Ganesh Pawar', '+91 97660 11240', 'CV-2026-009 · Gradeability', 'EV testing', 'r3', 0.55, 0, 0, 2210, 3600, 'JGT-PN-0131', 0],
+      ['TS 07 TR 1193', 'Mahindra Bolero Pik-Up', 'truck', 'Pick-up', 'Diesel', 'Running', 'Venkat Reddy', '+91 99490 77312', 'CV-2026-012 · Payload', 'Performance', 'r2', 0.1, 0.009, 52, 980, 4000, 'JGT-HY-0217', 0],
+      ['MH 14 TC 3310', 'Mahindra XUV 3XO', 'car', 'Passenger car', 'Petrol', 'Idle', 'Sachin Jadhav', '+91 98500 66421', 'MH-2026-011 · Mileage', 'Mileage', 'hwy', 0.32, 0, 0, 3990, 5000, 'JGT-PN-0104', 0],
+      ['TN 22 TR 8841', 'Tata Harrier', 'car', 'SUV', 'Diesel', 'Running', 'Karthik S', '+91 94440 58210', 'TT-2026-003 · Tyre wear', 'Wheel / Tyre', 'oval', 0.55, 0.01, 61, 1420, 4000, 'JGT-CH-0056', 0],
+      ['MH 12 TC 7720', 'Ashok Leyland Dost+', 'truck', 'LCV', 'Diesel', 'Stopped', 'Amol Kale', '+91 90110 28734', 'CV-2026-007 · Durability', 'Road testing', 'r2', 0.78, 0, 0, 7340, 10000, 'JGT-PN-0091', 0],
+      ['MH 14 TMP 0459', 'Tata Punch EV', 'ev', 'Passenger car', 'EV', 'Maintenance', 'Unassigned', '—', 'EV-2026-014 · EV Endurance', 'Endurance', 'r3', 0.12, 0, 0, 4880, 5000, 'JGT-PN-0150', 2],
+      ['TN 09 TR 5512', 'Mahindra Thar Roxx', 'car', 'SUV', 'Diesel', 'Running', 'Dinesh Babu', '+91 98840 90215', 'MH-2026-015 · Off-road', 'R&D testing', 'hwy', 0.7, 0.007, 57, 860, 3000, 'JGT-CH-0061', 0],
+      ['MH 14 TC 1988', 'Tata Intra V50', 'truck', 'Pick-up', 'Diesel', 'Completed', 'Rohit More', '+91 90490 33618', 'CV-2026-004 · Brake fade', 'Component testing', 'r2', 0.22, 0, 0, 3000, 3000, 'JGT-PN-0077', 0]
+    ];
+    const fmt = n => Math.round(n).toLocaleString('en-IN');
+    const all = V.map(r => {
+      const [reg, model, kind, cat, fuel, status, driver, phone, project, testType, rt, t0, rate, base, done, target, device, tickets] = r;
+      const pts = this.route(rt);
+      const t = status === 'Running' ? t0 + T * rate : t0;
+      const [x, y] = this.at(pts, t);
+      let speed = 0;
+      if (status === 'Running') {
+        speed = Math.round(base + 8 * Math.sin(T / 3 + t0 * 10));
+        if (reg === 'MH 14 TC 2087' && T % 14 > 9) speed = 86 + (T % 5) * 2;
+      }
+      const todayKm = status === 'Running' ? 84 + T * 0.4 * (base / 50) : (status === 'Idle' ? 112 : (status === 'Stopped' ? 96 : 0));
+      const [c, wash] = ST[status];
+      return { reg, model, kind, cat, fuel, status, driver, phone, project, testType, rt, t, pts, x: x.toFixed(2), y: y.toFixed(2), speed, todayKm, done: done + todayKm, target, device, tickets, c, wash, icon: ICON[kind] };
+    });
+
+    const q = s.q.trim().toLowerCase();
+    const shown = all.filter(v => (s.filter === 'All' || v.status === s.filter) && (!q || (v.reg + ' ' + v.driver).toLowerCase().indexOf(q) >= 0));
+    const pickV = reg => () => this.setState({ sel: reg });
+    const list = shown.map(v => {
+      const on = v.reg === s.sel;
+      return { reg: v.reg, model: v.model, driver: v.driver, status: v.status, c: v.c, wash: v.wash, icon: v.icon, speedLabel: v.status === 'Running' ? v.speed + ' km/h' : '—', rowBg: on ? '#fff7ed' : '#ffffff', rowBorder: on ? '#fdba8c' : 'transparent', pick: pickV(v.reg) };
+    });
+    const markers = shown.map(v => {
+      const on = v.reg === s.sel;
+      return { reg: v.reg, status: v.status, x: v.x, y: v.y, c: v.speed > 80 ? '#b91c1c' : v.c, icon: v.icon, ring: on ? '4px' : '2px', pick: pickV(v.reg) };
+    });
+
+    const chipDefs = ['All', 'Running', 'Idle', 'Stopped', 'Offline', 'Maintenance', 'Completed'];
+    const chips = chipDefs.map(id => {
+      const on = s.filter === id;
+      const n = id === 'All' ? all.length : all.filter(v => v.status === id).length;
+      return { label: id, n, dot: id === 'All' ? '#0c0a09' : ST[id][0], pressed: on ? 'true' : 'false', bg: on ? '#1c1917' : '#ffffff', color: on ? '#ffffff' : '#0c0a09', border: on ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ filter: id }) };
+    });
+
+    const v = all.find(x => x.reg === s.sel);
+    let sel = null, trail = '';
+    const isHistory = s.tab === 'history';
+    if (v) {
+      const pct = Math.min(100, v.done / v.target * 100);
+      const mins = v.status === 'Running' ? 154 + Math.floor(T / 6) : 0;
+      sel = {
+        reg: v.reg, model: v.model, cat: v.cat, fuel: v.fuel, status: v.speed > 80 ? 'Overspeeding' : v.status, c: v.speed > 80 ? '#b91c1c' : v.c, wash: v.speed > 80 ? '#fdeeee' : v.wash,
+        ign: v.status === 'Running' || v.status === 'Idle' ? 'ON' : 'OFF', gps: v.status === 'Offline' ? 'disconnected' : 'connected',
+        speed: v.speed, speedColor: v.speed > 80 ? '#b91c1c' : '#0c0a09', today: fmt(v.todayKm), dur: Math.floor(mins / 60) + ':' + String(mins % 60).padStart(2, '0'),
+        done: fmt(v.done), target: fmt(v.target), pct: pct.toFixed(1) + '%', remaining: fmt(Math.max(0, v.target - v.done)),
+        driver: v.driver, phone: v.phone, project: v.project, testType: v.testType,
+        place: { oval: 'Oval test track, Chakan', hwy: 'NH 60 near Chakan MIDC', r2: 'Talegaon–Chakan road', r3: 'Corridor B, Ranjangaon' }[v.rt],
+        last: v.status === 'Offline' ? '09:12 · 2 h ago' : 'a few seconds ago', device: v.device, tickets: v.tickets
+      };
+      const pts = v.pts;
+      const endT = isHistory ? s.playPos / 100 : ((v.t % 1) + 1) % 1;
+      const n = Math.floor(endT * (pts.length - 1));
+      const arr = pts.slice(0, n + 1).concat([this.at(pts, endT)]);
+      if (v.status === 'Running' || isHistory) trail = arr.map(p => p[0].toFixed(2) + ',' + p[1].toFixed(2)).join(' ');
+      if (isHistory) {
+        const [hx, hy] = this.at(pts, endT);
+        markers.forEach(m => { if (m.reg === v.reg) { m.x = hx.toFixed(2); m.y = hy.toFixed(2); } });
+      }
+    }
+
+    const sat = s.mode === 'sat';
+    const tabs = [['snap', 'Vehicle Snapshot'], ['live', 'Live Trip Tracking'], ['history', 'Trip History']].map(([id, label]) => {
+      const on = s.tab === id;
+      return { label, sel: on ? 'true' : 'false', bg: on ? '#1c1917' : 'transparent', color: on ? '#ffffff' : '#57534e', pick: () => this.setState({ tab: id, playing: false }) };
+    });
+    const mapModes = [['std', 'Standard'], ['sat', 'Satellite']].map(([id, label]) => {
+      const on = s.mode === id;
+      return { label, pressed: on ? 'true' : 'false', bg: on ? '#1c1917' : '#ffffff', color: on ? '#ffffff' : '#0c0a09', pick: () => this.setState({ mode: id }) };
+    });
+
+    const al = (id, type, text, c, wash) => {
+      const done = !!s.acked[id];
+      return { type, text, c, wash, opacity: done ? '0.45' : '1', ackLabel: done ? 'Done' : 'Ack', ack: () => this.setState({ acked: Object.assign({}, s.acked, { [id]: true }) }) };
+    };
+    const ecomet = all.find(x => x.reg === 'MH 14 TC 2087');
+    const alerts = [
+      ecomet.speed > 80 ? al(9, 'Overspeed', 'MH 14 TC 2087 at ' + ecomet.speed + ' km/h', '#b91c1c', '#fdeeee') : al(1, 'Overspeed', 'MH 14 TC 2087 hit 94 km/h · 4 min ago', '#b91c1c', '#fdeeee'),
+      al(2, 'Idle', 'MH 14 TC 3310 idle for 24 min', '#b45309', '#fef6e7'),
+      al(3, 'Geofence', 'TS 07 TR 1193 exited Zone A', '#c2410c', '#fff1e6'),
+      al(4, 'GPS lost', 'MH 12 TMP 6612 · last ping 09:12', '#57534e', '#f1f0ef')
+    ];
+
+    const RP = {
+      dash: 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z', pin: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+      act: 'M3 12h4l3-8 4 16 3-8h4', car: 'M3 12l2-6h14l2 6v4H3zM5 16v3h2v-3M17 16v3h2v-3', user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+      folder: 'M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', cal: 'M4 5h16v16H4zM4 10h16M8 3v4M16 3v4',
+      ticket: 'M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4zM10 5v14',
+      geo: 'M12 3l8 4.5v9L12 21l-8-4.5v-9z', chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2', bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8zM10 20a2 2 0 0 0 4 0'
+    };
+    const rail = [['Dashboard', 'dash', 'Main.dc.html'], ['Vehicle Tracking', 'pin', 'Web-Tracking.dc.html'], ['Live Trips', 'act', 'Web-LiveTrips.dc.html'], ['Vehicles', 'car', 'Web-Vehicles.dc.html'], ['Drivers', 'user', 'Web-Drivers.dc.html'], ['Projects', 'folder', 'Web-Projects.dc.html'], ['Allocation', 'cal', 'Web-Allocation.dc.html'], ['Tickets', 'ticket', 'Web-Tickets.dc.html'], ['Geofences', 'geo', 'Web-Geofence.dc.html'], ['Reports', 'chart', 'Web-Reports.dc.html'], ['Alerts', 'bell', 'Web-Alerts.dc.html']]
+      .map(([label, k, href]) => ({ label, d: RP[k], href: href || '#', color: k === 'pin' ? '#ffffff' : '#c3cad8', bg: k === 'pin' ? '#1d2f55' : 'transparent' }));
+
+    const now = new Date(2026, 10, 19, 10, 42, 0);
+    now.setSeconds(now.getSeconds() + Math.round(T * 0.9));
+    const pad = n => String(n).padStart(2, '0');
+    const pm = Math.round(s.playPos / 100 * 470) + 6 * 60;
+
+    return {
+      rail, tabs, mapModes, chips, list, markers, alerts, sel, hasSel: !!sel, trail,
+      listCount: shown.length, q: s.q,
+      onSearch: e => this.setState({ q: e.target.value }),
+      closeSel: () => this.setState({ sel: null }),
+      goLive: () => this.setState({ tab: 'live' }),
+      goHistory: () => this.setState({ tab: 'history', playPos: 0, playing: true }),
+      isHistory, isLive: s.tab !== 'history', selReg: sel ? sel.reg : '',
+      togglePlay: () => this.setState({ playing: !s.playing }), playLabel: s.playing ? 'Pause' : 'Play',
+      playPos: s.playPos, onScrub: e => this.setState({ playPos: +e.target.value, playing: false }),
+      playTime: '18 Nov · ' + pad(Math.floor(pm / 60)) + ':' + pad(pm % 60),
+      ctrlRight: sel ? '358px' : '14px',
+      clock: pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()),
+      mapBg: sat ? 'radial-gradient(circle at 18% 28%, #56653f 0, transparent 28%), radial-gradient(circle at 72% 74%, #6b6446 0, transparent 32%), radial-gradient(circle at 84% 18%, #3f5134 0, transparent 30%), radial-gradient(circle at 38% 82%, #7a6c4c 0, transparent 24%), radial-gradient(circle at 60% 30%, #4a5a3a 0, transparent 26%), #4b5a3d' : '#eeefe9',
+      roadCase: sat ? '#3a3a33' : '#d6d3d1', roadMain: sat ? '#b8b2a0' : '#ffffff', roadMinor: sat ? '#a39d8a' : '#ffffff', trackColor: sat ? '#8d8a80' : '#e7e5e4',
+      zoneFill: sat ? 'rgba(234,88,12,0.10)' : 'rgba(234,88,12,0.07)', labelColor: sat ? '#f5f5f4' : '#57534e'
+    };
+  }
+}
+</script>
+</body>
+</html>

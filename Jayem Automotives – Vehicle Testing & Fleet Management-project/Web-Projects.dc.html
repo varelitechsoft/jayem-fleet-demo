@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Project Management</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button{font-family:inherit;cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Project Management" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Operations · 8 projects · 3 locations</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Projects</h1>
+        </div>
+        <button type="button" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">+ New project</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+          <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.color}}; border-radius: 9999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500">{{t.label}} <span style="opacity: 0.7">{{t.n}}</span></button>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; align-items: start">
+        <section style="grid-column: span 2; min-width: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px">
+          <sc-for list="{{cards}}" as="p" hint-placeholder-count="8">
+            <button type="button" onClick="{{p.pick}}" style="text-align: left; background: #ffffff; border: 1px solid {{p.border}}; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; color: #0c0a09">
+              <span style="display: flex; justify-content: space-between; gap: 8px; width: 100%">
+                <span style="font-size: 12px; color: #78716c">{{p.id}}</span>
+                <span style="font-size: 11.5px; font-weight: 600; padding: 1px 8px; border-radius: 9999px; background: {{p.wash}}; color: {{p.c}}">{{p.status}}</span>
+              </span>
+              <span style="font-weight: 600; font-size: 15px; line-height: 1.3">{{p.name}}</span>
+              <span style="font-size: 12.5px; color: #57534e">{{p.client}} · {{p.type}} · {{p.loc}}</span>
+              <span style="display: flex; flex-direction: column; gap: 5px; width: 100%">
+                <span style="display: flex; justify-content: space-between; font-size: 12px"><span>{{p.done}} / {{p.target}} km</span><span style="font-weight: 600">{{p.pct}}</span></span>
+                <span style="display: block; height: 6px; border-radius: 9999px; background: #f0efee; overflow: hidden"><span style="display: block; height: 100%; width: {{p.pct}}; background: {{p.bar}}"></span></span>
+              </span>
+              <span style="font-size: 12px; color: #78716c">{{p.veh}} vehicles · {{p.drv}} drivers · due {{p.due}}</span>
+            </button>
+          </sc-for>
+        </section>
+
+        <aside style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 12px; color: #78716c">{{sel.id}}</span>
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 20px; font-weight: 500; line-height: 1.25">{{sel.name}}</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+            <div style="padding: 10px; border: 1px solid #f0efee; border-radius: 8px; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Target</span><span style="font-weight: 600">{{sel.target}}</span></div>
+            <div style="padding: 10px; border: 1px solid #f0efee; border-radius: 8px; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Achieved</span><span style="font-weight: 600; color: #9a3412">{{sel.done}}</span></div>
+            <div style="padding: 10px; border: 1px solid #f0efee; border-radius: 8px; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Remaining</span><span style="font-weight: 600">{{sel.rem}}</span></div>
+          </div>
+          <dl style="margin: 0; display: grid; grid-template-columns: 130px 1fr; gap: 6px 10px; font-size: 12.5px">
+            <dt style="color: #78716c">Client / OEM</dt><dd style="margin: 0">{{sel.client}}</dd>
+            <dt style="color: #78716c">Testing type</dt><dd style="margin: 0">{{sel.type}}</dd>
+            <dt style="color: #78716c">Location</dt><dd style="margin: 0">{{sel.loc}}</dd>
+            <dt style="color: #78716c">Start date</dt><dd style="margin: 0">{{sel.start}}</dd>
+            <dt style="color: #78716c">Expected completion</dt><dd style="margin: 0">{{sel.due}}</dd>
+            <dt style="color: #78716c">Project manager</dt><dd style="margin: 0">{{sel.pm}}</dd>
+            <dt style="color: #78716c">Supervisor</dt><dd style="margin: 0">{{sel.sup}}</dd>
+          </dl>
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid #f0efee">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.4px; color: #78716c">ASSIGNED VEHICLES ({{sel.veh}})</span>
+            <sc-for list="{{sel.vehicles}}" as="v" hint-placeholder-count="4">
+              <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; padding: 5px 0; border-bottom: 1px solid #f5f5f4"><span style="font-weight: 500">{{v.reg}}</span><span style="color: #57534e">{{v.driver}}</span><span style="font-weight: 600">{{v.km}}</span></div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <a href="Web-Reports.dc.html" style="flex: 1; text-align: center; border: 1px solid #e8e6e5; border-radius: 9999px; padding: 7px 10px; font-size: 12.5px; font-weight: 500; color: #0c0a09; text-decoration: none">Project report</a>
+            <a href="Web-Allocation.dc.html" style="flex: 1; text-align: center; border: 1px solid #c2410c; background: #c2410c; border-radius: 9999px; padding: 7px 10px; font-size: 12.5px; font-weight: 500; color: #ffffff; text-decoration: none">Allocate vehicle</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { tab: 'All', sel: 0 }; }
+  renderVals() {
+    const s = this.state;
+    const fmt = n => n.toLocaleString('en-IN');
+    const P = [
+      ['EV-2026-014', 'EV Endurance – Nexon EV Max', 'Tata Motors', 'Endurance Testing', 'Pune · Chakan', 38420, 60000, 12, 14, '02 Sep 2026', '15 Jan 2027', 'Active', 'Priya Deshmukh', 'Suresh Kumar'],
+      ['CV-2026-007', 'Ecomet 1615 Durability', 'Ashok Leyland', 'Road Testing', 'Hyderabad', 81300, 120000, 18, 22, '10 Jul 2026', '20 Dec 2026', 'Active', 'Priya Deshmukh', 'Ravi Teja'],
+      ['MH-2026-011', 'XUV 3XO Real-world Mileage', 'Mahindra', 'Mileage Testing', 'Pune · Talegaon', 31900, 40000, 8, 10, '01 Aug 2026', '05 Dec 2026', 'Active', 'Priya Deshmukh', 'Vikram Joshi'],
+      ['TT-2026-003', 'Radial Tyre Wear Cycle', 'Tata Motors', 'Wheel / Tyre Testing', 'Chennai HO', 9840, 25000, 6, 7, '15 Oct 2026', '28 Feb 2027', 'Active', 'Karthikeyan R', 'Senthil Murugan'],
+      ['CV-2026-009', 'Ace EV Gradeability', 'Tata Motors', 'EV Testing', 'Pune · Ranjangaon', 14210, 18000, 5, 6, '20 Aug 2026', '30 Nov 2026', 'At risk', 'Karthikeyan R', 'Sunil Bhosale'],
+      ['CV-2026-012', 'Bolero Pik-Up Payload Performance', 'Mahindra', 'Vehicle Performance Testing', 'Hyderabad', 7420, 20000, 6, 8, '01 Oct 2026', '31 Jan 2027', 'Active', 'Anita Sharma', 'Ravi Teja'],
+      ['MH-2026-015', 'Thar Roxx Off-road R&amp;D', 'Mahindra', 'R&D Testing', 'Chennai HO', 4110, 12000, 4, 5, '05 Nov 2026', '15 Mar 2027', 'Active', 'Anita Sharma', 'Senthil Murugan'],
+      ['CV-2026-004', 'Intra V50 Brake Fade', 'Tata Motors', 'Component / Part Testing', 'Pune · Chakan', 15000, 15000, 3, 3, '01 Jun 2026', '30 Sep 2026', 'Completed', 'Karthikeyan R', 'Suresh Kumar']
+    ].map(p => { p[1] = p[1].replace('&amp;', '&'); return p; });
+    const SC = { Active: ['#15803d', '#ecfdf3'], 'At risk': ['#b45309', '#fef6e7'], Completed: ['#7e22ce', '#f6effe'] };
+    const list = P.filter(p => s.tab === 'All' || p[11] === s.tab);
+    const cards = list.map(p => {
+      const i = P.indexOf(p), pct = Math.round(p[5] / p[6] * 100);
+      return { id: p[0], name: p[1], client: p[2], type: p[3], loc: p[4], done: fmt(p[5]), target: fmt(p[6]), pct: pct + '%', veh: p[7], drv: p[8], due: p[10], status: p[11], c: SC[p[11]][0], wash: SC[p[11]][1], bar: pct >= 100 ? '#7e22ce' : (pct >= 75 ? '#15803d' : '#c2410c'), border: i === s.sel ? '#fdba8c' : '#e8e6e5', pick: () => this.setState({ sel: i }) };
+    });
+    const p = P[s.sel];
+    const sel = {
+      id: p[0], name: p[1], client: p[2], type: p[3], loc: p[4], start: p[9], due: p[10], pm: p[12], sup: p[13], veh: p[7],
+      target: fmt(p[6]), done: fmt(p[5]), rem: fmt(p[6] - p[5]),
+      vehicles: [['TN 09 AB 4521', 'Rahul Kumar', '1,892 km'], ['MH 14 TMP 0459', 'In maintenance', '4,880 km'], ['MH 12 TC 9014', 'Nikhil Patil', '3,412 km'], ['MH 14 TC 6120', 'Prakash Naidu', '2,960 km']].map(v => ({ reg: v[0], driver: v[1], km: v[2] }))
+    };
+    const tabs = ['All', 'Active', 'At risk', 'Completed'].map(t => ({ label: t === 'All' ? 'All projects' : t, n: t === 'All' ? P.length : P.filter(x => x[11] === t).length, pressed: s.tab === t ? 'true' : 'false', bg: s.tab === t ? '#1c1917' : '#ffffff', color: s.tab === t ? '#ffffff' : '#0c0a09', border: s.tab === t ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ tab: t }) }));
+    return { cards, sel, tabs };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Driver app – No assignment today</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}a{color:#c2410c}a:hover{color:#9a3412}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #fafaf9; font-family: Inter, system-ui, sans-serif; color: #0c0a09; font-size: 14px; line-height: 1.5; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex: 1; padding: 24px 18px 16px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; flex-direction: column">
+        <span style="font-size: 13px; color: #78716c">Thu, 19 Nov · Shift A · 06:00–14:00</span>
+        <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 26px; font-weight: 500; letter-spacing: -0.6px; line-height: 1.2">Good morning, Rahul</span>
+      </div>
+      <span style="width: 44px; height: 44px; border-radius: 9999px; background: #1c1917; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 600">RK</span>
+    </div>
+    <section style="flex: 1; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 16px; padding: 32px 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 14px">
+      <span style="width: 72px; height: 72px; border-radius: 9999px; background: #f5f5f4; color: #57534e; display: flex; align-items: center; justify-content: center">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v16H4zM4 10h16M8 3v4M16 3v4M10 14l4 4M14 14l-4 4"></path></svg>
+      </span>
+      <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 22px; letter-spacing: -0.4px">No vehicle assigned today</h1>
+      <p style="margin: 0; color: #57534e; font-size: 14px; max-width: 280px">Your supervisor has not allocated a vehicle for this shift yet. You will get a notification as soon as one is assigned.</p>
+      <a href="tel:+919845012873" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 9999px; border: 1px solid #1c1917; color: #0c0a09; text-decoration: none; font-weight: 600">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg>
+        Call Suresh Kumar
+      </a>
+      <span style="font-size: 12.5px; color: #78716c">Last checked 07:02 · pull down to refresh</span>
+    </section>
+    <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 16px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; flex-direction: column"><span style="font-size: 12px; color: #78716c">Your last trip</span><span style="font-weight: 500">18 Nov · TN 09 AB 4521 · 286.4 km</span></div>
+      <a href="Driver-MyTrips.dc.html" style="font-size: 13px; font-weight: 500; text-decoration: none">View</a>
+    </section>
+  </div>
+  <dc-import name="DriverNav" active="Home" hint-size="390px,72px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Issues &amp; Tickets</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,select{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Issues &amp; Tickets" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" user-name="Priya Deshmukh" user-role="Project Manager" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Monitoring · raised from the driver app</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Issues &amp; tickets</h1>
+        </div>
+        <button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">Ticket report</button>
+      </div>
+
+      <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+        <div role="status" style="padding: 10px 14px; border-radius: 8px; background: #ecfdf3; border: 1px solid #a7e3bd; color: #14532d; font-size: 13px">{{toast}}</div>
+      </sc-if>
+
+      <section aria-label="Tickets by status" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px">
+        <sc-for list="{{stages}}" as="st" hint-placeholder-count="6">
+          <button type="button" onClick="{{st.pick}}" aria-pressed="{{st.pressed}}" style="text-align: left; background: #ffffff; border: 1px solid {{st.border}}; border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; color: #0c0a09">
+            <span style="display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #57534e"><span style="width: 8px; height: 8px; border-radius: 9999px; background: {{st.c}}"></span>{{st.label}}</span>
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 26px; font-weight: 500">{{st.n}}</span>
+          </button>
+        </sc-for>
+      </section>
+
+      <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; overflow-x: auto">
+        <table style="width: 100%; border-collapse: collapse; min-width: 1040px; font-size: 13px">
+          <thead>
+            <tr style="text-align: left; color: #78716c; font-size: 12px; background: #fafaf9">
+              <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5">Ticket</th>
+              <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Issue</th>
+              <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Vehicle · driver</th>
+              <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Raised</th>
+              <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Priority</th>
+              <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Supervisor</th>
+              <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Status</th>
+              <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5; text-align: right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="t" hint-placeholder-count="12">
+              <tr style="background: {{t.bg}}">
+                <td style="padding: 10px 14px; border-bottom: 1px solid #f0efee"><a href="Web-TicketDetail.dc.html" style="font-weight: 600; text-decoration: none; white-space: nowrap">{{t.id}}</a></td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee"><span style="display: flex; flex-direction: column"><span style="font-weight: 500">{{t.cat}}</span><span style="font-size: 12px; color: #78716c">{{t.desc}}</span></span></td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee; white-space: nowrap"><span style="display: flex; flex-direction: column"><span>{{t.reg}}</span><span style="font-size: 12px; color: #78716c">{{t.driver}}</span></span></td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee; color: #57534e; white-space: nowrap">{{t.when}}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee"><span style="font-size: 12px; font-weight: 600; color: {{t.pc}}">{{t.prio}}</span></td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{t.sup}}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee"><span style="font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: {{t.w}}; color: {{t.c}}; white-space: nowrap">{{t.status}}</span></td>
+                <td style="padding: 10px 14px; border-bottom: 1px solid #f0efee; text-align: right">
+                  <sc-if value="{{t.canAssign}}" hint-placeholder-val="{{false}}">
+                    <button type="button" onClick="{{t.assign}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 4px 12px; font-size: 12px; font-weight: 500; white-space: nowrap">Assign to Suresh K.</button>
+                  </sc-if>
+                  <sc-if value="{{t.canClose}}" hint-placeholder-val="{{false}}">
+                    <button type="button" onClick="{{t.close}}" style="border: 1px solid #1c1917; background: #1c1917; color: #ffffff; border-radius: 9999px; padding: 4px 12px; font-size: 12px; font-weight: 500">Review &amp; close</button>
+                  </sc-if>
+                  <sc-if value="{{t.view}}" hint-placeholder-val="{{true}}">
+                    <a href="Web-TicketDetail.dc.html" style="font-size: 12.5px; font-weight: 500; text-decoration: none">Open</a>
+                  </sc-if>
+                </td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { filter: 'All', toast: '', over: {} };
+  }
+  renderVals() {
+    const s = this.state;
+    const ST = { Open: ['#b91c1c', '#fdeeee'], Assigned: ['#9a3412', '#fff1e6'], 'In Progress': ['#1d4ed8', '#eef3fe'], Resolved: ['#15803d', '#ecfdf3'], Closed: ['#57534e', '#f1f0ef'] };
+    const PC = { High: '#b91c1c', Medium: '#b45309', Low: '#57534e' };
+    const base = [
+      ['JAY-TKT-2026-0013', 'Tyre / Wheel Issue', 'Front-left tyre bulge after kerb hit', 'TN 22 TR 8841', 'Karthik S', 'Today 11:42', 'High', '—', 'Open'],
+      ['JAY-TKT-2026-0012', 'Battery Issue', 'SoC dropped 64% → 51% in 3 km', 'TN 09 AB 4521', 'Rahul Kumar', '18 Nov 10:21', 'High', 'Suresh Kumar', 'In Progress'],
+      ['JAY-TKT-2026-0011', 'Engine / Motor Issue', 'Check-engine light, power loss uphill', 'MH 14 TC 2087', 'Imran Shaikh', '18 Nov 15:05', 'High', '—', 'Open'],
+      ['JAY-TKT-2026-0010', 'Part Replacement Required', 'Rear brake pads worn to 2 mm', 'MH 12 TC 7720', 'Amol Kale', '17 Nov 12:30', 'Medium', 'Suresh Kumar', 'Assigned'],
+      ['JAY-TKT-2026-0009', 'Vehicle Malfunction', 'AC compressor cutting out', 'TS 07 TR 1193', 'Venkat Reddy', '17 Nov 09:14', 'Low', 'Ravi Teja', 'Resolved'],
+      ['JAY-TKT-2026-0008', 'Troubleshooting Required', 'Instrument cluster flicker at idle', 'MH 14 TC 3310', 'Sachin Jadhav', '16 Nov 16:40', 'Medium', 'Vikram Joshi', 'In Progress'],
+      ['JAY-TKT-2026-0007', 'Accident', 'Minor rear bump at toll plaza, no injury', 'TS 08 TC 4410', 'Srinivas Rao', '15 Nov 13:22', 'High', 'Ravi Teja', 'Resolved'],
+      ['JAY-TKT-2026-0006', 'Part Failure', 'Wiper motor failed in rain', 'TN 09 TR 5512', 'Dinesh Babu', '14 Nov 08:50', 'Medium', 'Senthil Murugan', 'Closed'],
+      ['JAY-TKT-2026-0005', 'Battery Issue', '12V auxiliary battery not holding charge', 'MH 12 TMP 6612', 'Ganesh Pawar', '13 Nov 07:35', 'Medium', 'Sunil Bhosale', 'Closed'],
+      ['JAY-TKT-2026-0004', 'Tyre / Wheel Issue', 'Slow puncture rear right', 'MH 14 TC 1988', 'Rohit More', '12 Nov 11:10', 'Low', 'Suresh Kumar', 'Closed'],
+      ['JAY-TKT-2026-0003', 'Other', 'GPS unit loose on dashboard mount', 'TN 22 TR 8841', 'Karthik S', '11 Nov 10:02', 'Low', 'Senthil Murugan', 'Closed'],
+      ['JAY-TKT-2026-0002', 'Vehicle Malfunction', 'Regen braking inconsistent', 'MH 14 TMP 0459', 'Nikhil Patil', '10 Nov 14:48', 'High', 'Suresh Kumar', 'Resolved']
+    ].map(r => { const o = s.over[r[0]]; return o ? Object.assign([], r, { 7: o[0], 8: o[1] }) : r; });
+    const list = base.filter(r => s.filter === 'All' || r[8] === s.filter);
+    const rows = list.map(r => ({
+      id: r[0], cat: r[1], desc: r[2], reg: r[3], driver: r[4], when: r[5], prio: r[6], pc: PC[r[6]], sup: r[7], status: r[8], c: ST[r[8]][0], w: ST[r[8]][1],
+      bg: s.over[r[0]] ? '#fff7ed' : '#ffffff',
+      canAssign: r[8] === 'Open', canClose: r[8] === 'Resolved', view: r[8] !== 'Open' && r[8] !== 'Resolved',
+      assign: () => this.setState({ over: Object.assign({}, s.over, { [r[0]]: ['Suresh Kumar', 'Assigned'] }), toast: r[0] + ' assigned to Supervisor Suresh Kumar. He has been notified.' }),
+      close: () => this.setState({ over: Object.assign({}, s.over, { [r[0]]: [r[7], 'Closed'] }), toast: r[0] + ' reviewed and closed. The driver can see the resolution in the app.' })
+    }));
+    const stages = ['All', 'Open', 'Assigned', 'In Progress', 'Resolved', 'Closed'].map(k => ({
+      label: k === 'All' ? 'All tickets' : k, n: k === 'All' ? base.length : base.filter(r => r[8] === k).length, c: k === 'All' ? '#0c0a09' : ST[k][0],
+      pressed: s.filter === k ? 'true' : 'false', border: s.filter === k ? '#c2410c' : '#e8e6e5', pick: () => this.setState({ filter: k })
+    }));
+    return { rows, stages, toast: s.toast };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Geofence &amp; Routes</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Geofence &amp; Routes" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="display: flex; flex-wrap: wrap; flex: 1">
+      <aside style="flex: 1 1 320px; max-width: 100%; background: #ffffff; border-right: 1px solid #e8e6e5; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Monitoring · Pune · Chakan</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 26px; letter-spacing: -0.6px; line-height: 1.2">Geofences &amp; routes</h1>
+        </div>
+        <sc-if value="{{drawing}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid #fdba8c; background: #fff7ed; border-radius: 10px">
+            <span style="font-size: 13px; font-weight: 600">Drawing a new zone</span>
+            <span style="font-size: 12.5px; color: #57534e">Click on the map to add corners ({{ptCount}} added, need 3+).</span>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #57534e">Zone name<input value="{{newName}}" onInput="{{onName}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 7px 9px; font-size: 13px; background: #ffffff"></label>
+            <div style="display: flex; gap: 8px">
+              <button type="button" onClick="{{cancelDraw}}" style="flex: 1; border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 7px; font-size: 13px; font-weight: 500">Cancel</button>
+              <button type="button" onClick="{{saveZone}}" style="flex: 1; border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 7px; font-size: 13px; font-weight: 500">Save zone</button>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{notDrawing}}" hint-placeholder-val="{{true}}">
+          <button type="button" onClick="{{startDraw}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 9px; font-size: 13px; font-weight: 500">+ Draw testing zone</button>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{zones}}" as="z" hint-placeholder-count="3">
+            <div style="border: 1px solid #e8e6e5; border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+              <div style="display: flex; align-items: center; gap: 8px"><span style="width: 12px; height: 12px; border-radius: 3px; border: 2px dashed {{z.c}}"></span><span style="font-weight: 600; flex: 1">{{z.name}}</span><span style="font-size: 12px; color: #78716c">{{z.inside}} inside</span></div>
+              <span style="font-size: 12px; color: #78716c">{{z.kind}} · speed limit {{z.limit}} km/h</span>
+              <div style="display: flex; gap: 14px; font-size: 12.5px">
+                <label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked="{{z.entry}}" onChange="{{z.toggleEntry}}" style="accent-color: #c2410c">Entry alert</label>
+                <label style="display: flex; gap: 6px; align-items: center"><input type="checkbox" checked="{{z.exit}}" onChange="{{z.toggleExit}}" style="accent-color: #c2410c">Exit alert</label>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid #f0efee">
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.4px; color: #78716c">ENTRY / EXIT LOG · TODAY</span>
+          <sc-for list="{{log}}" as="l" hint-placeholder-count="4">
+            <div style="display: flex; gap: 8px; font-size: 12.5px"><span style="color: #78716c; width: 40px">{{l.t}}</span><span style="font-weight: 600; color: {{l.c}}; width: 34px">{{l.k}}</span><span style="flex: 1">{{l.x}}</span></div>
+          </sc-for>
+        </div>
+      </aside>
+
+      <section aria-label="Geofence map" style="flex: 999 1 520px; min-width: 0; position: relative; height: 832px; background: #eeefe9; overflow: hidden">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%" aria-hidden="true">
+          <path d="M0 78 C20 70 40 66 60 55 S90 30 100 22" fill="none" stroke="#d6d3d1" stroke-width="11" vector-effect="non-scaling-stroke"></path>
+          <path d="M0 78 C20 70 40 66 60 55 S90 30 100 22" fill="none" stroke="#ffffff" stroke-width="7" vector-effect="non-scaling-stroke"></path>
+          <path d="M45 0 L50 40 L58 100 M70 100 L75 60 L100 58" fill="none" stroke="#ffffff" stroke-width="5" vector-effect="non-scaling-stroke"></path>
+          <ellipse cx="30" cy="35" rx="16" ry="10" fill="none" stroke="#e7e5e4" stroke-width="9" vector-effect="non-scaling-stroke"></ellipse>
+          <path d="M10 18 L52 16 L56 52 L12 56 Z" fill="rgba(234,88,12,0.07)" stroke="#ea580c" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"></path>
+          <path d="M64 62 L96 60 L98 92 L66 94 Z" fill="rgba(29,78,216,0.06)" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"></path>
+          <path d="{{extraD}}" fill="rgba(126,34,206,0.08)" stroke="#7e22ce" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"></path>
+          <polyline points="{{draft}}" fill="rgba(194,65,12,0.12)" stroke="#c2410c" stroke-width="2" vector-effect="non-scaling-stroke"></polyline>
+        </svg>
+        <sc-for list="{{labels}}" as="lb" hint-placeholder-count="3">
+          <span style="position: absolute; left: {{lb.x}}%; top: {{lb.y}}%; font-size: 12px; font-weight: 600; color: #ffffff; background: {{lb.c}}; padding: 3px 8px; border-radius: 4px">{{lb.name}}</span>
+        </sc-for>
+        <sc-for list="{{dots}}" as="dt" hint-placeholder-count="6">
+          <span style="position: absolute; left: {{dt.x}}%; top: {{dt.y}}%; width: 14px; height: 14px; transform: translate(-50%, -50%); border-radius: 9999px; background: {{dt.c}}; border: 2px solid #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.3)"></span>
+        </sc-for>
+        <sc-if value="{{drawing}}" hint-placeholder-val="{{false}}">
+          <button type="button" onClick="{{addPt}}" aria-label="Drawing area: click to add a zone corner" style="position: absolute; inset: 0; border: 0; background: transparent; cursor: crosshair"></button>
+        </sc-if>
+        <div style="position: absolute; bottom: 14px; left: 14px; background: #ffffff; border-radius: 10px; padding: 10px 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); display: flex; gap: 14px; font-size: 12px; color: #57534e">
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 9999px; background: #15803d"></span>Inside zone</span>
+          <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 9999px; background: #b91c1c"></span>Outside permitted zone</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { drawing: false, pts: [], name: 'Gradient Test Hill', extra: [], flags: { A: [true, true], B: [false, true] } };
+  }
+  renderVals() {
+    const s = this.state;
+    const base = [
+      { id: 'A', name: 'Chakan Test Zone A', kind: 'Permitted testing zone', limit: 80, pts: [[10, 18], [52, 16], [56, 52], [12, 56]], c: '#ea580c', inside: 7 },
+      { id: 'B', name: 'Endurance Corridor B', kind: 'Site boundary', limit: 90, pts: [[64, 62], [96, 60], [98, 92], [66, 94]], c: '#1d4ed8', inside: 3 }
+    ].concat(s.extra);
+    const toD = p => 'M' + p.map(q => q[0] + ' ' + q[1]).join(' L') + ' Z';
+    const zones = base.map(z => {
+      const f = s.flags[z.id] || [true, true];
+      const set = (i) => () => { const nf = f.slice(); nf[i] = !nf[i]; this.setState({ flags: Object.assign({}, s.flags, { [z.id]: nf }) }); };
+      return { name: z.name, kind: z.kind, limit: z.limit, c: z.c, inside: z.inside, d: toD(z.pts), fill: z.c === '#ea580c' ? 'rgba(234,88,12,0.07)' : (z.c === '#1d4ed8' ? 'rgba(29,78,216,0.06)' : 'rgba(126,34,206,0.07)'), entry: f[0], exit: f[1], toggleEntry: set(0), toggleExit: set(1) };
+    });
+    const labels = base.map(z => ({ name: z.name, x: z.pts[0][0] + 1, y: Math.max(1, z.pts[0][1] - 4), c: z.c === '#ea580c' ? '#9a3412' : z.c }));
+    const dots = [[22, 26, 1], [40, 30, 1], [30, 46, 1], [78, 72, 1], [86, 80, 1], [62, 50, 0]].map(d => ({ x: d[0], y: d[1], c: d[2] ? '#15803d' : '#b91c1c' }));
+    const log = [['11:36', 'Exit', 'TS 07 TR 1193 left Zone A', '#b91c1c'], ['11:02', 'Entry', 'MH 14 TC 2087 entered Corridor B', '#15803d'], ['10:44', 'Entry', 'TN 22 TR 8841 entered Zone A', '#15803d'], ['09:58', 'Exit', 'MH 12 TC 7720 left Corridor B', '#b91c1c']].map(l => ({ t: l[0], k: l[1], x: l[2], c: l[3] }));
+    return {
+      zones, labels, dots, log, extraD: s.extra.map(z => toD(z.pts)).join(' ') || 'M0 0', drawing: s.drawing, notDrawing: !s.drawing, ptCount: s.pts.length, newName: s.name,
+      draft: s.pts.length ? s.pts.concat([s.pts[0]]).map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') : '',
+      onName: e => this.setState({ name: e.target.value }),
+      startDraw: () => this.setState({ drawing: true, pts: [] }),
+      cancelDraw: () => this.setState({ drawing: false, pts: [] }),
+      addPt: e => { const r = e.currentTarget.getBoundingClientRect(); this.setState({ pts: s.pts.concat([[(e.clientX - r.left) / r.width * 100, (e.clientY - r.top) / r.height * 100]]) }); },
+      saveZone: () => { if (s.pts.length < 3) return; this.setState({ drawing: false, extra: s.extra.concat([{ id: 'Z' + s.extra.length, name: s.name || 'New zone', kind: 'Permitted testing zone', limit: 60, pts: s.pts, c: '#7e22ce', inside: 0 }]), pts: [] }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

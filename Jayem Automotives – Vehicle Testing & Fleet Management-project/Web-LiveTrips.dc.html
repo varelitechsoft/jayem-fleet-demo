@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Live Trips</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button{font-family:inherit;cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Live Trips" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 20px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Overview · refreshes every few seconds (simulated)</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Live trips</h1>
+        </div>
+        <div role="group" aria-label="Location" style="display: flex; gap: 4px; padding: 3px; border: 1px solid #e8e6e5; border-radius: 9999px; background: #ffffff">
+          <sc-for list="{{locs}}" as="l" hint-placeholder-count="4">
+            <button type="button" onClick="{{l.pick}}" aria-pressed="{{l.pressed}}" style="border: 0; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 500; background: {{l.bg}}; color: {{l.color}}">{{l.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <section aria-label="Summary" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px">
+        <sc-for list="{{summary}}" as="k" hint-placeholder-count="5">
+          <div style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12.5px; color: #78716c">{{k.label}}</span>
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 500; letter-spacing: -0.6px">{{k.value}}</span>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px">
+        <sc-for list="{{trips}}" as="t" hint-placeholder-count="9">
+          <article style="background: #ffffff; border: 1px solid {{t.border}}; border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px">
+              <div style="display: flex; flex-direction: column">
+                <span style="font-weight: 600; font-size: 15px">{{t.reg}}</span>
+                <span style="font-size: 12.5px; color: #78716c">{{t.model}}</span>
+              </div>
+              <span style="font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 9999px; background: {{t.wash}}; color: {{t.c}}">{{t.status}}</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+              <div style="display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Speed</span><span style="font-weight: 600; color: {{t.speedColor}}">{{t.speed}} km/h</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Trip km</span><span style="font-weight: 600">{{t.km}}</span></div>
+              <div style="display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">Since</span><span style="font-weight: 600">{{t.start}}</span></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 5px">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; color: #57534e"><span>Today's target</span><span>{{t.pct}}</span></div>
+              <div style="height: 6px; border-radius: 9999px; background: #f0efee; overflow: hidden"><div style="height: 100%; width: {{t.pct}}; background: #c2410c"></div></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid #f0efee; font-size: 12.5px">
+              <span style="width: 26px; height: 26px; border-radius: 9999px; background: #f5f5f4; color: #44403c; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">{{t.ini}}</span>
+              <span style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{t.driver}} · {{t.project}}</span>
+              <a href="Web-Tracking.dc.html" style="font-weight: 500; text-decoration: none">Track →</a>
+            </div>
+          </article>
+        </sc-for>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { tick: 0, loc: 'All' }; }
+  componentDidMount() { this.timer = setInterval(() => this.setState({ tick: this.state.tick + 1 }), 1500); }
+  componentWillUnmount() { clearInterval(this.timer); }
+  renderVals() {
+    const s = this.state, T = s.tick;
+    const D = [
+      ['TN 09 AB 4521', 'Tata Nexon EV Max', 'Rahul Kumar', 'EV-2026-014', 'Pune', '07:14', 46, 41.6, 320],
+      ['MH 14 TC 2087', 'Ashok Leyland Ecomet 1615', 'Imran Shaikh', 'CV-2026-007', 'Pune', '06:32', 76, 118.2, 400],
+      ['TS 07 TR 1193', 'Mahindra Bolero Pik-Up', 'Venkat Reddy', 'CV-2026-012', 'Hyderabad', '06:50', 52, 64.0, 250],
+      ['TN 22 TR 8841', 'Tata Harrier', 'Karthik S', 'TT-2026-003', 'Chennai', '07:02', 61, 72.4, 300],
+      ['TN 09 TR 5512', 'Mahindra Thar Roxx', 'Dinesh Babu', 'MH-2026-015', 'Chennai', '07:40', 57, 38.9, 220],
+      ['TS 08 TC 4410', 'Ashok Leyland Boss 1215', 'Srinivas Rao', 'CV-2026-007', 'Hyderabad', '06:18', 63, 131.5, 420],
+      ['MH 12 TC 9014', 'Mahindra XUV 3XO', 'Nikhil Patil', 'MH-2026-011', 'Pune', '07:25', 71, 55.3, 350],
+      ['TS 07 TMP 2276', 'Tata Ace EV', 'Mahesh Goud', 'CV-2026-009', 'Hyderabad', '08:05', 38, 22.7, 150],
+      ['TN 10 TC 6658', 'Tata Signa 2830.K', 'Murugan P', 'CV-2026-016', 'Chennai', '06:05', 48, 104.1, 380]
+    ];
+    const fmt = n => n.toLocaleString('en-IN', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const rows = D.filter(d => s.loc === 'All' || d[4] === s.loc);
+    const trips = rows.map((d, i) => {
+      let speed = Math.max(0, Math.round(d[6] + 9 * Math.sin(T / 2 + i)));
+      if (i === 1 && T % 10 > 6) speed = 88;
+      const idle = i === 7 && T % 12 > 7;
+      if (idle) speed = 0;
+      const km = d[7] + T * d[6] / 2400;
+      const over = speed > 80;
+      const status = over ? 'Overspeed' : (idle ? 'Idle' : 'Running');
+      const c = over ? '#b91c1c' : (idle ? '#b45309' : '#15803d');
+      const wash = over ? '#fdeeee' : (idle ? '#fef6e7' : '#ecfdf3');
+      return { reg: d[0], model: d[1], driver: d[2], project: d[3], start: d[5], speed, km: fmt(km), pct: Math.min(100, km / d[8] * 100).toFixed(0) + '%', status, c, wash, border: over ? '#f5b5b5' : '#e8e6e5', speedColor: over ? '#b91c1c' : '#0c0a09', ini: d[2].split(' ').map(w => w[0]).join('') };
+    });
+    const base = { All: [96, 84, 7, 3, 2], Pune: [38, 33, 3, 1, 1], Chennai: [24, 22, 2, 0, 0], Hyderabad: [34, 29, 2, 2, 1] }[s.loc];
+    const summary = [['Trips in progress', base[0]], ['Moving now', base[1]], ['Idle', base[2]], ['Overspeed (live)', base[3]], ['GPS issues', base[4]]].map(([label, value]) => ({ label, value }));
+    const locs = ['All', 'Chennai', 'Pune', 'Hyderabad'].map(l => ({ label: l, pressed: s.loc === l ? 'true' : 'false', bg: s.loc === l ? '#fff1e6' : 'transparent', color: s.loc === l ? '#9a3412' : '#57534e', pick: () => this.setState({ loc: l }) }));
+    return { trips, summary, locs };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jayem Driver App</title><meta name="theme-color" content="#0f1c36">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>:root{--bg:#fafaf9;--card:#fff;--line:#e8e6e5;--line2:#d6d3d1;--soft:#f0efee;--ink:#0c0a09;--ink2:#44403c;--mute:#57534e;--mute2:#78716c;--navy:#0f1c36;--navy2:#1d2f55;--navtext:#c3cad8;--navmute:#8592ab;--or:#c2410c;--or2:#9a3412;--orw:#fff1e6;--orl:#fdba8c;--green:#15803d;--greenw:#ecfdf3;--red:#b91c1c;--redw:#fdeeee;--blue:#1d4ed8;--bluew:#eef3fe;--amber:#b45309;--amberw:#fef6e7;--r:10px;--font:Inter,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--head:'Inter Tight',Inter,system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--or);text-decoration:none}a:hover{color:var(--or2)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--head);font-weight:500;margin:0;letter-spacing:-.3px}
+h1{font-size:28px;letter-spacing:-.7px;line-height:1.2}h2{font-size:18px}h3{font-size:15px}
+.muted{color:var(--mute2)}.small{font-size:12.5px}.xs{font-size:12px}.b{font-weight:600}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.pad{padding:18px 20px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:500;white-space:nowrap;min-height:36px;transition:background .15s,border-color .15s}
+.btn:hover{background:#f5f5f4}
+.btn.pri{background:var(--or);border-color:var(--or);color:#fff}.btn.pri:hover{background:var(--or2);border-color:var(--or2)}
+.btn.dark{background:#1c1917;border-color:#1c1917;color:#fff}.btn.dark:hover{background:#000}
+.btn.green{background:var(--green);border-color:var(--green);color:#fff}
+.btn.danger{color:var(--red);border-color:#f5c2c2}.btn.danger:hover{background:var(--redw)}
+.btn.sm{padding:4px 12px;min-height:28px;font-size:12px}
+.btn[disabled],.btn.dis{opacity:.45;cursor:not-allowed}
+.seg{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:999px;background:#fff;flex-wrap:wrap}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--mute)}
+.seg button.on{background:#1c1917;color:#fff}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:500;color:var(--ink)}
+.chip.on{background:#1c1917;border-color:#1c1917;color:#fff}
+.dot{width:8px;height:8px;border-radius:999px;display:inline-block;flex:0 0 8px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:500;color:var(--ink2)}
+.in,select.in,textarea.in{border:1px solid var(--line2);border-radius:6px;padding:8px 10px;font-size:13.5px;background:#fff;color:var(--ink);width:100%;font-weight:400}
+.in:focus,select.in:focus,textarea.in:focus{outline:2px solid var(--or);outline-offset:-1px;border-color:var(--or)}
+textarea.in{resize:vertical}
+.err{color:var(--red);font-size:12.5px}
+.prog{height:6px;border-radius:999px;background:var(--soft);overflow:hidden}.prog>i{display:block;height:100%;background:var(--or);border-radius:999px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-weight:500;color:var(--mute2);font-size:12px;padding:10px;border-bottom:1px solid var(--line);background:#fafaf9;white-space:nowrap}
+.tbl td{padding:10px;border-bottom:1px solid var(--soft);vertical-align:middle}
+.tbl tr.click{cursor:pointer}.tbl tr.click:hover td{background:#fff7ed}
+.tbl th:first-child,.tbl td:first-child{padding-left:16px}.tbl th:last-child,.tbl td:last-child{padding-right:16px}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.sp{flex:1}
+.grid{display:grid;gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;display:flex;flex-direction:column;gap:4px}
+.kpi .l{font-size:12.5px;color:var(--mute2);display:flex;justify-content:space-between;align-items:center}
+.kpi .v{font-family:var(--head);font-size:27px;font-weight:500;letter-spacing:-.6px;line-height:1.15}
+.kpi .d{font-size:12px;color:var(--mute2)}
+dl.kv{margin:0;display:grid;grid-template-columns:minmax(110px,40%) 1fr;gap:7px 12px;font-size:13px}dl.kv dt{color:var(--mute2)}dl.kv dd{margin:0}
+.toast-wrap{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:9999;max-width:min(420px,calc(100vw - 32px))}
+.toast{background:#1c1917;color:#fff;border-radius:10px;padding:11px 14px;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.25);display:flex;gap:10px;align-items:flex-start;animation:tin .25s ease}
+.toast.ok{background:#14532d}.toast.warn{background:#7c2d12}.toast.bad{background:#7f1d1d}
+@keyframes tin{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.modal-bg{position:fixed;inset:0;background:rgba(12,10,9,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5000}
+.modal{background:#fff;border-radius:16px;width:640px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:22px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 45px rgba(17,12,46,.2)}
+.empty{padding:40px 20px;text-align:center;color:var(--mute2);font-size:13px}
+.photo{border-radius:8px;background:#1c1917;object-fit:cover;width:100%;display:block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.leaflet-container{font-family:var(--font)}
+.vm{display:flex;flex-direction:column;align-items:center;gap:2px;transform:translate(-50%,-50%);width:max-content}
+.vm .c{width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 0 2px #fff,0 3px 10px rgba(0,0,0,.4)}
+.vm.sel .c{box-shadow:0 0 0 4px #fff,0 0 0 7px rgba(194,65,12,.5),0 3px 10px rgba(0,0,0,.4)}
+.vm .t{font-size:10.5px;font-weight:600;background:#fff;color:#0c0a09;border-radius:4px;padding:1px 5px;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.mapfail{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--mute);background:#eeefe9;font-size:13px}
+html,body{height:100%}
+body{background:radial-gradient(1200px 600px at 50% -10%,#ffffff 0,#ecebe9 55%,#e2e0de 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;gap:56px}
+.stageinfo{max-width:300px;display:flex;flex-direction:column;gap:14px;color:var(--ink)}
+.stageinfo .lg{width:44px;height:44px;border-radius:12px;background:var(--or);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:600;font-size:22px}
+.stageinfo h1{font-size:30px;letter-spacing:-.8px;line-height:1.15}
+.stageinfo p{margin:0;color:var(--mute);font-size:14px}
+.stageinfo ul{margin:0;padding-left:18px;color:var(--mute);font-size:13px;display:flex;flex-direction:column;gap:4px}
+.stage{flex:0 0 auto;position:relative}
+.phone{position:absolute;left:0;top:0;transform-origin:0 0;width:402px;height:860px;flex:0 0 auto;border-radius:56px;background:#111;padding:12px;box-shadow:0 0 0 2px #2b2b2b,0 0 0 4px #9a9a9a33,0 40px 90px rgba(0,0,0,.28),0 12px 30px rgba(0,0,0,.18)}
+.phone:before{content:'';position:absolute;left:-3px;top:150px;width:3px;height:64px;border-radius:3px 0 0 3px;background:#2b2b2b;box-shadow:0 86px 0 #2b2b2b}
+.phone:after{content:'';position:absolute;right:-3px;top:200px;width:3px;height:96px;border-radius:0 3px 3px 0;background:#2b2b2b}
+.screen{position:relative;width:100%;height:100%;border-radius:44px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column}
+.sbar{flex:0 0 46px;display:flex;align-items:center;justify-content:space-between;padding:0 30px 0 34px;font-size:14px;font-weight:600;color:var(--ink);background:#fff;position:relative;z-index:900}
+.island{position:absolute;left:50%;top:11px;transform:translateX(-50%);width:118px;height:33px;border-radius:20px;background:#000}
+.sbar .ic{display:flex;gap:6px;align-items:center}
+#app{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;position:relative}
+#app::-webkit-scrollbar{display:none}
+.homebar{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#0c0a09;opacity:.85;z-index:950;pointer-events:none}
+.app{min-height:100%;background:var(--bg);display:flex;flex-direction:column;position:relative}
+.phone .modal-bg,.phone .toast-wrap{position:absolute}
+.phone .modal-bg{border-radius:44px;z-index:980}
+.phone .toast-wrap{left:26px;right:26px;transform:none;width:auto;top:auto;bottom:150px;z-index:990}
+@media (max-width:900px){.stageinfo{display:none}}
+body{padding:16px;gap:48px}
+body.native{padding:0;display:block;background:var(--bg)}
+body.native .stage{width:100%!important;height:100vh!important;height:100dvh!important}
+body.native .phone{width:100%;height:100%;border-radius:0;padding:0;box-shadow:none;transform:none!important}
+body.native .phone:before,body.native .phone:after,body.native .homebar,body.native .island{display:none}
+body.native .screen,body.native .phone .modal-bg{border-radius:0}
+.hdr{position:sticky;top:0;z-index:700;display:flex;align-items:center;gap:6px;padding:10px 10px 10px 6px;background:#fff;border-bottom:1px solid var(--line);min-height:60px}
+.hdr .bk{width:44px;height:44px;border:0;background:transparent;border-radius:999px;display:flex;align-items:center;justify-content:center;color:var(--ink);flex:0 0 44px}
+.hdr .bk:hover{background:#f5f5f4}
+.hdr h1{font-size:19px;letter-spacing:-.3px}
+.hdr .sub{font-size:12px;color:var(--mute2)}
+.scr{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px}
+.foot{position:sticky;bottom:0;z-index:600;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+.big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;border-radius:999px;border:0;background:var(--or);color:#fff;font-size:15.5px;font-weight:600;letter-spacing:.3px}
+.big:hover{background:var(--or2);color:#fff}
+.big.dark{background:#1c1917}.big.dark:hover{background:#000}
+.big.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.big.green{background:var(--green)}
+.big.off{background:#e7e5e4;color:var(--mute2);cursor:not-allowed}
+.big.red{background:var(--redw);color:var(--red);border:1px solid var(--red)}
+.box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.lbl{font-size:11.5px;font-weight:600;letter-spacing:.5px;color:var(--mute2)}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:500;color:var(--ink2)}
+.fld .in{height:50px;border-radius:10px;font-size:16px;padding:0 14px}
+.fld textarea.in{height:auto;padding:10px 12px;font-size:15px}
+.fld select.in{padding:0 10px}
+.ck{display:flex;align-items:center;gap:12px;min-height:44px;font-size:14.5px}
+.ck input{width:22px;height:22px;accent-color:var(--or);flex:0 0 22px}
+.photobtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photobtn{height:72px;border:1px dashed #a8a29e;border-radius:12px;background:#fafaf9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;font-weight:500;color:var(--ink);cursor:pointer;position:relative}
+.photobtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.catgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.catgrid button{min-height:62px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 6px;font-size:12px;font-weight:500;line-height:1.25}
+.catgrid button.on{border-color:var(--or);background:#fff7ed}
+.stat{display:flex;flex-direction:column;padding:10px;background:#fafaf9;border:1px solid var(--soft);border-radius:10px}
+.stat .k{font-size:11.5px;color:var(--mute2)}.stat .v{font-weight:600;font-size:15px}
+.tmap{position:relative;height:300px;background:#eeefe9}
+.tmap .map{position:absolute;inset:0}
+.sheet{margin-top:-18px;position:relative;z-index:500;background:#fff;border-radius:20px 20px 0 0;border-top:1px solid var(--line);padding:10px 16px 16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.handle{align-self:center;width:40px;height:4px;border-radius:999px;background:var(--line2)}
+.hero{background:var(--navy);color:#fff;padding:48px 22px 38px;display:flex;flex-direction:column;gap:20px}
+.listbtn{width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;color:var(--ink)}
+.listbtn:hover{border-color:var(--orl)}
+
+.iconbtn{width:38px;height:38px;border-radius:999px;border:1px solid var(--line);background:#fff;display:inline-flex;align-items:center;justify-content:center;color:var(--ink);flex:0 0 38px}
+.mapfail{position:absolute;inset:0}
+
+
+.phone .foot{padding-bottom:24px}
+.foot.wn{bottom:var(--navh);padding-bottom:12px}
+body.native .phone .foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+
+.appbar{padding:8px 12px 8px 14px;gap:10px}
+.abrand{flex:0 0 36px}.alg{width:36px;height:36px;border-radius:10px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:600;font-size:17px}
+.aav{width:36px;height:36px;border-radius:999px;background:#1c1917;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;flex:0 0 36px}
+.nbd{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--or);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+
+:root{--navh:84px}
+.bnav{position:sticky;bottom:0;z-index:600;height:var(--navh);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:start;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:7px 14px 0}
+.bnav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:var(--mute2);min-height:52px}
+.bnav .bi{position:relative;width:52px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.bnav a.on{color:var(--or2);font-weight:600}
+.bnav a.on .bi{background:var(--orw);color:var(--or)}
+.bnav .bd{position:absolute;top:-3px;right:6px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--or);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+body.native{--navh:calc(64px + env(safe-area-inset-bottom))}
+body.native .bnav{padding:7px 6px env(safe-area-inset-bottom)}
+.hmap{position:relative;height:150px;border-radius:12px;overflow:hidden;background:#e7ebe3;margin:-2px 0 2px}
+.hmap .map{position:absolute;inset:0}
+.hmapl{position:absolute;left:8px;bottom:8px;z-index:500;display:inline-flex;align-items:center;gap:5px;max-width:calc(100% - 16px);background:rgba(255,255,255,.95);border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.hmap .leaflet-control-attribution{font-size:9px}
+/* v1.1: quick actions, stops, stations, fleet map */
+.qa{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.qa a,.qa button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:78px;padding:8px 4px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);font-size:12px;font-weight:500;text-align:center;line-height:1.2}
+.qa a:hover{border-color:var(--orl)}
+.qa .qi{width:36px;height:36px;border-radius:999px;background:var(--orw);color:var(--or2);display:flex;align-items:center;justify-content:center}
+.qa .sosq{border-color:#f5b5b5;background:#fdeeee;color:var(--red);font-weight:700}
+.qa .sosq .qi{background:var(--red);color:#fff}
+.pausebox{display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:14px;background:#fffbf2;border:1px solid #fcd9a8}
+.brk{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;background:#f5f5f4;font-size:12.5px;color:var(--mute)}
+.brk b{color:var(--ink)}
+.brk.soon{background:#fef6e7;color:#92400e}
+.brk.due{background:#fdeeee;color:var(--red)}.brk.due b{color:var(--red)}
+.lnk{border:0;background:none;color:var(--or2);font-weight:600;font-size:12px;padding:0;white-space:nowrap;cursor:pointer}
+.tbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:56px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12px;font-weight:500}
+.hscroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;flex:0 0 auto}
+.hscroll::-webkit-scrollbar{display:none}
+.hscroll .chip{white-space:nowrap;flex:0 0 auto}
+.snum{width:24px;height:24px;flex:0 0 24px;border-radius:999px;background:#1c1917;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.stm{width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:999px;background:#c2410c;color:#fff;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35);font:600 12px var(--font);display:flex;align-items:center;justify-content:center}
+.snap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;flex:0 0 auto}
+.snap button{display:flex;flex-direction:column;align-items:flex-start;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:#fff;font-size:11px;color:var(--mute);text-align:left}
+.snap button b{font-family:var(--head);font-size:19px;line-height:1.1}
+.snap button.on{border-color:#1c1917;box-shadow:inset 0 0 0 1px #1c1917}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.wk span{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--mute2)}
+.wk i{font-style:normal}
+.wk b{padding:6px 0;border-radius:8px;background:#f5f5f4;color:var(--mute);font-size:13px}
+.wk .sA{background:#fff1e6;color:#c2410c}.wk .sB{background:#eef3fe;color:#1d4ed8}.wk .sC{background:#f3effe;color:#6d28d9}.wk .sG{background:#ecfdf3;color:#15803d}
+.iconbtn.lng{font-size:12px;font-weight:700;color:var(--ink)}
+.seg button:disabled{opacity:.4}
+.democase{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;text-align:left;cursor:pointer}
+.democase.on{border-color:var(--or);box-shadow:inset 0 0 0 1px var(--or)}
+.democase .dci{width:26px;height:26px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center}
+body:not(.native){flex-direction:column;gap:14px}
+.casebar{display:flex;align-items:center;gap:6px;padding:5px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(0,0,0,.08);flex:0 0 auto}
+.casebar .cbl{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--mute2);padding:0 8px;text-transform:uppercase}
+.casebar button{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:8px 14px;background:transparent;font:600 13px var(--font);color:var(--mute);cursor:pointer}
+.casebar button.on{background:#1c1917;color:#fff}
+body.native .casebar{display:none}
+</style></head><body><div class="casebar" id="casebar" role="group" aria-label="Demo case"></div><div class="stage" id="stage"><div class="phone" id="phone"><div class="screen"><div class="sbar" aria-hidden="true"><span id="sbtime"></span><span class="island"></span><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="1" fill="#0c0a09"/><rect x="5" y="5" width="3" height="7" rx="1" fill="#0c0a09"/><rect x="10" y="2" width="3" height="10" rx="1" fill="#0c0a09"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#0c0a09"/></svg><svg width="26" height="12" viewBox="0 0 26 12" aria-hidden="true"><rect x=".5" y=".5" width="22" height="11" rx="3" fill="none" stroke="#0c0a09" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="2" fill="#0c0a09"/><rect x="23.5" y="4" width="2" height="4" rx="1" fill="#0c0a09" opacity=".5"/></svg></span></div><div id="app"></div><span class="homebar"></span></div></div></div>
+<script>
+/* ===== Jayem shared simulated backend (same code in web portal and driver app) ===== */
+const J = (() => {
+  const KEY = 'jayem-demo-v9';
+  const SPEEDUP = 10; // map movement is 10x real time so the demo is visible
+
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const fmt = (n, d = 0) => Number(n || 0).toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const pad = n => String(n).padStart(2, '0');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const today0 = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  const dayISO = (offset = 0) => { const d = today0(); d.setDate(d.getDate() + offset); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+  const fDate = iso => { if (!iso) return '—'; const d = new Date(iso); return d.getDate() + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()] + ' ' + d.getFullYear(); };
+  const fDay = iso => { const d = new Date(iso); const t = today0(); const diff = Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - t) / 864e5); if (diff === 0) return 'Today'; if (diff === -1) return 'Yesterday'; return d.getDate() + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()]; };
+  const fTime = ts => { const d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); };
+  const ago = ts => { const s = Math.max(0, (Date.now() - ts) / 1000); if (s < 60) return 'just now'; if (s < 3600) return Math.floor(s / 60) + ' min ago'; if (s < 86400) return Math.floor(s / 3600) + ' h ago'; return fDay(ts); };
+  const dur = mins => Math.floor(mins / 60) + ' h ' + pad(Math.round(mins % 60)) + ' m';
+
+  const SITES = {
+    CHK: { id: 'CHK', name: 'Pune · Chakan', short: 'Chakan', city: 'Pune', center: [18.7606, 73.8636], sup: 'Suresh Kumar', supPhone: '+91 98450 12873', code: 'MH 14' },
+    TLG: { id: 'TLG', name: 'Pune · Talegaon', short: 'Talegaon', city: 'Pune', center: [18.7350, 73.6760], sup: 'Vikram Joshi', supPhone: '+91 98220 33410', code: 'MH 12' },
+    RNJ: { id: 'RNJ', name: 'Pune · Ranjangaon', short: 'Ranjangaon', city: 'Pune', center: [18.7560, 74.2420], sup: 'Sunil Bhosale', supPhone: '+91 97300 55218', code: 'MH 12' },
+  };
+  const CITIES = ['Pune'];
+
+  /* ---- routes ---- */
+  const routeCache = {};
+  function route(siteId, type) {
+    const k = siteId + type; if (routeCache[k]) return routeCache[k];
+    const c = SITES[siteId].center; let pts = [];
+    if (type === 'track') {
+      for (let i = 0; i <= 64; i++) { const a = i / 64 * Math.PI * 2; pts.push([c[0] + 0.0062 * Math.sin(a), c[1] - 0.0045 + 0.0118 * Math.cos(a)]); }
+    } else {
+      let out;
+      if (siteId === 'CHK') out = [[18.7606, 73.8636], [18.7700, 73.8640], [18.7780, 73.8645], [18.7870, 73.8655], [18.7950, 73.8668], [18.8040, 73.8685], [18.8120, 73.8705], [18.8210, 73.8732], [18.8300, 73.8760], [18.8390, 73.8786], [18.8470, 73.8810], [18.8600, 73.8850]];
+      else { out = []; for (let i = 0; i <= 11; i++) out.push([c[0] + i * 0.0085, c[1] + i * 0.0035 + 0.004 * Math.sin(i / 2)]); }
+      pts = out.concat(out.slice(0, -1).reverse());
+    }
+    // cumulative km
+    const cum = [0];
+    for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + km(pts[i - 1], pts[i]));
+    const r = { pts, cum, len: cum[cum.length - 1] };
+    routeCache[k] = r; return r;
+  }
+  function km(a, b) { const R = 6371, dLat = (b[0] - a[0]) * Math.PI / 180, dLng = (b[1] - a[1]) * Math.PI / 180; const x = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * Math.PI / 180) * Math.cos(b[0] * Math.PI / 180) * Math.sin(dLng / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); }
+  function at(r, dist) {
+    let d = ((dist % r.len) + r.len) % r.len; let i = 1;
+    while (i < r.cum.length - 1 && r.cum[i] < d) i++;
+    const seg = r.cum[i] - r.cum[i - 1] || 1, k = (d - r.cum[i - 1]) / seg, a = r.pts[i - 1], b = r.pts[i];
+    return { pos: [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k], idx: i };
+  }
+  function trail(r, dist, maxKm) {
+    const end = at(r, dist); const out = [end.pos]; let d = ((dist % r.len) + r.len) % r.len;
+    for (let i = end.idx - 1; i >= 0 && (d - r.cum[i]) < (maxKm || 1e9); i--) out.unshift(r.pts[i]);
+    return out;
+  }
+
+  /* ---- reference data ---- */
+  const MODELS = [
+    ['Tata Motors', 'Nexon EV Max', 'ev', 'Passenger car', 'EV'], ['Tata Motors', 'Punch EV', 'ev', 'Passenger car', 'EV'], ['Tata Motors', 'Tiago EV', 'ev', 'Passenger car', 'EV'], ['Tata Motors', 'Ace EV', 'ev', 'Small commercial', 'EV'], ['Mahindra', 'XUV400 EV', 'ev', 'SUV', 'EV'], ['Tata Motors', 'Curvv EV', 'ev', 'SUV', 'EV'],
+    ['Ashok Leyland', 'Ecomet 1615', 'truck', 'ICV truck', 'Diesel'], ['Ashok Leyland', 'Boss 1215', 'truck', 'ICV truck', 'Diesel'], ['Ashok Leyland', 'Dost+', 'truck', 'LCV', 'Diesel'], ['Tata Motors', 'Signa 2830.K', 'truck', 'HCV tipper', 'Diesel'], ['Tata Motors', 'Intra V50', 'truck', 'Pick-up', 'Diesel'], ['Mahindra', 'Bolero Pik-Up', 'truck', 'Pick-up', 'Diesel'], ['Tata Motors', 'Ultra T.7', 'truck', 'LCV', 'Diesel'],
+    ['Tata Motors', 'Harrier', 'car', 'SUV', 'Diesel'], ['Mahindra', 'Thar Roxx', 'car', 'SUV', 'Diesel'], ['Mahindra', 'Scorpio-N', 'car', 'SUV', 'Diesel'],
+    ['Mahindra', 'XUV 3XO', 'car', 'SUV', 'Petrol'], ['Tata Motors', 'Altroz', 'car', 'Passenger car', 'Petrol'], ['Tata Motors', 'Punch', 'car', 'Passenger car', 'Petrol'], ['Mahindra', 'XUV700', 'car', 'SUV', 'Petrol']
+  ];
+  const TEST_TYPES = ['Component / Part Testing', 'Vehicle Performance Testing', 'Endurance Testing', 'Road Testing', 'EV Testing', 'R&D Testing', 'Mileage Testing', 'Wheel / Tyre Testing', 'Engine / Motor Testing'];
+  const TICKET_CATS = ['Vehicle Malfunction', 'Part Failure', 'Troubleshooting Required', 'Part Replacement Required', 'Accident', 'Tyre / Wheel Issue', 'Engine / Motor Issue', 'Battery Issue', 'Other'];
+  const TICKET_STATUS = ['Open', 'Assigned', 'In Progress', 'Resolved', 'Closed'];
+  const ROLES = { admin: 'Super Admin', pm: 'Project Manager', sup: 'Supervisor', plant: 'Plant Manager', mgmt: 'Management' };
+  const PRI = { Emergency: 'Critical', Overspeed: 'High', 'Geofence Exit': 'High', 'New Ticket': 'Medium', 'GPS Disconnected': 'Medium', 'Unusual Stoppage': 'Medium', 'Break Overdue': 'Medium', 'Vehicle Idle': 'Low', 'Geofence Entry': 'Low', 'Vehicle Offline': 'Low', 'Battery Inspection': 'Medium' };
+  const PRI_C = { Critical: ['#ffffff', '#b91c1c'], High: ['#b91c1c', '#fdeeee'], Medium: ['#b45309', '#fef6e7'], Low: ['#57534e', '#f1f0ef'] };
+  const ESC = ['Supervisor', 'Project Manager', 'Plant Manager'];
+  const DESC_TEMPLATES = {
+    'Vehicle Malfunction': 'AC compressor cuts out after 20 minutes of running.',
+    'Part Failure': 'Wiper motor stopped working during the run.',
+    'Troubleshooting Required': 'Instrument cluster flickers at idle. Needs checking.',
+    'Part Replacement Required': 'Rear brake pads worn close to 2 mm.',
+    'Accident': 'Minor contact with barrier at the test track entry. No injury.',
+    'Tyre / Wheel Issue': 'Front-left tyre showing a bulge after kerb contact.',
+    'Engine / Motor Issue': 'Warning light on and power loss while climbing.',
+    'Battery Issue': 'Battery dropped from 64% to 51% within 3 km. "Reduced power" shown for a minute.',
+    'Other': 'GPS unit is loose on the dashboard mount.'
+  };
+  const RESOLUTION_TEMPLATES = {
+    'Battery Issue': ['Pulled BMS logs. Module 7 cell voltage 0.18 V below pack average.', 'Loose sense wire on module 7 giving a false low-charge reading', 'BMS sense harness · P/N 54E-7781-02 · qty 1', 'Harness replaced and pack rebalanced. 20 km test drive OK.'],
+    'Tyre / Wheel Issue': ['Inspected tyre and rim. Sidewall bulge confirmed.', 'Kerb impact damaged the sidewall', 'Radial tyre 215/60 R16 · qty 1', 'Tyre replaced, wheel balanced and alignment checked.'],
+    'Engine / Motor Issue': ['Scanned ECU. Boost pressure sensor reading out of range.', 'Faulty boost pressure sensor', 'MAP sensor · P/N 0281-002-576 · qty 1', 'Sensor replaced, codes cleared, 15 km road test OK.'],
+    _: ['Checked the reported problem with the driver and reproduced it.', 'Wear and tear on the affected part', 'Replacement part from site store · qty 1', 'Part replaced and tested. Vehicle cleared for testing.']
+  };
+
+  const FIRST = ['Imran', 'Ganesh', 'Venkat', 'Sachin', 'Karthik', 'Amol', 'Dinesh', 'Rohit', 'Srinivas', 'Nikhil', 'Mahesh', 'Murugan', 'Prakash', 'Vijay', 'Anil', 'Suraj', 'Ravi', 'Kiran', 'Manoj', 'Arjun', 'Santosh', 'Ramesh', 'Yogesh', 'Balaji', 'Harish', 'Naveen', 'Pradeep', 'Sandeep', 'Ajay', 'Deepak', 'Sunil', 'Rajesh', 'Ashok', 'Mukesh', 'Sanjay', 'Gopal', 'Lokesh', 'Raju', 'Shankar', 'Vinod'];
+  const LAST = ['Shaikh', 'Pawar', 'Reddy', 'Jadhav', 'S', 'Kale', 'Babu', 'More', 'Rao', 'Patil', 'Goud', 'P', 'Naidu', 'Shinde', 'Iyer', 'Gaikwad', 'Yadav', 'Chavan', 'Pillai', 'Kumar', 'Deshmukh', 'Raju', 'Nair', 'Bhosale', 'Rathod'];
+
+  function seed() {
+    const R = rng(2026);
+    const pick = a => a[Math.floor(R() * a.length)];
+    const now = Date.now();
+    const t0 = today0().getTime();
+
+    const projects = [
+      { id: 'EV-2026-014', name: 'EV Endurance – Nexon EV Max', client: 'Tata Motors', site: 'CHK', testType: 'Vehicle Testing', type: 'Endurance Testing', start: dayISO(-78), end: dayISO(57), target: 60000, achieved: 38420, pm: 'Priya Deshmukh', sup: 'Suresh Kumar', status: 'Ongoing', models: ['Nexon EV Max', 'Punch EV', 'Curvv EV'] },
+      { id: 'CV-2026-007', name: 'Ecomet 1615 Durability', client: 'Ashok Leyland', site: 'CHK', testType: 'Vehicle Testing', type: 'Road Durability Testing', start: dayISO(-132), end: dayISO(31), target: 120000, achieved: 81300, pm: 'Priya Deshmukh', sup: 'Suresh Kumar', status: 'Ongoing', models: ['Ecomet 1615', 'Boss 1215', 'Dost+'] },
+      { id: 'MH-2026-011', name: 'XUV 3XO Real-world Mileage', client: 'Mahindra', site: 'TLG', testType: 'Vehicle Testing', type: 'Mileage Testing', start: dayISO(-110), end: dayISO(16), target: 40000, achieved: 31900, pm: 'Priya Deshmukh', sup: 'Vikram Joshi', status: 'Ongoing', models: ['XUV 3XO', 'XUV700', 'Scorpio-N'] },
+      { id: 'TT-2026-003', name: 'Radial Tyre Wear Cycle', client: 'Tata Motors', site: 'TLG', testType: 'Wheel Testing', type: 'Tyre Wear Testing', start: dayISO(-35), end: dayISO(101), target: 25000, achieved: 9840, pm: 'Karthikeyan R', sup: 'Vikram Joshi', status: 'Ongoing', models: ['Harrier', 'Altroz', 'Punch'] },
+      { id: 'CV-2026-009', name: 'Ace EV Gradeability', client: 'Tata Motors', site: 'RNJ', testType: 'Vehicle Testing', type: 'EV Gradeability Testing', start: dayISO(-91), end: dayISO(11), target: 18000, achieved: 14210, pm: 'Karthikeyan R', sup: 'Sunil Bhosale', status: 'Ongoing', models: ['Ace EV', 'Tiago EV', 'XUV400 EV'] },
+      { id: 'CV-2026-012', name: 'Bolero Pik-Up Payload Performance', client: 'Mahindra', site: 'RNJ', testType: 'Vehicle Testing', type: 'Payload Performance Testing', start: dayISO(-49), end: dayISO(73), target: 20000, achieved: 7420, pm: 'Anita Sharma', sup: 'Sunil Bhosale', status: 'Ongoing', models: ['Bolero Pik-Up', 'Intra V50', 'Ultra T.7'] },
+      { id: 'MH-2026-015', name: 'Thar Roxx Off-road R&D', client: 'Mahindra', site: 'TLG', testType: 'Engine Testing', type: 'Engine Thermal & Off-road Testing', start: dayISO(-14), end: dayISO(116), target: 12000, achieved: 4110, pm: 'Anita Sharma', sup: 'Vikram Joshi', status: 'Ongoing', models: ['Thar Roxx', 'Scorpio-N', 'Harrier'] },
+      { id: 'EN-2026-018', name: 'mHawk 2.2 Engine Thermal Cycle', client: 'Mahindra', site: 'CHK', testType: 'Engine Testing', type: 'Engine Thermal Cycle Testing', start: dayISO(6), end: dayISO(96), target: 15000, achieved: 0, pm: 'Priya Deshmukh', sup: 'Suresh Kumar', status: 'Pending', models: ['Scorpio-N', 'XUV700', 'Thar Roxx'] },
+      { id: 'CV-2026-004', name: 'Intra V50 Brake Fade', client: 'Tata Motors', site: 'CHK', testType: 'Other Testing', type: 'Brake Fade (Component) Testing', start: dayISO(-171), end: dayISO(-50), target: 15000, achieved: 15000, pm: 'Karthikeyan R', sup: 'Suresh Kumar', status: 'Completed', models: ['Intra V50', 'Signa 2830.K', 'Ultra T.7'] }
+    ];
+    const projBySite = s => projects.filter(p => p.site === s && p.status === 'Ongoing');
+
+    /* vehicles */
+    const siteCounts = [['CHK', 28], ['TLG', 18], ['RNJ', 14]];
+    const vehicles = []; let gpsN = 40;
+    const featured = { reg: 'TN 09 AB 4521', temp: 'TN09 TMP 4521', mi: 0, site: 'CHK', project: 'EV-2026-014', odo: 18432.4, status: 'Idle', done: 1850, target: 5000 };
+    const fixedRegs = { CHK: ['MH 14 TC 2087', 'MH 14 TC 3310', 'MH 12 TC 7720', 'MH 14 TMP 0459', 'MH 14 TC 1988', 'MH 14 TC 6120'], TLG: ['MH 14 TR 8841', 'MH 12 TC 5512'], RNJ: ['MH 12 TMP 6612', 'MH 12 TR 1193', 'MH 12 TC 4410', 'MH 12 TMP 2276'] };
+    let vid = 1;
+    siteCounts.forEach(([site, n]) => {
+      for (let i = 0; i < n; i++) {
+        const S = SITES[site];
+        const projs = projBySite(site);
+        let proj = projs[i % projs.length];
+        let m;
+        const modelNames = proj.models;
+        m = MODELS.find(x => x[1] === modelNames[i % modelNames.length]);
+        let reg, temp, status, odo, done, target = [3000, 4000, 5000, 6000, 10000][Math.floor(R() * 5)];
+        const fr = fixedRegs[site] && fixedRegs[site][i - (site === 'CHK' ? 1 : 0)];
+        if (site === 'CHK' && i === 0) { m = MODELS[0]; reg = featured.reg; temp = featured.temp; proj = projects[0]; }
+        else if (fr) reg = fr;
+        if (!reg) { const series = ['TC', 'TR', 'TMP'][Math.floor(R() * 3)]; reg = S.code + ' ' + series + ' ' + String(1000 + Math.floor(R() * 8999)); }
+        if (!temp) temp = reg.replace(/^(\w\w) (\d\d) \w+ /, '$1$2 TMP ');
+        const r = R();
+        status = r < 0.58 ? 'Running' : r < 0.66 ? 'Idle' : r < 0.82 ? 'Stopped' : r < 0.9 ? 'Maintenance' : r < 0.96 ? 'Offline' : 'Completed';
+        if (proj.status === 'Completed') status = 'Completed';
+        odo = Math.round((2000 + R() * 70000) * 10) / 10;
+        done = Math.round(target * (0.15 + R() * 0.75));
+        if (site === 'CHK' && i === 0) { status = 'Idle'; odo = featured.odo; done = featured.done; target = featured.target; }
+        if (reg === 'MH 14 TC 2087') { m = MODELS[6]; proj = projects[0].id === 'x' ? proj : projects.find(p => p.id === 'CV-2026-007') || proj; status = 'Running'; }
+        if (reg === 'MH 14 TC 3310') { m = MODELS[16]; status = 'Idle'; }
+        if (reg === 'MH 12 TMP 6612') { m = MODELS[3]; status = 'Offline'; }
+        if (reg === 'MH 14 TMP 0459') { m = MODELS[1]; status = 'Maintenance'; }
+        if (reg === 'MH 14 TC 1988') { m = MODELS[10]; proj = projects.find(p => p.id === 'CV-2026-004'); status = 'Completed'; }
+        if (reg === 'MH 12 TC 7720') { m = MODELS[8]; status = 'Stopped'; }
+        if (reg === 'MH 14 TC 6120') { m = MODELS[0]; proj = projects[0]; status = 'Idle'; }
+        if (reg === 'MH 12 TR 1193') { m = MODELS[11]; proj = projects[5]; status = 'Running'; }
+        if (reg === 'MH 14 TR 8841') { m = MODELS[13]; proj = projects[3]; status = 'Running'; }
+        if (site === 'CHK' && (i === 20 || i === 21)) { proj = projects.find(p => p.id === 'EN-2026-018'); m = MODELS.find(x => x[1] === proj.models[i - 20]); status = 'Idle'; }
+        const id = 'V' + String(vid++).padStart(3, '0');
+        const gps = 'JGT-PN-' + String(gpsN++).padStart(4, '0');
+        const rt = R() < 0.5 ? 'track' : 'hwy';
+        const v = {
+          id, reg, temp, maker: m[0], model: m[1], kind: m[2], cat: m[3], fuel: m[4], site, project: proj.id,
+          vin: (m[0] === 'Mahindra' ? 'MA1' : m[0] === 'Ashok Leyland' ? 'MB1' : 'MAT') + Math.floor(R() * 9e5 + 1e5) + 'XX' + reg.slice(-4),
+          engine: (m[4] === 'EV' ? 'PMSM-' : 'DI-') + Math.floor(R() * 90 + 10) + '-' + reg.slice(-4),
+          odo, status, gps, target, done, testStart: proj.start, testEnd: proj.end, epi: 'EP-26-' + String(410 + vid).padStart(4, '0'),
+          sim: status === 'Running' ? { route: rt, phase: R() * 50, base: 48 + Math.floor(R() * 22), hot: R() < 0.12 || reg === 'MH 14 TC 2087' } : null,
+          park: [S.center[0] + (R() - 0.5) * 0.024, S.center[1] + (R() - 0.5) * 0.04],
+          driverId: null,
+          history: [
+            { t: new Date(proj.start).getTime(), x: 'Allocated to ' + proj.id, by: S.sup },
+            { t: new Date(proj.start).getTime() - 864e5 * 3, x: 'Registration changed: trade plate ' + temp + ' → ' + reg, by: 'RTO update' },
+            { t: new Date(proj.start).getTime() - 864e5 * 4, x: 'GPS device ' + gps + ' installed', by: 'Vareli field team' },
+            { t: new Date(proj.start).getTime() - 864e5 * 6, x: 'Received at ' + S.name + ' from ' + m[0] + ' R&D', by: 'Stores' }
+          ]
+        };
+        vehicles.push(v);
+      }
+    });
+
+    /* drivers */
+    const drivers = [];
+    const fixedDrivers = [['Rahul Kumar', 'CHK'], ['Imran Shaikh', 'CHK'], ['Prakash Naidu', 'CHK'], ['Sachin Jadhav', 'CHK'], ['Amol Kale', 'CHK'], ['Venkat Reddy', 'RNJ'], ['Karthik S', 'TLG'], ['Ganesh Pawar', 'RNJ'], ['Dinesh Babu', 'TLG'], ['Nikhil Patil', 'TLG'], ['Srinivas Rao', 'RNJ'], ['Yogesh Shinde', 'CHK'], ['Arjun Gaikwad', 'CHK'], ['Balaji Iyer', 'CHK']];
+    const siteCycle = ['CHK', 'TLG', 'CHK', 'RNJ', 'CHK', 'TLG'];
+    for (let i = 0; i < 120; i++) {
+      const f = fixedDrivers[i];
+      const name = f ? f[0] : FIRST[(i * 7) % FIRST.length] + ' ' + LAST[(i * 11 + 3) % LAST.length];
+      const site = f ? f[1] : siteCycle[i % siteCycle.length];
+      const ph = '9' + String(Math.floor(R() * 1e9)).padStart(9, '0');
+      const r = R();
+      drivers.push({
+        id: 'D' + String(i + 1).padStart(4, '0'), emp: 'JAY-DR-' + String(142 + i).padStart(4, '0'), name, phone: '+91 ' + ph.slice(0, 5) + ' ' + ph.slice(5), site, sup: SITES[site].sup,
+        lic: SITES[site].code.replace(' ', '') + ' ' + (2012 + Math.floor(R() * 12)) + String(Math.floor(R() * 1e7)).padStart(7, '0'), licClass: R() < 0.6 ? 'LMV, HMV (Transport)' : 'LMV', licValid: dayISO(Math.floor(400 + R() * 2400)),
+        emp_status: R() < 0.93 ? 'Permanent' : 'Contract', avail: r < 0.6 ? 'Available' : r < 0.85 ? 'Off duty' : 'On leave', vehicleId: null,
+        km: Math.round(8000 + R() * 90000), trips: Math.floor(60 + R() * 300), score: Math.round((3.4 + R() * 1.5) * 10) / 10, overspeed: Math.floor(R() * 6), joined: 2014 + Math.floor(R() * 11),
+        emergency: ['Sunita', 'Kavita', 'Lakshmi', 'Meena', 'Anjali'][i % 5] + ' ' + name.split(' ').slice(-1)[0] + ' · Spouse · +91 98' + String(Math.floor(R() * 1e8)).padStart(8, '0').replace(/(\d{3})(\d{5})/, '$1 $2')
+      });
+    }
+    drivers[0].phone = '+91 98410 23567'; drivers[0].score = 4.6; drivers[0].km = 62480; drivers[0].emergency = 'Sunita Kumar · Spouse · +91 98840 12345'; drivers[0].lic = 'MH12 20190004521'; drivers[0].licClass = 'LMV, HMV (Transport)';
+    // pair running vehicles with drivers at same site
+    vehicles.forEach(v => {
+      if (v.status !== 'Running') return;
+      const d = drivers.find(x => x.site === v.site && x.avail === 'Available' && !x.vehicleId && x.id !== 'D0001');
+      if (d) { d.avail = 'On trip'; d.vehicleId = v.id; v.driverId = d.id; }
+    });
+    const imran = drivers[1], v2087 = vehicles.find(v => v.reg === 'MH 14 TC 2087');
+    if (v2087.driverId && v2087.driverId !== imran.id) { const other = drivers.find(d => d.id === v2087.driverId); other.avail = 'Available'; other.vehicleId = null; }
+    if (imran.vehicleId && imran.vehicleId !== v2087.id) { const ov = vehicles.find(v => v.id === imran.vehicleId); ov.driverId = null; }
+    v2087.driverId = imran.id; imran.vehicleId = v2087.id; imran.avail = 'On trip';
+    drivers[0].avail = 'Available';
+
+    /* today's assignment for Rahul (brief sample) */
+    const assignments = {
+      D0001: { vehicleId: 'V001', project: 'EV-2026-014', type: 'Road Performance Testing', target: 320, route: 'track', routeName: 'Chakan oval track + NH 60 loop', instructions: 'Keep 60–80 km/h on NH 60. Track limit is 80 km/h.\nLog battery % at every charge stop.\nReport any warning light at once using Report issue.\nCharge only at the Chakan DC 60 kW station.', date: dayISO(0), status: 'Assigned', createdBy: 'Suresh Kumar', createdAt: t0 + 6.68 * 3600e3 }
+    };
+    vehicles[0].driverId = 'D0001';
+    /* second demo case: a fuel (diesel) vehicle for Sachin Jadhav */
+    (() => {
+      const sj = drivers[3];
+      if (sj.vehicleId) { const ov = vehicles.find(v => v.id === sj.vehicleId); const alt = drivers.find(x => x.site === 'CHK' && x.avail === 'Available' && !x.vehicleId && x.id !== 'D0001' && x.id !== sj.id); if (ov) { ov.driverId = alt ? alt.id : null; if (alt) { alt.avail = 'On trip'; alt.vehicleId = ov.id; } } }
+      sj.avail = 'Available'; sj.vehicleId = null; sj.phone = '+91 98220 45781';
+      const fv = vehicles.find(v => v.project === 'CV-2026-007' && v.site === 'CHK' && v.fuel === 'Diesel' && v.status !== 'Running' && !v.driverId) || vehicles.find(v => v.site === 'CHK' && v.fuel === 'Diesel' && v.status !== 'Running' && !v.driverId);
+      fv.status = 'Idle'; fv.driverId = sj.id;
+      const fp = projects.find(p => p.id === fv.project);
+      assignments[sj.id] = { vehicleId: fv.id, project: fv.project, type: fp.type, target: 260, route: 'hwy', routeName: 'NH 60 highway loop · Chakan – Rajgurunagar', instructions: 'Run at rated payload. Keep 60–80 km/h on NH 60.\nLog fuel at every refill with the bill photo.\nReport any warning light at once using Report issue.\nRefuel only at the approved HP / Indian Oil pumps.', date: dayISO(0), status: 'Assigned', createdBy: 'Suresh Kumar', createdAt: t0 + 6.7 * 3600e3 };
+    })();
+
+    /* trips history */
+    const trips = []; let tripN = 1100;
+    const histVeh = vehicles.filter(v => v.driverId || v.id === 'V001').slice(0, 14);
+    for (let day = -14; day <= -1; day++) {
+      histVeh.forEach((v, j) => {
+        if ((day + j) % 3 === 0 && v.id !== 'V001') return;
+        const d = v.id === 'V001' ? drivers[0] : drivers.find(x => x.id === v.driverId) || drivers[2];
+        const kmv = Math.round((170 + R() * 160) * 10) / 10;
+        const startMin = 6 * 60 + Math.floor(R() * 90), mins = Math.round(kmv / (48 + R() * 14) * 60) + 25;
+        const ds = new Date(t0 + day * 864e5 + startMin * 60e3);
+        const ev = v.fuel === 'EV';
+        trips.push({
+          id: 'TRP-26-' + String(tripN++).padStart(5, '0'), vehicleId: v.id, driverId: d.id, project: v.project, type: projects.find(p => p.id === v.project).type, site: v.site,
+          startTs: ds.getTime(), endTs: ds.getTime() + mins * 60e3, odoS: 0, odoE: 0, km: kmv, mins, avg: Math.round(kmv / mins * 60), max: Math.round(70 + R() * 22), idle: Math.round(10 + R() * 40),
+          energy: ev ? Math.round(kmv / (6 + R() * 1.4) * 10) / 10 : Math.round(kmv / (v.fuel === 'Petrol' ? 14 + R() * 2 : 7 + R() * 5) * 10) / 10, unit: ev ? 'kWh' : 'L',
+          battS: ev ? 96 : null, battE: ev ? Math.floor(18 + R() * 20) : null, cost: ev ? null : 0, route: R() < 0.5 ? 'track' : 'hwy', status: 'Completed', breaks: Math.floor(mins / 200), tickets: [], remarks: 'Normal run.', photoS: null, photoE: null,
+          shift: startMin < 14 * 60 ? 'A' : 'B', log: { regen: ev ? ['Low', 'Medium', 'High'][Math.floor(R() * 3)] : 'NA', ac: ['Off', 'On · Eco', 'On · Full'][Math.floor(R() * 3)], load: ['Unladen', 'Half load', 'Full load (GVW)'][Math.floor(R() * 3)], mode: ['Eco', 'Normal', 'Sport'][Math.floor(R() * 3)], anc: 'OK' }, stops: []
+        });
+      });
+    }
+    // odometer chains (backwards from current odo)
+    vehicles.forEach(v => {
+      const vt = trips.filter(t => t.vehicleId === v.id).sort((a, b) => b.startTs - a.startTs);
+      let o = v.odo; vt.forEach(t => { t.odoE = Math.round(o * 10) / 10; t.odoS = Math.round((o - t.km) * 10) / 10; o = t.odoS; });
+    });
+    trips.forEach(t => { if (t.unit === 'L') t.cost = Math.round(t.energy * (vehicles.find(v => v.id === t.vehicleId).fuel === 'Petrol' ? 104.6 : 92.4)); });
+
+    /* tickets */
+    const vByReg = reg => vehicles.find(v => v.reg === reg) || vehicles[1];
+    const T = [
+      ['JAY-TKT-2026-0012', 'Battery Issue', 'Battery dropped from 64% to 51% within 3 km. "Reduced power" shown for a minute.', 'TN 09 AB 4521', 'D0001', -1, 10.35, 'High', 'In Progress', 'Suresh Kumar'],
+      ['JAY-TKT-2026-0011', 'Engine / Motor Issue', 'Check-engine light and power loss uphill.', 'MH 14 TC 2087', 'D0002', -1, 15, 'High', 'Open', null],
+      ['JAY-TKT-2026-0010', 'Part Replacement Required', 'Rear brake pads worn to 2 mm.', 'MH 12 TC 7720', 'D0005', -2, 12.5, 'Medium', 'Assigned', 'Suresh Kumar'],
+      ['JAY-TKT-2026-0009', 'Vehicle Malfunction', 'AC compressor cutting out.', 'MH 12 TR 1193', 'D0006', -2, 9.2, 'Low', 'Resolved', 'Sunil Bhosale'],
+      ['JAY-TKT-2026-0008', 'Troubleshooting Required', 'Instrument cluster flicker at idle.', 'MH 14 TC 3310', 'D0004', -3, 16.6, 'Medium', 'In Progress', 'Suresh Kumar'],
+      ['JAY-TKT-2026-0007', 'Accident', 'Minor rear bump at toll plaza, no injury.', 'MH 12 TC 4410', 'D0011', -4, 13.3, 'High', 'Resolved', 'Sunil Bhosale'],
+      ['JAY-TKT-2026-0006', 'Part Failure', 'Wiper motor failed in rain.', 'MH 12 TC 5512', 'D0009', -5, 8.8, 'Medium', 'Closed', 'Vikram Joshi'],
+      ['JAY-TKT-2026-0005', 'Battery Issue', '12V auxiliary battery not holding charge.', 'MH 12 TMP 6612', 'D0008', -6, 7.6, 'Medium', 'Closed', 'Sunil Bhosale'],
+      ['JAY-TKT-2026-0004', 'Tyre / Wheel Issue', 'Slow puncture, rear right.', 'MH 14 TC 1988', 'D0012', -7, 11.2, 'Low', 'Closed', 'Suresh Kumar'],
+      ['JAY-TKT-2026-0003', 'Other', 'GPS unit loose on dashboard mount.', 'MH 14 TR 8841', 'D0007', -8, 10, 'Low', 'Closed', 'Vikram Joshi'],
+      ['JAY-TKT-2026-0002', 'Vehicle Malfunction', 'Regen braking inconsistent.', 'MH 14 TMP 0459', 'D0010', -9, 14.8, 'High', 'Resolved', 'Suresh Kumar'],
+      ['JAY-TKT-2026-0001', 'Tyre / Wheel Issue', 'Rear-left tyre bulge after kerb hit.', 'TN 09 AB 4521', 'D0001', -16, 11, 'Medium', 'Closed', 'Suresh Kumar'],
+      ['JAY-TKT-2026-0013', 'Troubleshooting Required', 'Infotainment screen restarts on rough road.', 'TN 09 AB 4521', 'D0001', -12, 15.2, 'Low', 'Resolved', 'Suresh Kumar']
+    ];
+    const tickets = T.map(t => {
+      const v = vByReg(t[3]); const created = t0 + t[5] * 864e5 + t[6] * 3600e3; const st = TICKET_STATUS.indexOf(t[8]);
+      const tl = [{ t: created, x: 'Ticket raised from driver app', by: drivers.find(d => d.id === t[4]).name }, { t: created + 60e3, x: 'Project manager notified (email + dashboard)', by: 'System' }];
+      if (st >= 1) tl.push({ t: created + 40 * 60e3, x: 'Assigned to ' + t[9], by: projects.find(p => p.id === v.project).pm });
+      if (st >= 2) tl.push({ t: created + 120 * 60e3, x: 'Investigation started', by: t[9] });
+      const rt = RESOLUTION_TEMPLATES[t[1]] || RESOLUTION_TEMPLATES._;
+      if (st >= 3) tl.push({ t: created + 20 * 3600e3, x: 'Resolved · ' + rt[2], by: t[9] });
+      if (st >= 4) tl.push({ t: created + 26 * 3600e3, x: 'Reviewed and closed', by: projects.find(p => p.id === v.project).pm });
+      return { id: t[0], raisedBy: 'Driver', cat: t[1], desc: t[2], vehicleId: v.id, driverId: t[4], project: v.project, created, prio: t[7], status: t[8], sup: t[9], loc: v.park, place: SITES[v.site].short + ' test area', photo: null, tripId: null, timeline: tl, resolution: st >= 3 ? { trouble: rt[0], cause: rt[1], part: rt[2], remarks: rt[3], photo: null, date: created + 20 * 3600e3 } : null };
+    });
+
+    { const tr = trips.filter(t => t.vehicleId === 'V001').sort((a, b) => b.startTs - a.startTs)[0]; const tk = tickets.find(t => t.id === 'JAY-TKT-2026-0012'); if (tr && tk) { tk.tripId = tr.id; tk.created = tr.startTs + 3.1 * 3600e3; tk.timeline.forEach((e, i) => e.t = tk.created + i * 40 * 60e3); tr.tickets.push(tk.id); } }
+    /* alerts */
+    const alerts = [
+      { id: 'A1', type: 'Overspeed', vehicleId: v2087.id, text: 'MH 14 TC 2087 at 94 km/h on NH 60 (limit 80)', ts: now - 2 * 60e3, ack: false },
+      { id: 'A2', type: 'Vehicle Idle', vehicleId: vByReg('MH 14 TC 3310').id, text: 'MH 14 TC 3310 idling 24 min at Gate 3', ts: now - 6 * 60e3, ack: false },
+      { id: 'A3', type: 'Geofence Exit', vehicleId: vByReg('MH 12 TR 1193').id, text: 'MH 12 TR 1193 left Medchal testing zone', ts: now - 9 * 60e3, ack: false },
+      { id: 'A4', type: 'GPS Disconnected', vehicleId: vByReg('MH 12 TMP 6612').id, text: 'MH 12 TMP 6612 · no GPS for 2 h', ts: now - 2 * 3600e3, ack: false },
+      { id: 'A5', type: 'Unusual Stoppage', vehicleId: vByReg('MH 12 TC 5512').id, text: 'MH 12 TC 5512 stopped on highway shoulder for 11 min', ts: now - 14 * 60e3, ack: false },
+      { id: 'A6', type: 'Vehicle Offline', vehicleId: vByReg('MH 14 TMP 0459').id, text: 'MH 14 TMP 0459 offline (in maintenance)', ts: now - 3 * 3600e3, ack: true, by: 'Suresh Kumar' },
+      { id: 'A7', type: 'Geofence Entry', vehicleId: v2087.id, text: 'MH 14 TC 2087 entered Endurance Corridor B', ts: now - 38 * 60e3, ack: true, by: 'Suresh Kumar' }
+    ];
+
+    alerts.forEach(a => { a.priority = PRI[a.type] || 'Low'; a.level = 0; a.due = a.ts + ({ Critical: 5, High: 15, Medium: 30, Low: 60 })[a.priority] * 60e3; a.log = [{ t: a.ts, x: 'Raised · sent to Supervisor ' + (SITES[(vehicles.find(v => v.id === a.vehicleId) || vehicles[0]).site].sup) }]; if (a.ack) { a.ackTs = a.ts + 4 * 60e3; } });
+    { const a1 = alerts[0]; a1.level = 1; a1.due = now + 9 * 60e3; a1.log.push({ t: a1.ts + 15 * 60e3 - 13 * 60e3, x: 'No response in time · escalated to Project Manager Priya Deshmukh' }); const a5 = alerts[4]; a5.priority = 'High'; a5.level = 2; a5.due = now + 12 * 60e3; a5.log.push({ t: a5.ts + 2 * 60e3, x: 'Escalated to Project Manager' }, { t: a5.ts + 9 * 60e3, x: 'Escalated to Plant Manager Rajesh Kulkarni' }); }
+    alerts.unshift({ id: 'A8', type: 'Break Overdue', vehicleId: v2087.id, text: 'Imran Shaikh has driven 3 h 40 min without a break', ts: now - 3 * 60e3, ack: false, priority: 'Medium', level: 0, due: now + 27 * 60e3, log: [{ t: now - 3 * 60e3, x: 'Raised · sent to Supervisor Suresh Kumar' }] });
+    tickets.unshift({ id: 'JAY-TKT-2026-0014', raisedBy: 'Plant Manager', cat: 'Vehicle Malfunction', desc: 'Coolant leak spotted under MH 14 TC 3310 in parking bay 4 during plant round.', vehicleId: vByReg('MH 14 TC 3310').id, driverId: 'D0004', project: vByReg('MH 14 TC 3310').project, created: now - 50 * 60e3, prio: 'High', status: 'Open', sup: null, loc: vByReg('MH 14 TC 3310').park, place: 'Chakan · parking bay 4', photo: null, tripId: null, timeline: [{ t: now - 50 * 60e3, x: 'Issue raised from web dashboard', by: 'Rajesh Kulkarni (Plant Manager)' }, { t: now - 49 * 60e3, x: 'Project manager notified (email + dashboard)', by: 'System' }], resolution: null, level: 1 });
+    const notifications = [
+      { id: 'N1', to: 'D0001', ts: t0 + 6.68 * 3600e3, title: 'New vehicle allocated', body: 'TN 09 AB 4521 · EV-2026-014 · target 320 km today', read: false, link: 'home', kind: 'car' },
+      { id: 'N1b', to: 'D0004', ts: t0 + 6.7 * 3600e3, title: 'New vehicle allocated', body: 'Diesel vehicle · target 260 km today', read: false, link: 'home', kind: 'car' },
+      { id: 'N2', to: 'D0001', ts: t0 - 864e5 + 9.5 * 3600e3, title: 'Message from supervisor', body: '"Charge at Chakan DC only. Station 2 is down."', read: true, link: '', kind: 'msg' },
+      { id: 'N3', to: 'D0001', ts: t0 - 2 * 864e5 + 13 * 3600e3, title: 'Testing notice', body: 'Track closed 13:00–13:30 for calibration. Use the NH 60 loop.', read: true, link: '', kind: 'warn' },
+      { id: 'N4', to: 'D0001', ts: t0 - 15 * 864e5, title: 'Ticket resolved', body: 'JAY-TKT-2026-0001 · rear-left tyre replaced', read: true, link: 'tickets', kind: 'ticket' }
+    ];
+
+    const geofences = [
+      { id: 'G1', name: 'Chakan Test Zone A', site: 'CHK', kind: 'Permitted testing zone', limit: 80, entry: true, exit: true, color: '#ea580c', pts: [[18.7690, 73.8460], [18.7695, 73.8720], [18.7515, 73.8725], [18.7510, 73.8455]] },
+      { id: 'G2', name: 'NH 60 Endurance Corridor B', site: 'CHK', kind: 'Site boundary', limit: 90, entry: false, exit: true, color: '#1d4ed8', pts: [[18.7720, 73.8600], [18.8650, 73.8790], [18.8640, 73.8920], [18.7710, 73.8690]] },
+      { id: 'G3', name: 'Talegaon Mileage Loop', site: 'TLG', kind: 'Permitted testing zone', limit: 80, entry: true, exit: true, color: '#ea580c', pts: [[18.7440, 73.6650], [18.7440, 73.6880], [18.7260, 73.6880], [18.7260, 73.6650]] },
+      { id: 'G4', name: 'Ranjangaon Gradient Area', site: 'RNJ', kind: 'Permitted testing zone', limit: 60, entry: true, exit: true, color: '#ea580c', pts: [[18.7650, 74.2300], [18.7650, 74.2550], [18.7470, 74.2550], [18.7470, 74.2300]] }
+    ];
+
+    const users = [
+      ['Arvind Raman', 'admin@jayem.in', 'admin', 'All locations'], ['Meera Subramanian', 'meera.s@jayem.in', 'admin', 'All locations'],
+      ['Priya Deshmukh', 'pm@jayem.in', 'pm', 'EV-2026-014, CV-2026-007, MH-2026-011'], ['Karthikeyan R', 'karthik.r@jayem.in', 'pm', 'TT-2026-003, CV-2026-009, CV-2026-004'], ['Anita Sharma', 'anita.sharma@jayem.in', 'pm', 'CV-2026-012, MH-2026-015'],
+      ['Suresh Kumar', 'supervisor@jayem.in', 'sup', 'Pune · Chakan'], ['Vikram Joshi', 'vikram.j@jayem.in', 'sup', 'Pune · Talegaon'], ['Sunil Bhosale', 'sunil.b@jayem.in', 'sup', 'Pune · Ranjangaon'], ['Rajesh Kulkarni', 'plant@jayem.in', 'plant', 'Pune plant (all areas)'],
+      ['Tata Motors – Viewer', 'viewer@jayem.in', 'mgmt', 'All projects (read-only)'], ['Ashok Leyland – Viewer', 'cv.testing@ashokleyland.com', 'mgmt', 'CV-2026-007 (read-only)']
+    ].map((u, i) => ({ id: 'U' + (i + 1), name: u[0], email: u[1], role: u[2], scope: u[3], active: true, last: i % 3 === 0 ? now - 60e3 : now - (i + 1) * 3.1 * 3600e3 }));
+
+    const spare = ['JGT-PN-0199', 'JGT-PN-0200', 'JGT-HY-0301', 'JGT-CH-0120'].map(id => ({ id, model: id.endsWith('0') ? 'iTriangle TS101' : 'Teltonika FMC130', vehicleId: null }));
+
+    return {
+      v: 3, created: now, projects, vehicles, drivers, trips, tickets, alerts, notifications, assignments, active: {}, geofences, users, spareGps: spare,
+      testTypes: [
+        { id: 'TT1', name: 'Vehicle Testing', desc: 'Full-vehicle durability, endurance, mileage and performance runs.', params: [['Target distance', 'km', '5,000'], ['Max speed on track', 'km/h', '80'], ['Daily run', 'km', '300'], ['Load condition', '', 'Rated payload'], ['Data logging interval', 's', '1']] },
+        { id: 'TT2', name: 'Wheel Testing', desc: 'Tyre wear, wheel alignment and rim durability.', params: [['Target distance', 'km', '25,000'], ['Tyre pressure', 'psi', '35'], ['Tread depth check every', 'km', '1,000'], ['Alignment check every', 'km', '5,000'], ['Min tread depth', 'mm', '1.6']] },
+        { id: 'TT3', name: 'Engine Testing', desc: 'Thermal cycles, power, emissions and oil life.', params: [['Thermal cycles', 'cycles', '400'], ['Coolant temp limit', '°C', '108'], ['RPM band', 'rpm', '1,500–4,000'], ['Oil sample every', 'h', '50'], ['Idle soak per cycle', 'min', '20']] },
+        { id: 'TT4', name: 'Other Testing', desc: 'Component, brake, NVH and special requirements.', params: [['Test cycles', 'cycles', '1,000'], ['Brake temp limit', '°C', '450'], ['Inspection every', 'cycles', '100']] }
+      ],
+      inspections: [
+        { id: 'BI-1041', vehicleId: 'V001', driverId: 'D0001', ts: t0 - 864e5 + 7.1 * 3600e3, soc: 96, soh: 97, temp: 31, voltage: 352, damage: 'None', connector: 'OK', coolant: 'OK', photos: [], remarks: 'Pack looks clean. No warning lights.', result: 'Pass' },
+        { id: 'BI-1038', vehicleId: 'V001', driverId: 'D0001', ts: t0 - 2 * 864e5 + 7.0 * 3600e3, soc: 94, soh: 97, temp: 30, voltage: 350, damage: 'None', connector: 'OK', coolant: 'OK', photos: [], remarks: '', result: 'Pass' },
+        { id: 'BI-1033', vehicleId: vehicles.find(v => v.fuel === 'EV' && v.id !== 'V001').id, driverId: 'D0003', ts: t0 - 864e5 + 8.2 * 3600e3, soc: 88, soh: 91, temp: 41, voltage: 338, damage: 'Minor scratch on cover', connector: 'OK', coolant: 'Low', photos: [], remarks: 'Coolant slightly below MIN mark.', result: 'Needs attention' }
+      ],
+      stations: [
+        ['HP', 'HP Petrol Pump, Chakan Chowk', 18.7612, 73.8598, ['Petrol', 'Diesel']], ['Indian Oil', 'Indian Oil, Talegaon Road', 18.7488, 73.8420, ['Petrol', 'Diesel', 'CNG']], ['MNGL', 'MNGL CNG Station, Chakan MIDC', 18.7701, 73.8521, ['CNG']],
+        ['Bharat Petroleum', 'BPCL, Rajgurunagar Bypass', 18.8402, 73.8790, ['Petrol', 'Diesel']], ['Indian Oil', 'Indian Oil COCO, NH 60 Kurali', 18.7934, 73.8667, ['Petrol', 'Diesel', 'EV charging']], ['HP', 'HP Auto Care, Bhamboli', 18.7810, 73.8150, ['Petrol', 'Diesel', 'CNG']],
+        ['Shell', 'Shell, Moshi', 18.6930, 73.8520, ['Petrol', 'Diesel']], ['Tata Power', 'Tata Power EZ Charge, Chakan', 18.7580, 73.8700, ['EV charging']], ['HP', 'HP, Talegaon Dabhade', 18.7330, 73.6800, ['Petrol', 'Diesel', 'CNG']], ['Indian Oil', 'Indian Oil, Ranjangaon MIDC', 18.7545, 74.2470, ['Petrol', 'Diesel']], ['Nayara', 'Nayara, Shikrapur', 18.6930, 74.1350, ['Petrol', 'Diesel']], ['Statiq', 'Statiq Hub, Chakan MIDC Phase 2', 18.7720, 73.8410, ['EV charging']], ['ChargeZone', 'ChargeZone, Talegaon Chowk', 18.7470, 73.8240, ['EV charging']], ['Jio-bp', 'Jio-bp pulse, Moshi', 18.6990, 73.8460, ['EV charging', 'Petrol', 'Diesel']], ['Tata Power', 'Tata Power EZ Charge, Talegaon MIDC', 18.7290, 73.6930, ['EV charging']], ['Statiq', 'Statiq, Ranjangaon MIDC', 18.7600, 74.2330, ['EV charging']], ['HP', 'HP CNG, Kuruli', 18.7850, 73.8620, ['CNG', 'Petrol']]
+      ].map((x, i) => ({ id: 'FS' + (i + 1), brand: x[0], name: x[1], pos: [x[2], x[3]], fuels: x[4], open24: i % 3 !== 2 })),
+      support: [
+        { id: 'VSUP-2026-0007', subject: 'Report export shows wrong date range', category: 'Bug', priority: 'Medium', desc: 'Daily Trip Report PDF shows the previous week in the header.', by: 'Priya Deshmukh', ts: now - 2 * 864e5, status: 'In Progress', replies: [{ by: 'Vareli Support · Ankit', ts: now - 2 * 864e5 + 3 * 3600e3, text: 'Thanks, we can reproduce this. Fix is planned for the next release this week.' }] },
+        { id: 'VSUP-2026-0006', subject: 'Add 2 new supervisor logins', category: 'Access request', priority: 'Low', desc: 'Need logins for Shift B supervisors at Chakan.', by: 'Arvind Raman', ts: now - 5 * 864e5, status: 'Resolved', replies: [{ by: 'Vareli Support · Neha', ts: now - 5 * 864e5 + 2 * 3600e3, text: 'Both logins are created. Invite emails sent.' }] },
+        { id: 'VSUP-2026-0005', subject: 'GPS device JGT-PN-0131 not reporting', category: 'Hardware / GPS', priority: 'High', desc: 'Device on MH 12 TMP 6612 shows offline for 2 hours.', by: 'Suresh Kumar', ts: now - 3 * 3600e3, status: 'Open', replies: [] },
+        { id: 'VSUP-2026-0004', subject: 'Training session for new PMs', category: 'Training', priority: 'Low', desc: 'Please schedule a 1-hour session on the ticket workflow.', by: 'Arvind Raman', ts: now - 12 * 864e5, status: 'Closed', replies: [{ by: 'Vareli Support · Neha', ts: now - 11 * 864e5, text: 'Session done on Teams. Recording shared.' }] }
+      ],
+      seq: { chg: 100, ticket: 14, support: 7, insp: 1041, proj: 18, trip: tripN, alert: 100, notif: 10, veh: vid, drv: 401, user: 20, geo: 10 },
+      settings: { limitTrack: 80, limitHwy: 90, idleMin: 20, gpsLostMin: 15, stopMin: 10, maxHours: 9, perm: {}, sla: { Critical: 5, High: 15, Medium: 30, Low: 60 }, breakEvery: 210, breakMin: 15 },
+      shifts: [{ id: 'A', name: 'Shift A', from: '06:00', to: '14:00', color: '#c2410c' }, { id: 'B', name: 'Shift B', from: '14:00', to: '22:00', color: '#1d4ed8' }, { id: 'C', name: 'Shift C', from: '22:00', to: '06:00', color: '#6d28d9' }, { id: 'G', name: 'General', from: '09:00', to: '18:00', color: '#15803d' }],
+      roster: (() => { const r = {}; const mon = new Date(t0); mon.setDate(mon.getDate() - ((mon.getDay() + 6) % 7)); for (let k = 0; k < 14; k++) { const day = new Date(mon.getTime() + k * 864e5); const key = day.getFullYear() + '-' + String(day.getMonth() + 1).padStart(2, '0') + '-' + String(day.getDate()).padStart(2, '0'); r[key] = {}; drivers.forEach((d, i) => { const wk = Math.floor(k / 7); const off = (i + 2) % 7 === k % 7; r[key][d.id] = d.avail === 'On leave' && k % 7 < 3 ? 'LEAVE' : off ? 'OFF' : ['A', 'B', 'A', 'C', 'B', 'G'][(i + wk) % 6]; }); r[key].D0001 = 'A'; r[key].D0004 = 'A'; } return r; })(),
+      charging: (() => { const out = []; let n = 1; vehicles.filter(v => v.fuel === 'EV').slice(0, 6).forEach((v, j) => { for (let day = -6; day <= -1; day++) { const st = t0 + day * 864e5 + (11 + (j % 3)) * 3600e3 + j * 7 * 60e3; const b = 18 + ((j * 7 + day * 3 + 60) % 17), a = 88 + ((j + day + 20) % 10), durm = Math.round((a - b) * 0.9 + 6); out.push({ id: 'CHG-' + String(n++).padStart(4, '0'), vehicleId: v.id, driverId: v.id === 'V001' ? 'D0001' : (v.driverId || 'D0003'), ts: st, shift: 'A', type: j % 3 === 2 ? 'AC Slow' : 'DC Fast', socB: b, socA: a, start: st, end: st + durm * 60e3, charger: j % 3 === 2 ? 'Delta 22 kW AC' : 'Exicom 60 kW DC', kw: j % 3 === 2 ? 22 : 60, kwh: Math.round((a - b) * 0.42 * 10) / 10, loc: j % 2 ? 'Tata Power EZ Charge, Chakan' : SITES[v.site].short + ' plant DC station', remark: '', photoB: null, photoA: null }); } }); return out.sort((x, y) => y.ts - x.ts); })(),
+      log: []
+    };
+  }
+
+  let S;
+  function load() { try { const s = localStorage.getItem(KEY); if (s) { const p = JSON.parse(s); if (p && p.v === 3) return p; } } catch (e) { } return seed(); }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { } }
+  S = load(); save();
+  const listeners = [];
+  window.addEventListener('storage', e => { if (e.key === KEY && e.newValue) { try { S = JSON.parse(e.newValue); listeners.forEach(f => f('remote')); } catch (er) { } } });
+  function tx(fn) { try { const s = localStorage.getItem(KEY); if (s) S = JSON.parse(s); } catch (e) { } const r = fn(S); save(); listeners.forEach(f => f('local')); return r; }
+  function reset() { S = seed(); save(); listeners.forEach(f => f('reset')); }
+
+  /* ---- live helpers ---- */
+  const V = id => S.vehicles.find(v => v.id === id);
+  const D = id => S.drivers.find(d => d.id === id);
+  const P = id => S.projects.find(p => p.id === id);
+  function status(v) { if (S.active[v.id]) return 'Running'; return v.status; }
+  function live(v, now) {
+    now = now || Date.now();
+    const a = S.active[v.id];
+    if (a) {
+      const r = route(v.site, a.route || 'track');
+      const paused = (a.pausedMs || 0) + (a.pause ? now - a.pause.from : 0);
+      const el = Math.max(0, (now - a.startTs - paused) / 1000);
+      const sp = a.pause ? 0 : Math.max(0, Math.round(58 + 14 * Math.sin(el / 9) + (Math.floor(el) % 47 > 41 ? 18 : 0)));
+      const dist = el * (60 * SPEEDUP / 3600);
+      const p = at(r, dist);
+      return { pos: p.pos, speed: sp, dist, mins: el / 60, route: r, travelled: dist, trail: trail(r, dist, 6), ign: true, paused: !!a.pause, pausedMin: paused / 60e3 };
+    }
+    if (v.sim && v.status === 'Running') {
+      const r = route(v.site, v.sim.route);
+      const t = now / 1000;
+      let sp = Math.round(v.sim.base + 9 * Math.sin(t / 6 + v.sim.phase));
+      if (v.sim.hot && Math.floor(t + v.sim.phase * 7) % 40 > 33) sp = 84 + Math.floor((t % 5) * 2);
+      const dist = v.sim.phase * r.len / 50 + t * (v.sim.base * SPEEDUP / 3600);
+      const p = at(r, dist);
+      const sinceShift = Math.max(0.3, Math.min(8, (now - (today0().getTime() + 6 * 3600e3)) / 3600e3));
+      return { pos: p.pos, speed: Math.max(0, sp), dist: sinceShift * v.sim.base * 0.9, mins: sinceShift * 60, route: r, trail: trail(r, dist, 5), ign: true };
+    }
+    return { pos: v.park, speed: 0, dist: v.status === 'Idle' || v.status === 'Stopped' ? 96 + (parseInt(v.id.slice(1)) % 7) * 11 : 0, mins: 0, route: null, trail: [], ign: v.status === 'Idle' };
+  }
+
+  /* ---- sample photos (canvas) ---- */
+  function samplePhoto(kind, text) {
+    const c = document.createElement('canvas'); c.width = 480; c.height = 300; const g = c.getContext('2d');
+    const grd = g.createLinearGradient(0, 0, 0, 300); grd.addColorStop(0, '#2a2622'); grd.addColorStop(1, '#0c0a09'); g.fillStyle = grd; g.fillRect(0, 0, 480, 300);
+    if (kind === 'odo') {
+      g.strokeStyle = '#57534e'; g.lineWidth = 6; g.beginPath(); g.arc(240, 330, 230, Math.PI * 1.08, Math.PI * 1.92); g.stroke();
+      g.fillStyle = '#111'; g.fillRect(90, 120, 300, 90); g.strokeStyle = '#fdba8c'; g.lineWidth = 2; g.strokeRect(90, 120, 300, 90);
+      g.fillStyle = '#fdba8c'; g.font = 'bold 54px monospace'; g.textAlign = 'center'; g.fillText(text, 240, 184);
+      g.font = '16px sans-serif'; g.fillStyle = '#a8a29e'; g.fillText('ODO  km', 240, 238);
+    } else if (kind === 'soc') {
+      g.strokeStyle = '#334155'; g.lineWidth = 5; g.beginPath(); g.arc(240, 330, 230, Math.PI * 1.08, Math.PI * 1.92); g.stroke();
+      g.strokeStyle = '#86efac'; g.lineWidth = 4; g.strokeRect(150, 110, 170, 80); g.fillStyle = '#86efac'; g.fillRect(320, 135, 10, 30);
+      const pc = Math.max(0, Math.min(100, parseFloat(text) || 0)); g.fillStyle = pc < 25 ? '#f87171' : '#22c55e'; g.fillRect(156, 116, 158 * pc / 100, 68);
+      g.fillStyle = '#f8fafc'; g.font = 'bold 44px monospace'; g.textAlign = 'center'; g.fillText(Math.round(pc) + '%', 240, 250);
+      g.font = '15px sans-serif'; g.fillStyle = '#a8a29e'; g.fillText('BATTERY SOC', 240, 280);
+    } else {
+      g.fillStyle = '#3f3a34'; g.beginPath(); g.ellipse(240, 170, 170, 95, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#fdba8c'; g.font = 'bold 30px sans-serif'; g.textAlign = 'center'; g.fillText(text || 'ISSUE PHOTO', 240, 160);
+      g.font = '16px sans-serif'; g.fillStyle = '#d6d3d1'; g.fillText('Sample photo · ' + fTime(Date.now()), 240, 196);
+    }
+    return c.toDataURL('image/jpeg', 0.7);
+  }
+  function shrink(file, cb) {
+    const fr = new FileReader();
+    fr.onload = () => { const img = new Image(); img.onload = () => { const w = Math.min(560, img.width), h = Math.round(img.height * w / img.width); const c = document.createElement('canvas'); c.width = w; c.height = h; c.getContext('2d').drawImage(img, 0, 0, w, h); cb(c.toDataURL('image/jpeg', 0.72)); }; img.onerror = () => cb(null); img.src = fr.result; };
+    fr.readAsDataURL(file);
+  }
+
+  /* ---- mutations shared by both apps ---- */
+  function shiftOf(id, day) { const r = (S.roster || {})[day || dayISO(0)]; const c = r ? r[id] : null; return c ? ((S.shifts || []).find(x => x.id === c) || { id: c, name: c === 'OFF' ? 'Weekly off' : 'On leave', from: '', to: '' }) : null; }
+  function notify(s, to, title, body, link, kind) { s.notifications.unshift({ id: 'N' + (++s.seq.notif), to, ts: Date.now(), title, body, read: false, link: link || '', kind: kind || 'msg' }); }
+  function addAlert(s, type, vehicleId, text, pri) { const v = s.vehicles.find(x => x.id === vehicleId) || {}; const priority = pri || PRI[type] || 'Low'; const now = Date.now(); s.alerts.unshift({ id: 'A' + (++s.seq.alert), type, vehicleId, text, ts: now, ack: false, priority, level: 0, due: now + ((s.settings.sla || {})[priority] || 30) * 60e3, log: [{ t: now, x: 'Raised · sent to Supervisor ' + ((SITES[v.site] || {}).sup || '') }] }); const p = s.projects.find(x => x.id === v.project); if (p && (priority === 'Critical' || priority === 'High')) notify(s, 'role:pm', type + ' · ' + (v.reg || ''), text, 'alerts', 'warn'); if (s.alerts.length > 250) s.alerts.length = 250; }
+  function escalate(s) { const now = Date.now(); let n = 0; s.alerts.forEach(a => { if (a.ack || a.resolved || !a.due || a.level >= 2 || now < a.due) return; a.level++; a.due = now + ((s.settings.sla || {})[a.priority] || 30) * 60e3; const v = s.vehicles.find(x => x.id === a.vehicleId) || {}; const p = s.projects.find(x => x.id === v.project) || {}; const who = a.level === 1 ? 'Project Manager ' + (p.pm || '') : 'Plant Manager Rajesh Kulkarni'; a.log.push({ t: now, x: 'No response in time · escalated to ' + who }); notify(s, a.level === 1 ? 'role:pm' : 'role:plant', 'Escalated: ' + a.type, a.text, 'alerts', 'warn'); n++; }); s.tickets.forEach(t => { if (t.status !== 'Open' || (t.level || 0) >= 2) return; const lim = ({ High: 30, Medium: 120, Low: 480 })[t.prio] * 60e3; if (now - t.created > lim * ((t.level || 0) + 1)) { t.level = (t.level || 0) + 1; t.timeline.push({ t: now, x: 'Not assigned in time · escalated to ' + (t.level === 1 ? 'Project Manager' : 'Plant Manager'), by: 'System' }); n++; } }); return n; }
+
+  const ICONS = {
+    dash: 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z', pin: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+    act: 'M3 12h4l3-8 4 16 3-8h4', car: 'M3 13l2-5h14l2 5v4H3zM6 17v2M18 17v2M7 13.5h.01M17 13.5h.01', truck: 'M2 6h11v10H2zM13 10h5l4 4v2h-9zM6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z', ev: 'M13 2L4 14h7l-1 8 9-12h-7z',
+    user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0', folder: 'M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', cal: 'M4 5h16v16H4zM4 10h16M8 3v4M16 3v4M9 15l2 2 4-4',
+    route: 'M6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 15V9a4 4 0 0 1 4-4h6M18 9v6a4 4 0 0 1-4 4H8', ticket: 'M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4zM10 5v14',
+    fuel: 'M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M4 10h10M14 8h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V9l-3-3', geo: 'M12 3l8 4.5v9L12 21l-8-4.5v-9z', chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+    bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8zM10 20a2 2 0 0 0 4 0', users: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M22 21a7 7 0 0 0-4-6.3', shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+    set: 'M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4', back: 'M15 18l-6-6 6-6', chev: 'M9 6l6 6-6 6', down: 'M6 9l6 6 6-6', x: 'M6 6l12 12M18 6L6 18', search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4',
+    menu: 'M4 6h16M4 12h16M4 18h16', phone: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z', home: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
+    camera: 'M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z', upload: 'M12 16V4M7 9l5-5 5 5M4 20h16', check: 'M5 12l5 5 9-10', warn: 'M12 3l9 16H3zM12 10v4M12 17h.01', play: 'M8 5v14l11-7z', pause: 'M7 5h3v14H7zM14 5h3v14h-3z',
+    full: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5', download: 'M12 4v11M7 10l5 5 5-5M5 20h14', plus: 'M12 5v14M5 12h14', msg: 'M4 5h16v11H8l-4 4z', swap: 'M7 7h13l-3-3M17 17H4l3 3', logout: 'M15 4h4v16h-4M10 16l-4-4 4-4M6 12h10', layers: 'M12 3l9 5-9 5-9-5zM3 13l9 5 9-5'
+  };
+  const ic = (n, s = 18, w = 1.7) => '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + (ICONS[n] || '') + '"></path></svg>';
+  const STATUS_C = { Running: ['#15803d', '#ecfdf3'], Idle: ['#b45309', '#fef6e7'], Stopped: ['#57534e', '#f1f0ef'], Offline: ['#78716c', '#f1f0ef'], Maintenance: ['#1d4ed8', '#eef3fe'], 'Under Maintenance': ['#1d4ed8', '#eef3fe'], Completed: ['#7e22ce', '#f6effe'], 'Testing Completed': ['#7e22ce', '#f6effe'] };
+  const TSTATUS_C = { Open: ['#b91c1c', '#fdeeee'], Assigned: ['#9a3412', '#fff1e6'], 'In Progress': ['#1d4ed8', '#eef3fe'], Resolved: ['#15803d', '#ecfdf3'], Closed: ['#57534e', '#f1f0ef'] };
+  const ALERT_C = { Overspeed: ['#b91c1c', '#fdeeee'], 'Vehicle Idle': ['#b45309', '#fef6e7'], 'Geofence Entry': ['#15803d', '#ecfdf3'], 'Geofence Exit': ['#c2410c', '#fff1e6'], 'GPS Disconnected': ['#57534e', '#f1f0ef'], 'Unusual Stoppage': ['#7e22ce', '#f6effe'], 'Vehicle Offline': ['#78716c', '#f1f0ef'], 'New Ticket': ['#1d4ed8', '#eef3fe'], Emergency: ['#b91c1c', '#fdeeee'] };
+  const pill = (text, map) => { const c = (map || STATUS_C)[text] || ['#57534e', '#f1f0ef']; return '<span class="pill" style="color:' + c[0] + ';background:' + c[1] + '">' + esc(text) + '</span>'; };
+
+  const TILES = { std: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', 'Map © Esri, HERE, Garmin, OpenStreetMap contributors'], sat: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 'Imagery © Esri, Maxar, Earthstar Geographics'] };
+  return {
+    TILES,
+    get S() { return S; }, tx, reset, save, escalate, PRI, PRI_C, ESC, on: f => listeners.push(f), V, D, P, status, live, route, at, trail, km, samplePhoto, shrink, notify, addAlert, shiftOf,
+    SITES, CITIES, MODELS, TEST_TYPES, TICKET_CATS, TICKET_STATUS, ROLES, DESC_TEMPLATES, RESOLUTION_TEMPLATES, SPEEDUP,
+    fmt, pad, esc, dayISO, fDate, fDay, fTime, ago, dur, today0, ic, ICONS, pill, STATUS_C, TSTATUS_C, ALERT_C
+  };
+})();
+
+/* ===== Language: English / Hindi / Marathi (shared) ===== */
+const I18N = (() => {
+  const D = {
+    // navigation & sections
+    'Dashboard': ['डैशबोर्ड', 'डॅशबोर्ड'], 'Project Analytics': ['प्रोजेक्ट एनालिटिक्स', 'प्रकल्प विश्लेषण'], 'Vehicle Tracking': ['वाहन ट्रैकिंग', 'वाहन ट्रॅकिंग'], 'Live Trips': ['लाइव ट्रिप', 'लाइव्ह ट्रिप'],
+    'Vehicle Management': ['वाहन प्रबंधन', 'वाहन व्यवस्थापन'], 'Driver Management': ['ड्राइवर प्रबंधन', 'चालक व्यवस्थापन'], 'Project Management': ['प्रोजेक्ट प्रबंधन', 'प्रकल्प व्यवस्थापन'], 'Testing Configuration': ['टेस्टिंग कॉन्फ़िगरेशन', 'चाचणी संरचना'],
+    'Vehicle Allocation': ['वाहन आवंटन', 'वाहन वाटप'], 'Trip Management': ['ट्रिप प्रबंधन', 'ट्रिप व्यवस्थापन'], 'Issues & Tickets': ['समस्याएं और टिकट', 'समस्या व तिकिटे'], 'Fuel & Energy': ['ईंधन और ऊर्जा', 'इंधन व ऊर्जा'],
+    'Geofence & Routes': ['जियोफेंस और रूट', 'जिओफेन्स व मार्ग'], 'Alerts & Escalation': ['अलर्ट और एस्केलेशन', 'अलर्ट व एस्केलेशन'], 'Reports & Analytics': ['रिपोर्ट और एनालिटिक्स', 'अहवाल व विश्लेषण'], 'User Management': ['यूज़र प्रबंधन', 'वापरकर्ता व्यवस्थापन'],
+    'Roles & Permissions': ['भूमिकाएं और अनुमतियां', 'भूमिका व परवानग्या'], 'Settings': ['सेटिंग्स', 'सेटिंग्ज'], 'Vareli Support': ['वरेली सपोर्ट', 'वरेली सपोर्ट'], 'Battery Inspections': ['बैटरी निरीक्षण', 'बॅटरी तपासणी'],
+    'OVERVIEW': ['अवलोकन', 'आढावा'], 'OPERATIONS': ['संचालन', 'कामकाज'], 'MONITORING': ['निगरानी', 'देखरेख'], 'INSIGHTS': ['जानकारी', 'माहिती'], 'ADMINISTRATION': ['प्रशासन', 'प्रशासन'], 'TESTING & FLEET PORTAL': ['टेस्टिंग और फ्लीट पोर्टल', 'चाचणी व फ्लीट पोर्टल'],
+    'Back': ['वापस', 'मागे'], 'Search vehicle, driver, project, ticket': ['वाहन, ड्राइवर, प्रोजेक्ट, टिकट खोजें', 'वाहन, चालक, प्रकल्प, तिकीट शोधा'],
+    // roles
+    'Super Admin': ['सुपर एडमिन', 'सुपर अॅडमिन'], 'Project Manager': ['प्रोजेक्ट मैनेजर', 'प्रकल्प व्यवस्थापक'], 'Supervisor': ['सुपरवाइज़र', 'पर्यवेक्षक'], 'Plant Manager': ['प्लांट मैनेजर', 'प्लांट व्यवस्थापक'], 'Management': ['मैनेजमेंट', 'व्यवस्थापन'],
+    // dashboard
+    'Operations overview': ['संचालन अवलोकन', 'कामकाज आढावा'], 'Total vehicles': ['कुल वाहन', 'एकूण वाहने'], 'Active vehicles': ['सक्रिय वाहन', 'सक्रिय वाहने'], 'Under testing': ['टेस्टिंग में', 'चाचणीत'], 'Total projects': ['कुल प्रोजेक्ट', 'एकूण प्रकल्प'],
+    'Open tickets': ['खुले टिकट', 'उघडी तिकिटे'], 'Live alerts': ['लाइव अलर्ट', 'लाइव्ह अलर्ट'], 'Vehicle status': ['वाहन स्थिति', 'वाहन स्थिती'], 'Project status': ['प्रोजेक्ट स्थिति', 'प्रकल्प स्थिती'], 'Project progress overview': ['प्रोजेक्ट प्रगति अवलोकन', 'प्रकल्प प्रगती आढावा'],
+    'Ticket history': ['टिकट इतिहास', 'तिकीट इतिहास'], 'Live alerts by priority': ['प्राथमिकता अनुसार लाइव अलर्ट', 'प्राधान्यानुसार लाइव्ह अलर्ट'], 'Project ageing': ['प्रोजेक्ट अवधि', 'प्रकल्प कालावधी'], 'Open live map →': ['लाइव मैप खोलें →', 'लाइव्ह नकाशा उघडा →'],
+    'All projects': ['सभी प्रोजेक्ट', 'सर्व प्रकल्प'], 'View all': ['सभी देखें', 'सर्व पहा'], 'History': ['इतिहास', 'इतिहास'], 'Acknowledge': ['स्वीकार करें', 'स्वीकारा'], 'Acknowledged': ['स्वीकृत', 'स्वीकारले'], 'Resolve': ['हल करें', 'सोडवा'], 'Escalate now': ['अभी एस्केलेट करें', 'आता एस्केलेट करा'],
+    // statuses
+    'Running': ['चल रहा है', 'चालू'], 'Idle': ['निष्क्रिय', 'थांबलेले (चालू इंजिन)'], 'Stopped': ['रुका हुआ', 'थांबलेले'], 'Offline': ['ऑफलाइन', 'ऑफलाइन'], 'Maintenance': ['मेंटेनेंस', 'देखभाल'], 'Under maintenance': ['मेंटेनेंस में', 'देखभालीत'], 'Completed': ['पूर्ण', 'पूर्ण'],
+    'Ongoing': ['चालू', 'सुरू'], 'Pending': ['लंबित', 'प्रलंबित'], 'Active': ['सक्रिय', 'सक्रिय'], 'Open': ['खुला', 'उघडे'], 'Assigned': ['सौंपा गया', 'नेमलेले'], 'In Progress': ['प्रगति में', 'प्रगतीत'], 'Resolved': ['हल हुआ', 'सोडवले'], 'Closed': ['बंद', 'बंद'],
+    'Critical': ['गंभीर', 'गंभीर'], 'High': ['उच्च', 'उच्च'], 'Medium': ['मध्यम', 'मध्यम'], 'Low': ['निम्न', 'कमी'], 'On track': ['सही दिशा में', 'वेळेवर'], 'Behind': ['पीछे', 'मागे'], 'Not started': ['शुरू नहीं', 'सुरू नाही'],
+    'Overspeed': ['तेज़ गति', 'अतिवेग'], 'Vehicle Idle': ['वाहन निष्क्रिय', 'वाहन थांबलेले'], 'Geofence Exit': ['जियोफेंस से बाहर', 'जिओफेन्समधून बाहेर'], 'Geofence Entry': ['जियोफेंस में प्रवेश', 'जिओफेन्समध्ये प्रवेश'], 'GPS Disconnected': ['GPS बंद', 'GPS बंद'], 'Emergency': ['आपातकाल', 'आणीबाणी'], 'Break Overdue': ['ब्रेक बाकी', 'ब्रेक बाकी'], 'New Ticket': ['नया टिकट', 'नवीन तिकीट'],
+    // common
+    'Vehicle': ['वाहन', 'वाहन'], 'Vehicles': ['वाहन', 'वाहने'], 'Driver': ['ड्राइवर', 'चालक'], 'Project': ['प्रोजेक्ट', 'प्रकल्प'], 'Status': ['स्थिति', 'स्थिती'], 'Priority': ['प्राथमिकता', 'प्राधान्य'], 'Location': ['स्थान', 'ठिकाण'], 'Date': ['तारीख', 'तारीख'],
+    'Save': ['सेव करें', 'जतन करा'], 'Cancel': ['रद्द करें', 'रद्द करा'], 'Export': ['एक्सपोर्ट', 'निर्यात'], 'Search': ['खोजें', 'शोधा'], 'Close': ['बंद करें', 'बंद करा'], 'Edit': ['बदलें', 'बदला'], 'Delete': ['हटाएं', 'हटवा'], 'Submit': ['जमा करें', 'सबमिट करा'],
+    'Start date': ['शुरू तारीख', 'सुरुवात तारीख'], 'Expected end date': ['अनुमानित समाप्ति', 'अपेक्षित शेवट'], 'Total duration': ['कुल अवधि', 'एकूण कालावधी'], 'Projected end': ['अनुमानित समाप्ति', 'अंदाजित शेवट'], 'Target km': ['लक्ष्य किमी', 'लक्ष्य किमी'], 'Achieved km': ['प्राप्त किमी', 'पूर्ण किमी'], 'Remaining km': ['बाकी किमी', 'उर्वरित किमी'],
+    'Testing coverage': ['टेस्टिंग कवरेज', 'चाचणी व्याप्ती'], 'Testing completed vs pending': ['टेस्टिंग पूर्ण बनाम बाकी', 'चाचणी पूर्ण विरुद्ध बाकी'], 'Raise issue': ['समस्या दर्ज करें', 'समस्या नोंदवा'], 'New project': ['नया प्रोजेक्ट', 'नवीन प्रकल्प'], 'Create project': ['प्रोजेक्ट बनाएं', 'प्रकल्प तयार करा'],
+    'Raise support request': ['सपोर्ट अनुरोध भेजें', 'सपोर्ट विनंती पाठवा'], 'Language': ['भाषा', 'भाषा'], 'Sign in': ['साइन इन', 'साइन इन'], 'Email': ['ईमेल', 'ईमेल'], 'Password': ['पासवर्ड', 'पासवर्ड'], 'Forgot password?': ['पासवर्ड भूल गए?', 'पासवर्ड विसरलात?'],
+    // driver app
+    'Home': ['होम', 'मुख्य'], 'Map': ['मैप', 'नकाशा'], 'Trips': ['ट्रिप', 'ट्रिप'], 'Alerts': ['अलर्ट', 'अलर्ट'], 'Profile': ['प्रोफ़ाइल', 'प्रोफाइल'], 'JAYEM DRIVER': ['जयेम ड्राइवर', 'जयेम चालक'], 'DRIVER APP': ['ड्राइवर ऐप', 'चालक अॅप'],
+    'Start your shift': ['अपनी शिफ्ट शुरू करें', 'तुमची शिफ्ट सुरू करा'], 'LOG IN': ['लॉग इन', 'लॉग इन'], 'Employee ID or mobile number': ['कर्मचारी ID या मोबाइल नंबर', 'कर्मचारी ID किंवा मोबाईल नंबर'], 'Send OTP': ['OTP भेजें', 'OTP पाठवा'],
+    "TODAY'S VEHICLE": ['आज का वाहन', 'आजचे वाहन'], 'START TESTING': ['टेस्टिंग शुरू करें', 'चाचणी सुरू करा'], 'START TRIP': ['ट्रिप शुरू करें', 'ट्रिप सुरू करा'], 'END TRIP': ['ट्रिप समाप्त करें', 'ट्रिप संपवा'], 'Report issue': ['समस्या बताएं', 'समस्या कळवा'], 'Emergency / SOS': ['आपातकाल / SOS', 'आणीबाणी / SOS'],
+    'Battery inspection': ['बैटरी निरीक्षण', 'बॅटरी तपासणी'], 'Fuel stations': ['पेट्रोल पंप', 'पेट्रोल पंप'], 'Quick actions': ['त्वरित कार्य', 'झटपट कृती'], 'Your supervisor': ['आपके सुपरवाइज़र', 'तुमचे पर्यवेक्षक'], 'Project': ['प्रोजेक्ट', 'प्रकल्प'],
+    'Current speed': ['वर्तमान गति', 'सध्याचा वेग'], 'Distance': ['दूरी', 'अंतर'], 'Duration': ['अवधि', 'कालावधी'], 'Start time': ['शुरू समय', 'सुरुवात वेळ'], 'Odometer': ['ओडोमीटर', 'ओडोमीटर'], 'Battery': ['बैटरी', 'बॅटरी'], 'Breaks': ['ब्रेक', 'ब्रेक'], 'Idle time': ['निष्क्रिय समय', 'थांबलेला वेळ'],
+    'Testing target': ['टेस्टिंग लक्ष्य', 'चाचणी लक्ष्य'], 'Next break': ['अगला ब्रेक', 'पुढील ब्रेक'], 'Time for a break': ['ब्रेक का समय', 'ब्रेकची वेळ'], 'Start break': ['ब्रेक शुरू करें', 'ब्रेक सुरू करा'], 'End break': ['ब्रेक समाप्त करें', 'ब्रेक संपवा'], 'Remind me in 15 min': ['15 मिनट बाद याद दिलाएं', '15 मिनिटांनी आठवण करा'],
+    'Use sample photo': ['सैंपल फोटो लें', 'नमुना फोटो वापरा'], 'Take / upload photo': ['फोटो लें / अपलोड करें', 'फोटो घ्या / अपलोड करा'], 'Photo added': ['फोटो जोड़ा गया', 'फोटो जोडला'], 'Retake': ['फिर से लें', 'पुन्हा घ्या'],
+    'Nearby': ['पास में', 'जवळ'], 'On your route': ['आपके रास्ते पर', 'तुमच्या मार्गावर'], 'Navigate': ['नेविगेट करें', 'मार्ग दाखवा'], 'Open 24 h': ['24 घंटे खुला', '24 तास सुरू'], 'All brands': ['सभी ब्रांड', 'सर्व ब्रँड'],
+    'My tickets': ['मेरे टिकट', 'माझी तिकिटे'], 'My trips': ['मेरी ट्रिप', 'माझ्या ट्रिप'], 'Notifications': ['सूचनाएं', 'सूचना'], 'Vehicle alerts': ['वाहन अलर्ट', 'वाहन अलर्ट'], 'Log out': ['लॉग आउट', 'लॉग आउट'],
+    'My vehicle': ['मेरा वाहन', 'माझे वाहन'], 'Project vehicles': ['प्रोजेक्ट वाहन', 'प्रकल्प वाहने'], 'All areas': ['सभी क्षेत्र', 'सर्व भाग'], 'Live': ['लाइव', 'लाइव्ह'], 'Snapshot': ['स्नैपशॉट', 'स्नॅपशॉट'],
+    'Trip start': ['ट्रिप शुरू', 'ट्रिप सुरुवात'], 'Trip end': ['ट्रिप समाप्ति', 'ट्रिप शेवट'], 'EP number': ['EP नंबर', 'EP क्रमांक'], 'Covered': ['पूरा', 'पूर्ण'], 'Target': ['लक्ष्य', 'लक्ष्य'], 'Save inspection': ['निरीक्षण सेव करें', 'तपासणी जतन करा'],
+    'Pass': ['पास', 'उत्तीर्ण'], 'Needs attention': ['ध्यान दें', 'लक्ष द्या'], 'Language preference': ['भाषा चयन', 'भाषा निवड'], 'Break reminder': ['ब्रेक रिमाइंडर', 'ब्रेक आठवण'],
+    'Good morning': ['सुप्रभात', 'सुप्रभात'], 'Good afternoon': ['नमस्कार', 'नमस्कार'], 'Good evening': ['शुभ संध्या', 'शुभ संध्याकाळ'],
+    'Charging stations': ['चार्जिंग स्टेशन', 'चार्जिंग स्टेशन'], 'Chargers': ['चार्जर', 'चार्जर'], 'Fuel pumps': ['पेट्रोल पंप', 'पेट्रोल पंप'], 'Stations': ['स्टेशन', 'स्टेशन'],
+    'Map': ['मैप', 'नकाशा'],
+    'Stop / break': ['रोकें / ब्रेक', 'थांबा / ब्रेक'],
+    'RESUME TRIP': ['ट्रिप फिर शुरू करें', 'ट्रिप पुन्हा सुरू करा'],
+    'Stop trip': ['ट्रिप रोकें', 'ट्रिप थांबवा'],
+    'STOP TRIP': ['ट्रिप रोकें', 'ट्रिप थांबवा'],
+    'Driver break': ['ड्राइवर ब्रेक', 'चालक ब्रेक'],
+    'Lunch / meal': ['लंच / भोजन', 'जेवण'],
+    'Charging': ['चार्जिंग', 'चार्जिंग'],
+    'Refuelling': ['ईंधन भरना', 'इंधन भरणे'],
+    'Vehicle issue': ['वाहन समस्या', 'वाहन समस्या'],
+    'Breakdown': ['ब्रेकडाउन', 'बिघाड'],
+    'Shift change': ['शिफ्ट बदल', 'शिफ्ट बदल'],
+    'Road block / traffic': ['रोड ब्लॉक / ट्रैफिक', 'रस्ता बंद / वाहतूक'],
+    'Supervisor instruction': ['सुपरवाइज़र निर्देश', 'सुपरवायझर सूचना'],
+    'Other': ['अन्य', 'इतर'],
+    'Charging log': ['चार्जिंग लॉग', 'चार्जिंग नोंद'],
+    'Battery inspection': ['बैटरी निरीक्षण', 'बॅटरी तपासणी'],
+    'Fuel stations': ['ईंधन स्टेशन', 'इंधन स्टेशन'],
+    'Report issue': ['समस्या बताएं', 'समस्या नोंदवा'],
+    'My tickets': ['मेरे टिकट', 'माझी तिकिटे'],
+    'SOS': ['SOS', 'SOS'],
+    'Nearby': ['पास में', 'जवळपास'],
+    'On your route': ['आपके रूट पर', 'तुमच्या मार्गावर'],
+    'Navigate': ['नेविगेट', 'मार्ग दाखवा'],
+    'Vehicle alerts': ['वाहन अलर्ट', 'वाहन अलर्ट'],
+    'Vehicle map': ['वाहन मैप', 'वाहन नकाशा'],
+    'All Pune': ['पूरा पुणे', 'संपूर्ण पुणे'],
+    'My project': ['मेरा प्रोजेक्ट', 'माझा प्रकल्प'],
+    'Shift Allocation': ['शिफ्ट आवंटन', 'शिफ्ट वाटप'],
+    'Shift allocation': ['शिफ्ट आवंटन', 'शिफ्ट वाटप'],
+    'END TRIP': ['ट्रिप समाप्त करें', 'ट्रिप संपवा'],
+    'Idle time': ['निष्क्रिय समय', 'निष्क्रिय वेळ'],
+    'Breaks': ['ब्रेक', 'ब्रेक'],
+    'Speed': ['गति', 'वेग'],
+    'Odometer': ['ओडोमीटर', 'ओडोमीटर'],
+    'Distance': ['दूरी', 'अंतर'],
+    'Battery': ['बैटरी', 'बॅटरी'],
+    'Trip in progress': ['ट्रिप जारी है', 'ट्रिप चालू आहे'],
+    'Save charging log': ['चार्जिंग लॉग सेव करें', 'चार्जिंग नोंद जतन करा'],
+    'Fuel entry': ['ईंधन एंट्री', 'इंधन नोंद'],
+    'Project vehicles': ['प्रोजेक्ट वाहन', 'प्रकल्प वाहने'],
+    'Home': ['होम', 'होम'],
+    'Trips': ['ट्रिप', 'ट्रिप'],
+    'Alerts': ['अलर्ट', 'अलर्ट'],
+    'Profile': ['प्रोफ़ाइल', 'प्रोफाइल'],
+    'START TESTING': ['टेस्टिंग शुरू करें', 'चाचणी सुरू करा'],
+    'START TRIP': ['ट्रिप शुरू करें', 'ट्रिप सुरू करा'],
+    'SUBMIT & END TRIP': ['जमा करें और ट्रिप समाप्त करें', 'सबमिट करा व ट्रिप संपवा'],
+    'Target vs covered': ['लक्ष्य बनाम पूरा', 'लक्ष्य वि. पूर्ण'],
+    'Your shift': ['आपकी शिफ्ट', 'तुमची शिफ्ट'],
+    'Test start': ['टेस्ट शुरू', 'चाचणी सुरुवात'],
+    'Test end': ['टेस्ट समाप्ति', 'चाचणी शेवट'],
+    'Trade plate': ['ट्रेड प्लेट', 'ट्रेड प्लेट'],
+    'Regen mode': ['रीजेन मोड', 'रीजेन मोड'],
+    'AC mode': ['AC मोड', 'AC मोड'],
+    'Load condition': ['लोड स्थिति', 'लोड स्थिती'],
+    'Drive mode': ['ड्राइव मोड', 'ड्राइव्ह मोड'],
+    'Remark': ['टिप्पणी', 'शेरा'],
+    'Messages': ['संदेश', 'संदेश'],
+    'Log out': ['लॉग आउट', 'लॉग आउट'],
+    'Take break now': ['अभी ब्रेक लें', 'आता ब्रेक घ्या'],
+    'Time for a break': ['ब्रेक का समय', 'ब्रेकची वेळ']
+  };
+  const P = [
+    [/^Good (morning|afternoon|evening), (.+)$/, (m, i) => (i === 0 ? { morning: 'सुप्रभात', afternoon: 'नमस्कार', evening: 'शुभ संध्या' } : { morning: 'सुप्रभात', afternoon: 'नमस्कार', evening: 'शुभ संध्याकाळ' })[m[1]] + ', ' + m[2]],
+    [/^([\d,]+) vehicles$/, (m, i) => m[1] + (i === 0 ? ' वाहन' : ' वाहने')], [/^([\d,.]+) km$/, (m) => m[1] + ' किमी'], [/^([\d,.]+) km\/h$/, (m) => m[1] + ' किमी/तास']
+  ];
+  const LANGS = [['en', 'English', 'EN'], ['hi', 'हिन्दी', 'हि'], ['mr', 'मराठी', 'म']];
+  const KEY = 'jayem-lang';
+  let lang = 'en'; try { lang = localStorage.getItem(KEY) || 'en'; } catch (e) { }
+  function look(t, i) { if (D[t]) return D[t][i]; for (const [re, f] of P) { const m = t.match(re); if (m) return f(m, i); } return null; }
+  function apply(root) {
+    if (lang === 'en' || !root) return; const i = lang === 'hi' ? 0 : 1;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); const ns = []; while (w.nextNode()) ns.push(w.currentNode);
+    ns.forEach(n => { const p = n.parentNode; if (!p || /^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName)) return; const raw = n.nodeValue, t = raw.trim(); if (!t || t.length > 80) return; const tr = look(t, i); if (tr != null) n.nodeValue = raw.replace(t, tr); });
+    root.querySelectorAll('[placeholder]').forEach(e => { const tr = look(e.getAttribute('placeholder'), i); if (tr) e.setAttribute('placeholder', tr); });
+    root.querySelectorAll('option').forEach(o => { const tr = look(o.textContent.trim(), i); if (tr) o.textContent = tr; });
+  }
+  function set(l) { lang = l; try { localStorage.setItem(KEY, l); } catch (e) { } document.documentElement.lang = l === 'en' ? 'en' : l; }
+  return { apply, set, get lang() { return lang; }, LANGS, t: s => { if (lang === 'en') return s; const r = look(s, lang === 'hi' ? 0 : 1); return r == null ? s : r; } };
+})();
+
+/* ===== Driver mobile app ===== */
+const { fmt, esc, ic, pill, fDate, fDay, fTime, ago, dur, dayISO } = J;
+const DS = { me: null, route: 'home', params: [], nav: 0, ui: {}, map: null, mk: null, tr: null };
+const DKEY = 'jayem-driver-session';
+try { DS.me = JSON.parse(localStorage.getItem(DKEY) || 'null'); } catch (e) { }
+const U = {};
+const PARENT = { assignment: 'home', pretrip: 'home', trip: 'home', fuel: 'home', issue: 'home', end: 'trip', stop: 'trip', batt: 'home', stations: 'home', tripd: 'trips', tickets: 'profile', ticket: 'tickets' };
+
+function toast(msg, kind) { let w = document.getElementById('toasts'); if (!w) { w = document.createElement('div'); w.id = 'toasts'; w.className = 'toast-wrap'; w.setAttribute('role', 'status'); phoneEl().appendChild(w); } while (w.children.length >= 2) w.firstChild.remove(); const t = document.createElement('div'); t.className = 'toast ' + (kind || ''); t.innerHTML = '<span style="flex:1">' + msg + '</span>'; w.appendChild(t); setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 3800); }
+function modal(html) { closeModal(); const m = document.createElement('div'); m.className = 'modal-bg'; m.id = 'modal'; m.innerHTML = '<div class="modal" role="dialog" aria-modal="true" style="width:400px">' + html + '</div>'; m.addEventListener('click', e => { if (e.target === m) closeModal(); }); phoneEl().appendChild(m); }
+function closeModal() { const m = document.getElementById('modal'); if (m) m.remove(); }
+U.closeModal = closeModal;
+const phoneEl = () => document.getElementById('phone') || document.body;
+const val = id => { const e = document.getElementById(id); return e ? e.value : ''; };
+
+/* data helpers */
+const me = () => DS.me ? J.D(DS.me.id) : null;
+const asg = () => { const d = me(); const a = d && J.S.assignments[d.id]; return a && a.date === dayISO(0) ? a : null; };
+const myActive = () => { const d = me(); if (!d) return null; const id = Object.keys(J.S.active).find(k => J.S.active[k].driverId === d.id); return id ? Object.assign({ vehicleId: id }, J.S.active[id]) : null; };
+const myVeh = () => { const a = myActive(); if (a) return J.V(a.vehicleId); const s = asg(); return s ? J.V(s.vehicleId) : null; };
+const unread = () => { const d = me(); return d ? J.S.notifications.filter(n => n.to === d.id && !n.read).length : 0; };
+
+/* router */
+function parse() { const h = (location.hash || '#/home').replace(/^#\/?/, ''); const parts = h.split('/').filter(Boolean); return { route: parts[0] || 'home', params: parts.slice(1) }; }
+U.go = r => { location.hash = '#/' + r; };
+U.back = () => { if (DS.nav > 0) history.back(); else U.go(PARENT[DS.route] || 'home'); };
+window.addEventListener('hashchange', () => { DS.nav++; render(); const sc = document.getElementById('app'); if (sc) sc.scrollTop = 0; });
+function destroyMap() { if (DS.map) { try { DS.map.remove(); } catch (e) { } } DS.map = null; DS.mk = null; DS.tr = null; DS.tick = null; }
+function render() {
+  destroyMap(); closeModal();
+  const p = parse(); DS.route = p.route; DS.params = p.params;
+  const root = document.getElementById('app');
+  if (!DS.me || !me() || DS.route === 'login') { root.innerHTML = '<div class="app">' + scLogin() + '</div>'; I18N.apply(root); caseBar(); return; }
+  const fn = SC[DS.route] || SC.home; const out = fn();
+  root.innerHTML = '<div class="app">' + (out.nav ? out.html.replace('<div class="foot"', '<div class="foot wn"') : out.html) + (out.nav ? bnav(out.nav) : '') + '</div>';
+  I18N.apply(root);
+  if (out.mount) out.mount();
+  caseBar();
+  DS.tick = out.tick || null;
+}
+setInterval(() => { if (DS.tick) try { DS.tick(); } catch (e) { console.error(e); } }, 1000);
+const hdr = (title, sub, right) => '<header class="hdr"><button class="bk" onclick="U.back()" aria-label="Back">' + ic('back', 22, 2) + '</button><div style="flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25"><h1>' + title + '</h1>' + (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div>' + (right || '') + '</header>';
+const topHdr = (title, right, sub) => { const d = me(), n = unread(); return '<header class="hdr appbar"><a href="#/home" class="abrand" aria-label="Jayem home"><span class="alg">J</span></a><div style="flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2"><span class="xs muted" style="letter-spacing:.3px">' + (sub || 'JAYEM DRIVER') + '</span><h1 style="font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + title + '</h1></div>' + (right || '') + '<button class="iconbtn lng" onclick="U.cycleLang()" aria-label="Change language">' + I18N.LANGS.find(l => l[0] === I18N.lang)[2] + '</button><a href="#/alerts" class="iconbtn" style="position:relative" aria-label="Notifications, ' + n + ' unread">' + ic('bell', 18) + (n ? '<span class="nbd">' + n + '</span>' : '') + '</a>' + (d ? '<a href="#/profile" class="aav" aria-label="Profile">' + esc(d.name.split(' ').map(w => w[0]).slice(0, 2).join('')) + '</a>' : '') + '</header>'; };
+function bnav(on) { const n = unread(), tk = J.S.tickets.filter(t => me() && t.driverId === me().id && t.status !== 'Closed').length; return '<nav class="bnav" aria-label="Driver app">' + [['home', 'Home', 'home'], ['fleet', 'Map', 'pin'], ['trips', 'Trips', 'route'], ['alerts', 'Alerts', 'bell'], ['profile', 'Profile', 'user']].map(t => { const b = t[0] === 'alerts' ? n : 0; return '<a href="#/' + t[0] + '" class="' + (on === t[0] ? 'on' : '') + '"' + (on === t[0] ? ' aria-current="page"' : '') + '><span class="bi">' + ic(t[2], 21, on === t[0] ? 2 : 1.7) + (b ? '<span class="bd">' + b + '</span>' : '') + '</span><span>' + t[1] + '</span></a>'; }).join('') + '</nav>'; }
+function photoField(key, label, kind, text) {
+  const ph = DS.ui[key];
+  return '<div class="box"><span class="b" style="font-size:13.5px">' + label + ' <span style="color:var(--red)">*</span></span>' + (ph ? '<div class="row" style="flex-wrap:nowrap"><img src="' + ph + '" alt="Photo added" style="width:130px;height:82px;object-fit:cover;border-radius:8px;background:#1c1917"><div style="display:flex;flex-direction:column;gap:6px"><span class="small b" style="color:var(--green)">✓ Photo added</span><button class="btn sm" onclick="U.clearPhoto(\'' + key + '\')">Retake</button></div></div>' :
+    '<div class="photobtns"><label class="photobtn">' + ic('camera', 22) + 'Take / upload photo<input type="file" accept="image/*" capture="environment" onchange="U.photo(this,\'' + key + '\')"></label><button type="button" class="photobtn" onclick="U.samplePhoto(\'' + key + '\',\'' + kind + '\',\'' + esc(text) + '\')">' + ic('check', 22) + 'Use sample photo</button></div>') + '</div>';
+}
+U.photo = (inp, key) => { const f = inp.files && inp.files[0]; if (!f) return; J.shrink(f, d => { if (!d) { toast('Could not read that image', 'bad'); return; } DS.ui[key] = d; render(); }); };
+U.samplePhoto = (key, kind, text) => { DS.ui[key] = J.samplePhoto(kind, text); render(); };
+U.clearPhoto = key => { DS.ui[key] = null; render(); };
+function mkMap(el, center, zoom) {
+  if (typeof L === 'undefined') { el.innerHTML = '<div class="mapfail">Map needs internet to load.<br>Trip tracking still works.</div>'; return null; }
+  const m = L.map(el, { zoomControl: false, attributionControl: true, zoomAnimation: false, markerZoomAnimation: false }).setView(center, zoom);
+  L.tileLayer(J.TILES.std[0], { maxZoom: 18, maxNativeZoom: 15, attribution: J.TILES.std[1] }).addTo(m);
+  setTimeout(() => { try { if (m._mapPane && m.getContainer().isConnected) m.invalidateSize(); } catch (e) { } }, 120);
+  return m;
+}
+
+/* ---------- login ---------- */
+function scLogin() {
+  const S = J.S; if (!DS.ui.login) DS.ui.login = { mode: 'pw', id: 'JAY-DR-0142', pw: 'driver@123', otpSent: false, otp: '' };
+  const F = DS.ui.login;
+  const withAsg = Object.keys(S.assignments).filter(id => S.assignments[id].date === dayISO(0)).map(id => J.D(id)).filter(Boolean);
+  return '<div class="hero"><div class="row" style="gap:12px"><span style="width:44px;height:44px;border-radius:12px;background:var(--or);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:600;font-size:22px">J</span><span><b style="display:block;font-family:var(--head);font-size:18px">Jayem Automotives</b><span class="xs" style="color:var(--navmute);letter-spacing:.4px">DRIVER APP</span></span></div><h1 style="font-weight:400;font-size:30px;letter-spacing:-.8px;color:#fff">Start your shift</h1></div>' +
+    '<div class="scr" role="form" aria-label="Log in" style="margin-top:-16px;background:var(--bg);border-radius:20px 20px 0 0;gap:14px" onkeydown="if(event.key===\'Enter\'){event.preventDefault();U.login()}">' +
+    '<div class="box" style="gap:8px"><span class="lbl">DEMO · PICK A CASE</span><div class="grid" style="grid-template-columns:1fr 1fr;gap:8px">' + [['JAY-DR-0142', 'Battery (EV)', 'ev', '#1d4ed8', '#eef3fe'], ['JAY-DR-0145', 'Fuel (diesel)', 'fuel', '#9a3412', '#fff1e6']].map(x => { const dd = findDrv(x[0]); const as = dd && S.assignments[dd.id]; const vv = as && J.V(as.vehicleId); return '<button type="button" class="democase ' + (F.id === x[0] ? 'on' : '') + '" onclick="U.pickDrv(\'' + x[0] + '\')"><span class="row" style="gap:6px;color:' + x[3] + '"><span class="dci" style="background:' + x[4] + '">' + ic(x[2], 16) + '</span><b>' + x[1] + '</b></span><span class="small b">' + esc(dd ? dd.name : '') + '</span><span class="xs muted">' + esc(vv ? vv.reg + ' · ' + vv.model : '') + '</span></button>'; }).join('') + '</div><span class="xs muted">Password for both: driver@123</span></div>' + 
+    '<div class="row" style="gap:6px;justify-content:center">' + I18N.LANGS.map(l => '<button type="button" class="chip ' + (I18N.lang === l[0] ? 'on' : '') + '" onclick="U.lang(\'' + l[0] + '\')">' + l[1] + '</button>').join('') + '</div><div class="seg" style="display:grid;grid-template-columns:1fr 1fr" role="tablist">' + [['pw', 'Password'], ['otp', 'OTP']].map(x => '<button type="button" role="tab" aria-selected="' + (F.mode === x[0]) + '" class="' + (F.mode === x[0] ? 'on' : '') + '" style="padding:9px" onclick="U.lmode(\'' + x[0] + '\')">' + x[1] + '</button>').join('') + '</div>' +
+    '<label class="fld">Employee ID or mobile number<input class="in" id="l_id" value="' + esc(F.id) + '" oninput="DS.ui.login.id=this.value" autocomplete="username"></label>' +
+    (F.mode === 'pw' ? '<label class="fld">Password<input class="in" type="password" id="l_pw" value="' + esc(F.pw) + '" oninput="DS.ui.login.pw=this.value" autocomplete="current-password"></label>' :
+      (F.otpSent ? '<label class="fld">Enter the 4-digit OTP<input class="in" id="l_otp" inputmode="numeric" maxlength="4" value="' + esc(F.otp) + '" oninput="DS.ui.login.otp=this.value" style="font-size:26px;letter-spacing:14px;text-align:center"></label><span class="xs muted">OTP auto-filled for the demo (2026). <a href="javascript:void(0)" onclick="U.sendOtp()">Resend</a></span>' : '<button type="button" class="big ghost" onclick="U.sendOtp()">Send OTP</button>')) +
+    '<div class="row"><span class="sp"></span><a href="javascript:void(0)" class="small b" onclick="U.forgot()">Forgot password?</a></div><div id="l_err" class="err" role="alert"></div>' +
+    '<button class="big" id="loginbtn" type="button" onclick="U.login()">LOG IN</button>' +
+'</div>';
+}
+U.lmode = m => { DS.ui.login.mode = m; render(); };
+U.sendOtp = () => { const id = val('l_id'); if (!findDrv(id)) { document.getElementById('l_err').textContent = 'Enter a registered employee ID or mobile number.'; return; } DS.ui.login.id = id; DS.ui.login.otpSent = true; DS.ui.login.otp = '2026'; render(); toast('OTP sent to ' + findDrv(id).phone.replace(/\d(?=\d{3})/g, '•')); };
+U.pickDrv = emp => { DS.ui.login = { mode: 'pw', id: emp, pw: 'driver@123', otpSent: false, otp: '' }; render(); };
+U.forgot = () => modal('<h2>Forgot password?</h2><p class="small" style="margin:0">Ask your supervisor to reset it, or log in with OTP instead.</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="U.closeModal()">Close</button><button class="btn pri" onclick="U.closeModal();U.lmode(\'otp\')">Use OTP</button></div>');
+function findDrv(v) { v = String(v || '').trim().toLowerCase().replace(/\s/g, ''); return J.S.drivers.find(d => d.emp.toLowerCase() === v || d.phone.replace(/\s/g, '').replace('+91', '') === v.replace('+91', '')); }
+U.login = () => {
+  const F = DS.ui.login, err = document.getElementById('l_err'); F.id = val('l_id');
+  const d = findDrv(F.id); if (!d) { err.textContent = 'We could not find that employee ID or mobile number.'; return; }
+  if (F.mode === 'pw' && val('l_pw') !== 'driver@123') { err.textContent = 'Wrong password. Try again or use OTP.'; return; }
+  if (F.mode === 'otp' && (!F.otpSent || val('l_otp') !== '2026')) { err.textContent = F.otpSent ? 'OTP does not match.' : 'Tap Send OTP first.'; return; }
+  DS.me = { id: d.id }; lastN = J.S.notifications.filter(x => x.to === d.id).length; try { localStorage.setItem(DKEY, JSON.stringify(DS.me)); } catch (e) { }
+  DS.nav = -1; location.hash = '#/home'; render(); toast('Welcome, ' + esc(d.name.split(' ')[0]), 'ok');
+};
+
+function homeMap(v, pts, pos) {
+  const el = document.getElementById('hmap'); if (!el) return; const m = mkMap(el, pos, 13); DS.map = m; if (!m) return;
+  m.dragging.disable(); m.scrollWheelZoom.disable(); m.doubleClickZoom.disable(); m.touchZoom.disable();
+  if (pts && pts.length) { const pl = L.polyline(pts, { color: '#c2410c', weight: 4, opacity: .85, dashArray: '6 6' }).addTo(m); m.fitBounds(pl.getBounds().extend(pos), { padding: [18, 18], maxZoom: 14 }); DS.tr = L.polyline([], { color: '#c2410c', weight: 5 }).addTo(m); }
+  DS.mk = L.marker(pos, { icon: L.divIcon({ className: '', iconSize: [0, 0], html: '<div class="vm"><span class="c" style="background:#0f1c36">' + ic(v.kind === 'ev' ? 'ev' : v.kind === 'truck' ? 'truck' : 'car', 15, 2) + '</span></div>' }) }).addTo(m);
+}
+/* ---------- screens ---------- */
+const SC = {};
+/* ---------- shared helpers for the trip log ---------- */
+const STOP_REASONS = ['Driver break', 'Lunch / meal', 'Charging', 'Refuelling', 'Vehicle issue', 'Breakdown', 'Shift change', 'Road block / traffic', 'Supervisor instruction', 'Other'];
+const LOGOPT = { regen: ['Off', 'Low', 'Medium', 'High'], ac: ['Off', 'On · Eco', 'On · Full'], load: ['Unladen', 'Half load', 'Full load (GVW)'], mode: ['Eco', 'Normal', 'Sport'], anc: ['OK', 'Not OK'] };
+const CHARGERS = ['Exicom 60 kW DC', 'Tata Power 50 kW DC', 'Delta 30 kW DC', 'Delta 22 kW AC', 'Bharat AC001 3.3 kW'];
+const num = x => parseFloat(String(x == null ? '' : x).replace(/,/g, '')) || 0;
+const isEV = v => v && v.fuel === 'EV';
+const myShift = () => { const d = me(); const s = d && J.shiftOf(d.id); return s || { id: 'A', name: 'Shift A', from: '06:00', to: '14:00' }; };
+const shiftTxt = () => { const s = myShift(); return s.name + (s.from ? ' · ' + s.from + '–' + s.to : ''); };
+const curSoc = (act, L2) => Math.min(100, Math.max(5, Math.round((act.startSoc || 96) + (act.socAdd || 0) - L2.dist / 3.3)));
+const driveMin = act => { if (!act || act.pause) return 0; const st = act.stops || []; const last = st.length ? st[st.length - 1].to : act.startTs; return Math.max(0, Math.round((Date.now() - last) / 1000 * J.SPEEDUP / 60 + (act.driveOffset || 0))); };
+const breakCount = act => (act.stops || []).length + (act.pause ? 1 : 0);
+const hm = m => Math.floor(m / 60) + ':' + J.pad(Math.floor(m % 60)) + ' h';
+const idleMin = L2 => Math.round(L2.mins * J.SPEEDUP * 0.06);
+const chipSel = (obj, field, opts) => '<div class="row" style="gap:6px">' + opts.map(o => '<button type="button" class="chip ' + (DS.ui[obj][field] === o ? 'on' : '') + '" aria-pressed="' + (DS.ui[obj][field] === o) + '" onclick="DS.ui.' + obj + '.' + field + '=\'' + o + '\';render()">' + o + '</button>').join('') + '</div>';
+const toHM = ts => { const d = new Date(ts); return J.pad(d.getHours()) + ':' + J.pad(d.getMinutes()); };
+const hmToMin = s => { const m = String(s || '').match(/(\d+):(\d+)/); return m ? +m[1] * 60 + +m[2] : 0; };
+const kmBetween = (a, b) => { const R = 6371, dLa = (b[0] - a[0]) * Math.PI / 180, dLo = (b[1] - a[1]) * Math.PI / 180; const x = Math.sin(dLa / 2) ** 2 + Math.cos(a[0] * Math.PI / 180) * Math.cos(b[0] * Math.PI / 180) * Math.sin(dLo / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+const vIcon = (v, bg) => L.divIcon({ className: '', iconSize: [0, 0], html: '<div class="vm"><span class="c" style="background:' + bg + '">' + ic(v.kind === 'ev' ? 'ev' : v.kind === 'truck' ? 'truck' : 'car', 15, 2) + '</span></div>' });
+
+function quick(v, act) {
+  const items = [];
+  if (isEV(v)) { items.push(['#/batt', 'ev', 'Battery inspection', '']); items.push(['#/fuel', 'fuel', 'Charging log', '']); }
+  else items.push(['#/fuel', 'fuel', 'Fuel entry', '']);
+  items.push(['#/stations', 'pin', isEV(v) ? 'Charging stations' : 'Fuel stations', '']);
+  items.push(['#/issue', 'warn', 'Report issue', '']);
+  items.push(['#/tickets', 'ticket', 'My tickets', '']);
+  return '<section class="qa" aria-label="Quick actions">' + items.map(x => '<a href="' + x[0] + '"><span class="qi">' + ic(x[1], 20) + '</span><span>' + x[2] + '</span></a>').join('') +
+    '<button type="button" class="sosq" onclick="U.sos()"><span class="qi">' + ic('warn', 20, 2) + '</span><span>SOS</span></button></section>';
+}
+function tripInfo(v, p) {
+  return '<dl class="kv"><dt>EP number</dt><dd class="b">' + esc(v.epi) + '</dd><dt>Trade plate</dt><dd>' + esc(v.temp) + '</dd><dt>Project</dt><dd>' + esc(p.id || v.project) + '</dd><dt>Test start</dt><dd>' + fDate(v.testStart) + '</dd><dt>Test end</dt><dd>' + fDate(v.testEnd) + '</dd><dt>Your shift</dt><dd>' + shiftTxt() + '</dd></dl>';
+}
+
+/* ---------- home ---------- */
+SC.home = () => {
+  const d = me(), a = asg(), act = myActive(), now = new Date();
+  const greet = now.getHours() < 12 ? 'Good morning' : now.getHours() < 17 ? 'Good afternoon' : 'Good evening';
+  const dateLine = '<span class="small muted">' + now.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }) + ' · ' + shiftTxt() + '</span>';
+  const title = esc(d.name);
+  if (act) {
+    const v = J.V(act.vehicleId), L2 = J.live(v), p = J.P(v.project) || {}, ag = asg() || { target: 300 };
+    const body = '<section class="box" style="border-color:' + (act.pause ? '#fcd9a8' : '#a7e3bd') + ';background:' + (act.pause ? '#fffbf2' : '#f6fef9') + '"><div class="hmap"><div id="hmap" class="map"></div><span class="hmapl">' + ic('pin', 13, 2) + 'Live position · simulated GPS</span></div>' +
+      '<div class="row"><span class="dot" style="background:' + (act.pause ? 'var(--amber,#b45309)' : 'var(--green)') + '"></span><b class="sp">' + (act.pause ? 'Trip stopped · ' + esc(act.pause.reason) : 'Trip in progress') + '</b><span class="small muted">since ' + fTime(act.pause ? act.pause.from : act.startTs) + '</span></div>' +
+      '<div style="font-family:var(--head);font-size:24px;font-weight:600">' + esc(v.reg) + '</div>' +
+      '<div class="grid" style="grid-template-columns:repeat(3,1fr);gap:8px"><div class="stat"><span class="k">Speed</span><span class="v" id="h_sp">' + L2.speed + ' km/h</span></div><div class="stat"><span class="k">Today</span><span class="v" id="h_d">' + fmt(L2.dist, 1) + ' km</span></div><div class="stat"><span class="k">Odometer</span><span class="v" id="h_o">' + fmt(act.startOdo + L2.dist, 1) + '</span></div>' +
+      '<div class="stat"><span class="k">Idle time</span><span class="v" id="h_i">' + idleMin(L2) + ' min</span></div><div class="stat"><span class="k">Breaks</span><span class="v">' + breakCount(act) + '</span></div><div class="stat"><span class="k">' + (isEV(v) ? 'Battery' : 'Target') + '</span><span class="v" id="h_b">' + (isEV(v) ? curSoc(act, L2) + '%' : ag.target + ' km') + '</span></div></div>' +
+      '<div><div class="row small" style="justify-content:space-between;margin-bottom:5px"><span class="muted">Target vs covered</span><b id="h_t">' + fmt(v.done + L2.dist) + ' / ' + fmt(v.target) + ' km</b></div><div class="prog" style="height:8px"><i id="h_pg" style="width:' + Math.min(100, (v.done + L2.dist) / v.target * 100) + '%"></i></div></div></section>' +
+      quick(v, act) + '<section class="box">' + tripInfo(v, p) + '</section>';
+    return { html: topHdr(title, '', greet) + '<div class="scr">' + dateLine + body + '</div><div class="foot"><a class="big" href="#/trip">' + ic('pin', 20, 2) + (act.pause ? 'OPEN TRIP · RESUME' : 'OPEN LIVE TRIP') + '</a></div>', nav: 'home', mount: () => homeMap(v, L2.route ? L2.route.pts : [], L2.pos), tick: () => { const L3 = J.live(J.V(act.vehicleId)); if (DS.mk) { DS.mk.setLatLng(L3.pos); if (DS.tr) DS.tr.setLatLngs(L3.trail); } const s = document.getElementById('h_sp'); if (s) { s.textContent = L3.speed + ' km/h'; document.getElementById('h_d').textContent = fmt(L3.dist, 1) + ' km'; document.getElementById('h_o').textContent = fmt(act.startOdo + L3.dist, 1); document.getElementById('h_i').textContent = idleMin(L3) + ' min'; document.getElementById('h_t').textContent = fmt(v.done + L3.dist) + ' / ' + fmt(v.target) + ' km'; if (isEV(v)) document.getElementById('h_b').textContent = curSoc(act, L3) + '%'; } } };
+  }
+  if (!a) {
+    const last = J.S.trips.filter(t => t.driverId === d.id).sort((x, y) => y.startTs - x.startTs)[0];
+    const body = '<section class="box" style="align-items:center;text-align:center;padding:30px 20px;gap:12px"><span style="width:72px;height:72px;border-radius:999px;background:#f5f5f4;color:var(--mute);display:flex;align-items:center;justify-content:center">' + ic('cal', 34, 1.5) + '</span><h2 style="font-size:21px">No vehicle assigned today</h2><p class="small muted" style="margin:0;max-width:290px">This screen updates on its own as soon as your supervisor assigns one.</p><a class="btn" href="tel:' + J.SITES[d.site].supPhone.replace(/\s/g, '') + '" style="height:46px">' + ic('phone', 17) + 'Call ' + esc(d.sup) + '</a><button class="btn sm" onclick="U.refresh()">Refresh now</button></section>' +
+      '<section class="qa" aria-label="Quick actions"><a href="#/stations"><span class="qi">' + ic('pin', 20) + '</span><span>Stations</span></a><a href="#/fleet"><span class="qi">' + ic('car', 20) + '</span><span>Project vehicles</span></a><a href="#/tickets"><span class="qi">' + ic('ticket', 20) + '</span><span>My tickets</span></a></section>' +
+      (last ? '<a class="box" href="#/tripd/' + last.id + '" style="flex-direction:row;align-items:center;color:var(--ink)"><span class="sp"><span class="xs muted">Your last trip</span><br><b>' + fDay(last.startTs) + ' · ' + esc(J.V(last.vehicleId).reg) + ' · ' + fmt(last.km, 1) + ' km</b></span>' + ic('chev', 18) + '</a>' : '');
+    return { html: topHdr(title, '', greet) + '<div class="scr">' + dateLine + body + '</div>', nav: 'home' };
+  }
+  const v = J.V(a.vehicleId), p = J.P(a.project) || {}, site = J.SITES[v.site];
+  const pct = Math.min(100, v.done / v.target * 100), done = a.status === 'Completed';
+  const stc = { Assigned: ['#9a3412', '#fff1e6', 'Assigned · not started'], Acknowledged: ['#1d4ed8', '#eef3fe', 'Acknowledged · ready'], Started: ['#15803d', '#ecfdf3', 'Started'], Completed: ['#57534e', '#f1f0ef', 'Completed for today'] }[a.status];
+  const lastTrips = J.S.trips.filter(t => t.vehicleId === v.id && t.startTs > Date.now() - 864e5 * 7);
+  const body = '<section class="box" aria-label="Today\'s assignment" style="gap:13px"><div class="row"><span class="lbl sp">TODAY\'S VEHICLE</span><span class="pill" style="color:' + stc[0] + ';background:' + stc[1] + '">' + stc[2] + '</span></div>' +
+    '<div class="hmap"><div id="hmap" class="map"></div><span class="hmapl">' + ic('pin', 13, 2) + esc(site.name) + ' · ' + esc(a.routeName) + '</span></div>' +
+    '<div class="row" style="align-items:flex-start"><div class="sp" style="min-width:0"><div style="font-family:var(--head);font-size:25px;font-weight:600;letter-spacing:.4px;line-height:1.15">' + esc(v.reg) + '</div><div class="small" style="color:var(--mute)">' + esc(v.maker + ' ' + v.model) + ' · ' + esc(v.cat) + '</div></div>' + pill(v.fuel, { EV: ['#1d4ed8', '#eef3fe'], Diesel: ['#44403c', '#f1f0ef'], Petrol: ['#9a3412', '#fff1e6'], CNG: ['#15803d', '#ecfdf3'] }) + '</div>' +
+    '<div style="display:flex;flex-direction:column;gap:7px"><div class="row" style="justify-content:space-between;align-items:baseline"><span style="font-family:var(--head);font-size:22px;font-weight:500">' + fmt(v.done) + ' <span class="small muted" style="font-family:var(--font)">/ ' + fmt(v.target) + ' km</span></span><b class="small" style="color:var(--or2)">' + pct.toFixed(0) + '%</b></div><div class="prog" style="height:8px"><i style="width:' + pct + '%"></i></div><span class="small" style="color:var(--mute)">Target vs covered · today\'s target <b style="color:var(--ink)">' + a.target + ' km</b></span></div>' +
+    '<div class="grid" style="grid-template-columns:repeat(3,1fr);gap:8px"><div class="stat"><span class="k">Idle (7 days)</span><span class="v">' + lastTrips.reduce((s, t) => s + (t.idle || 0), 0) + ' min</span></div><div class="stat"><span class="k">Breaks (7 days)</span><span class="v">' + lastTrips.reduce((s, t) => s + (t.breaks || 0), 0) + '</span></div><div class="stat"><span class="k">Odometer</span><span class="v">' + fmt(v.odo, 0) + '</span></div></div>' +
+    tripInfo(v, p) + '<a href="#/assignment" class="small b">View full assignment and instructions →</a></section>' + quick(v, null);
+  return { html: topHdr(title, '', greet) + '<div class="scr">' + dateLine + body + '</div>' + (done ? '<div class="foot"><a class="big ghost" href="#/trips">Today\'s testing is done · View trips</a></div>' : '<div class="foot"><a class="big" href="#/pretrip">' + ic('play', 20, 0) + 'START TESTING</a></div>'), nav: 'home', mount: () => homeMap(v, J.route(v.site, a.route || 'track').pts, v.park) };
+};
+U.refresh = () => { try { J.tx(() => { }); } catch (e) { } render(); toast(asg() ? 'New assignment received' : 'Still no assignment. We will update you.'); };
+
+/* ---------- pre-trip ---------- */
+SC.pretrip = () => {
+  const a = asg(), d = me(); if (!a) return { html: hdr('Start trip') + '<div class="scr"><div class="box empty">No assignment today.</div></div>' };
+  if (myActive()) { setTimeout(() => U.go('trip'), 0); return { html: '' }; }
+  const v = J.V(a.vehicleId), ev = isEV(v);
+  if (!DS.ui.pre || DS.ui.pre.v !== v.id) DS.ui.pre = { v: v.id, odo: v.odo.toFixed(1), soc: '96', checks: [1, 1, 1, 1, 1, 1], ready: true, gps: true, corr: false, corrBy: d.sup };
+  const F = DS.ui.pre;
+  const labels = ['Tyres and wheels look fine', 'Lights and indicators work', 'Brakes feel normal', 'No warning lights on cluster', 'Mirrors, wipers and horn OK', ev ? 'Charging cable and kit on board' : 'Fuel level checked'];
+  const n = parseFloat(F.odo); let err = '';
+  if (F.odo === '' || isNaN(n)) err = 'Enter the odometer reading.'; else if (n < v.odo && !F.corr) err = 'Reading is lower than the last recorded ' + fmt(v.odo, 1) + ' km. Tick "Authorised correction" if your supervisor approved it.';
+  const ok = !!DS.ui.prePhoto && !err && F.checks.every(Boolean) && F.ready && F.gps && (!ev || !!DS.ui.preSoc);
+  const missing = []; if (!DS.ui.prePhoto) missing.push('odometer photo'); if (ev && !DS.ui.preSoc) missing.push('battery photo'); if (err) missing.push('odometer reading'); if (!F.checks.every(Boolean)) missing.push('checklist'); if (!F.ready) missing.push('readiness'); if (!F.gps) missing.push('GPS');
+  return {
+    html: hdr('Start trip', esc(v.reg) + ' · ' + shiftTxt()) + '<div class="scr">' +
+      '<p class="xs muted" style="margin:0">Everything is pre-filled except the photos. Check the readings match your cluster.</p>' +
+      photoField('prePhoto', '1. Start odometer photo', 'odo', String(Math.round(n * 10) / 10 || v.odo)) +
+      '<div class="box"><label class="fld">2. Start odometer (km) <span class="xs muted" style="font-weight:400">Last recorded: ' + fmt(v.odo, 1) + '</span><input class="in" id="p_odo" inputmode="decimal" value="' + esc(F.odo) + '" onchange="DS.ui.pre.odo=this.value;render()" style="font-size:19px;font-weight:500"></label>' + (err && F.odo !== '' ? '<span class="err" role="alert">' + err + '</span>' : '') +
+      (n < v.odo ? '<label class="ck"><input type="checkbox" ' + (F.corr ? 'checked' : '') + ' onchange="DS.ui.pre.corr=this.checked;render()">Authorised correction by ' + esc(F.corrBy) + '</label>' : '') + '</div>' +
+      (ev ? photoField('preSoc', '3. Battery % photo', 'soc', F.soc) + '<div class="box"><label class="fld">Start SOC (%)<input class="in" id="p_soc" inputmode="numeric" value="' + esc(F.soc) + '" onchange="DS.ui.pre.soc=this.value;render()" style="font-size:19px;font-weight:500"></label></div>' : '') +
+      '<div class="box" style="gap:2px"><span class="b" style="font-size:13.5px;margin-bottom:4px">' + (ev ? '4' : '3') + '. Vehicle condition</span>' + labels.map((l, i) => '<label class="ck"><input type="checkbox" ' + (F.checks[i] ? 'checked' : '') + ' onchange="DS.ui.pre.checks[' + i + ']=this.checked?1:0;render()">' + l + '</label>').join('') + '</div>' +
+      '<div class="box"><span class="b" style="font-size:13.5px">Ready to go</span><label class="ck"><input type="checkbox" ' + (F.ready ? 'checked' : '') + ' onchange="DS.ui.pre.ready=this.checked;render()">Vehicle is available and ready for testing</label><button type="button" class="row" onclick="DS.ui.pre.gps=!DS.ui.pre.gps;render()" aria-pressed="' + F.gps + '" style="height:50px;padding:0 14px;border-radius:10px;border:1px solid ' + (F.gps ? '#a7e3bd' : 'var(--line2)') + ';background:' + (F.gps ? 'var(--greenw)' : '#fff') + ';justify-content:space-between;font-size:14.5px;font-weight:500"><span class="row" style="gap:10px">' + ic('pin', 20) + 'GPS tracking</span><b class="small" style="color:' + (F.gps ? 'var(--green)' : 'var(--mute2)') + '">' + (F.gps ? 'ON · signal good' : 'Tap to turn on') + '</b></button></div></div>' +
+      '<div class="foot">' + (ok ? '' : '<span class="xs muted" style="text-align:center">Still needed: ' + missing.join(', ') + '</span>') + '<button class="big ' + (ok ? '' : 'off') + '" onclick="U.startTrip()" aria-disabled="' + !ok + '">START TRIP</button></div>'
+  };
+};
+U.startTrip = () => {
+  const F = DS.ui.pre; F.odo = val('p_odo') || F.odo; if (document.getElementById('p_soc')) F.soc = val('p_soc');
+  const a = asg(), v = J.V(a.vehicleId), n = parseFloat(F.odo);
+  if (!DS.ui.prePhoto) { toast('Add the odometer photo first (tap "Use sample photo" for the demo).', 'warn'); return; }
+  if (isEV(v) && !DS.ui.preSoc) { toast('Add the battery % photo first.', 'warn'); return; }
+  if (isNaN(n) || (n < v.odo && !F.corr)) { toast('Check the odometer reading.', 'warn'); render(); return; }
+  if (!F.checks.every(Boolean) || !F.ready || !F.gps) { toast('Finish the checklist and turn GPS on.', 'warn'); return; }
+  const d = me(), sh = myShift();
+  J.tx(s => {
+    s.active[v.id] = { driverId: d.id, startTs: Date.now(), startOdo: n, startSoc: isEV(v) ? (parseInt(F.soc) || 96) : null, photo: DS.ui.prePhoto, socPhoto: DS.ui.preSoc || null, shift: sh.id, route: a.route || 'track', routeName: a.routeName, tripId: 'TRP-26-' + String(s.seq.trip).padStart(5, '0'), maxSp: 0, energy: null, correction: n < v.odo ? F.corrBy : null, stops: [], pausedMs: 0, driveOffset: 0 };
+    s.assignments[d.id].status = 'Started';
+    const dd = s.drivers.find(x => x.id === d.id); dd.avail = 'On trip'; dd.vehicleId = v.id;
+    const vv = s.vehicles.find(x => x.id === v.id); vv.driverId = d.id; vv.history.push({ t: Date.now(), x: 'Trip started by ' + d.name + ' at ' + fmt(n, 1) + ' km', by: 'Driver app' });
+  });
+  DS.ui.prePhoto = null; DS.ui.preSoc = null; DS.ui.pre = null; DS.ui.issue = null; DS.ui.end = null; DS.ui.fuel = null; DS.brkShown = null;
+  toast('Trip started at ' + fTime(Date.now()) + '. GPS tracking is on.', 'ok'); location.replace('#/trip');
+};
+
+/* ---------- live trip ---------- */
+SC.trip = () => {
+  const act = myActive(); if (!act) return { html: hdr('Trip') + '<div class="scr"><div class="box empty">No trip in progress.<br><br><a class="btn pri" href="#/home">Go home</a></div></div>', nav: 'home' };
+  const v = J.V(act.vehicleId), a = asg() || { target: 300, project: v.project }, ev = isEV(v);
+  const P = act.pause;
+  const actions = P ?
+    '<section class="pausebox" role="status"><div class="row"><span class="pill" style="background:#fff1e6;color:#9a3412">Trip stopped</span><span class="sp"></span><b id="t_pt" style="font-family:var(--head);font-size:20px">0:00</b></div><b style="font-size:15px">' + esc(P.reason) + '</b><span class="small muted">Since ' + fTime(P.from) + ' · ' + (ev ? 'SOC ' + P.soc + '% · ' : '') + 'odometer ' + fmt(P.odo, 1) + ' km' + (P.notes ? ' · ' + esc(P.notes) : '') + '</span>' + (P.reason === 'Charging' && ev ? '<a class="btn" style="height:42px" href="#/fuel">' + ic('fuel', 16) + 'Fill charging log</a>' : P.reason === 'Refuelling' && !ev ? '<a class="btn" style="height:42px" href="#/fuel">' + ic('fuel', 16) + 'Add fuel entry</a>' : '') + '</section>' +
+      '<button class="big green" onclick="U.resume()">' + ic('play', 20, 0) + 'RESUME TRIP</button>' +
+      '<div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><a class="big ghost" style="height:48px;font-size:14px" href="#/issue">' + ic('warn', 18) + 'Report issue</a><button class="big red" style="height:48px;font-size:14px" onclick="U.sos()">SOS</button></div>' +
+      '<a class="big dark" href="#/end">END TRIP</a>' :
+    '<div id="t_brk" class="brk"></div>' +
+    '<div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><a class="big ghost" style="height:50px;font-size:14px;border-color:var(--or);color:var(--or2)" href="#/stop">' + ic('pause', 18, 0) + 'Stop / break</a><button class="big red" style="height:50px;font-size:14px" onclick="U.sos()">Emergency / SOS</button></div>' +
+    '<div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:8px"><a class="tbtn" href="#/issue">' + ic('warn', 18) + 'Issue</a><a class="tbtn" href="#/fuel">' + ic('fuel', 18) + (ev ? 'Charging' : 'Fuel') + '</a><a class="tbtn" href="#/stations">' + ic('pin', 18) + 'Stations</a></div>' +
+    '<a class="big dark" href="#/end">END TRIP</a>';
+  return {
+    html: '<header class="hdr"><button class="bk" onclick="U.go(\'home\')" aria-label="Back to home">' + ic('back', 22, 2) + '</button><div style="flex:1;min-width:0;line-height:1.25"><h1 style="font-size:17px">' + esc(v.reg) + ' · ' + (P ? 'Stopped' : 'Trip live') + '</h1><span class="sub">' + a.project + ' · ' + shiftTxt() + '</span></div>' + (P ? '<span class="pill" style="background:#fff1e6;color:#9a3412">PAUSED</span>' : '<span class="pill" style="background:var(--greenw);color:var(--green)"><span class="dot" style="background:var(--green)"></span>LIVE</span>') + '</header>' +
+      '<div class="tmap"><div class="map" id="dmap"></div></div><div class="sheet"><span class="handle"></span>' +
+      '<div class="row" style="align-items:flex-end"><div class="sp"><span class="xs muted">Current speed</span><div id="t_sp" style="font-family:var(--head);font-size:52px;font-weight:500;letter-spacing:-1.5px;line-height:1">0</div></div><span id="t_warn"></span></div>' +
+      '<div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:8px" id="t_stats"></div>' +
+      '<div><div class="row small" style="justify-content:space-between;margin-bottom:5px"><span class="muted">Target vs covered</span><b id="t_tg"></b></div><div class="prog" style="height:8px"><i id="t_pg" style="width:0"></i></div></div>' +
+      actions + '</div>',
+    nav: null,
+    mount: () => {
+      const L2 = J.live(v); const m = mkMap(document.getElementById('dmap'), L2.pos, 14); DS.map = m;
+      if (m) { const r = J.route(v.site, act.route); L.polyline(r.pts, { color: '#fdba8c', weight: 4, dashArray: '4 6' }).addTo(m); DS.tr = L.polyline(L2.trail, { color: '#c2410c', weight: 5 }).addTo(m); DS.mk = L.marker(L2.pos, { icon: vIcon(v, P ? '#b45309' : '#c2410c') }).addTo(m); }
+      tripTick();
+    },
+    tick: tripTick
+  };
+};
+function tripTick() {
+  const act = myActive(); if (!act) return; const v = J.V(act.vehicleId), L2 = J.live(v), a = asg() || { target: 300 };
+  const lim = J.S.settings.limitTrack, over = L2.speed > lim;
+  const sp = document.getElementById('t_sp'); if (!sp) return;
+  sp.innerHTML = L2.speed + '<span style="font-size:16px;letter-spacing:0;color:var(--mute2);font-weight:400"> km/h</span>'; sp.style.color = over ? 'var(--red)' : 'var(--ink)';
+  document.getElementById('t_warn').innerHTML = over ? '<span class="pill" style="background:var(--redw);color:var(--red)">Slow down · limit ' + lim + '</span>' : '';
+  const stats = [['Distance', fmt(L2.dist, 1) + ' km'], ['Driving', hm(L2.mins)], ['Start', fTime(act.startTs)], ['Odometer', fmt(act.startOdo + L2.dist, 1)], isEV(v) ? ['Battery', curSoc(act, L2) + '%'] : ['Fuel used', fmt(L2.dist / (v.fuel === 'Petrol' ? 14.5 : 9.5), 1) + ' L'], ['Idle', idleMin(L2) + ' min'], ['Breaks', String(breakCount(act))], ['Stopped', Math.round(L2.pausedMin || 0) + ' min'], ['EP no.', esc(v.epi)]];
+  document.getElementById('t_stats').innerHTML = stats.map(s => '<div class="stat"><span class="k">' + s[0] + '</span><span class="v" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + s[1] + '</span></div>').join('');
+  const done = v.done + L2.dist; document.getElementById('t_tg').textContent = fmt(done) + ' / ' + fmt(v.target) + ' km · today ' + fmt(L2.dist, 0) + '/' + a.target;
+  document.getElementById('t_pg').style.width = Math.min(100, done / v.target * 100) + '%';
+  if (DS.mk) { DS.mk.setLatLng(L2.pos); DS.tr.setLatLngs(L2.trail); if (DS.map && !DS.map.getBounds().pad(-0.2).contains(L2.pos)) DS.map.panTo(L2.pos); }
+  if (I18N.lang !== 'en') I18N.apply(document.getElementById('t_stats'));
+  const pt = document.getElementById('t_pt'); if (pt && act.pause) { const s = Math.floor((Date.now() - act.pause.from) / 1000); pt.textContent = Math.floor(s / 60) + ':' + J.pad(s % 60); }
+  /* break reminder on the demo clock */
+  const every = J.S.settings.breakEvery, dm = driveMin(act), b = document.getElementById('t_brk');
+  if (b) { const left = every - dm; b.className = 'brk' + (left <= 0 ? ' due' : left < 30 ? ' soon' : ''); b.innerHTML = ic('cal', 15) + '<span class="sp">' + (left <= 0 ? '<b>Break due now</b> · driving ' + hm(dm) + ' without a break' : 'Driving ' + hm(dm) + ' · next break in <b>' + hm(left) + '</b>') + '</span><button class="lnk" onclick="U.simDrive()">Simulate 3.5 h</button>'; }
+  if (!act.pause && dm >= every) {
+    const stint = (act.stops || []).length + ':' + (act.driveOffset || 0);
+    if (DS.brkShown !== stint && !document.getElementById('modal')) { DS.brkShown = stint; U.breakModal(dm); }
+    if (act.brkAlert !== (act.stops || []).length) { J.tx(s => { const x = s.active[act.vehicleId]; if (!x) return; x.brkAlert = (x.stops || []).length; J.addAlert(s, 'Break Overdue', act.vehicleId, me().name + ' has driven ' + hm(dm) + ' without a break', 'Medium'); }); }
+  }
+  /* overspeed alert to supervisor + PM (once every 2 min) */
+  if (over && !act.pause && (!act.lastOs || Date.now() - act.lastOs > 120000)) { J.tx(s => { const x = s.active[act.vehicleId]; if (!x) return; x.lastOs = Date.now(); J.addAlert(s, 'Overspeed', act.vehicleId, v.reg + ' at ' + L2.speed + ' km/h (limit ' + lim + ') · ' + me().name, 'High'); J.notify(s, me().id, 'Overspeed warning', 'You were at ' + L2.speed + ' km/h. Limit is ' + lim + ' km/h. Your supervisor and PM are informed.', 'alerts', 'warn'); }); toast('Overspeed: ' + L2.speed + ' km/h. Supervisor and PM notified.', 'bad'); }
+  if (L2.speed > (act.maxSp || 0)) { if (!DS._lastMaxSave || Date.now() - DS._lastMaxSave > 10000) { DS._lastMaxSave = Date.now(); J.tx(s => { if (s.active[act.vehicleId]) s.active[act.vehicleId].maxSp = Math.max(s.active[act.vehicleId].maxSp || 0, L2.speed); }); } }
+}
+U.simDrive = () => { const act = myActive(); if (!act) return; const need = J.S.settings.breakEvery - driveMin(act) + 2; J.tx(s => { const x = s.active[act.vehicleId]; x.driveOffset = (x.driveOffset || 0) + Math.max(1, need); }); toast('Demo: added ' + hm(Math.max(1, need)) + ' of driving', 'warn'); };
+U.breakModal = dm => modal('<h2>Time for a break</h2><p class="small" style="margin:0">You have been driving for <b>' + hm(dm) + '</b>. Company rule: a ' + J.S.settings.breakMin + '-minute break every ' + hm(J.S.settings.breakEvery) + '. Your supervisor has been informed.</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="U.closeModal();U.snooze()">Remind me in 15 min</button><button class="btn pri" onclick="U.closeModal();DS.ui.stop=null;DS.ui.stopReason=\'Driver break\';U.go(\'stop\')">Take break now</button></div>');
+U.snooze = () => { const act = myActive(); J.tx(s => { const x = s.active[act.vehicleId]; x.driveOffset = (x.driveOffset || 0) - 15; }); DS.brkShown = null; toast('We will remind you again in 15 min', 'ok'); };
+
+/* ---------- stop trip / break ---------- */
+SC.stop = () => {
+  const act = myActive(); if (!act) return { html: hdr('Stop trip') + '<div class="scr"><div class="box empty">No trip in progress.</div></div>' };
+  if (act.pause) { setTimeout(() => U.go('trip'), 0); return { html: '' }; }
+  const v = J.V(act.vehicleId), L2 = J.live(v), ev = isEV(v);
+  if (!DS.ui.stop || DS.ui.stop.trip !== act.tripId) DS.ui.stop = { trip: act.tripId, reason: DS.ui.stopReason || 'Driver break', odo: (act.startOdo + L2.dist).toFixed(1), soc: String(curSoc(act, L2)), notes: '' };
+  DS.ui.stopReason = null;
+  const F = DS.ui.stop;
+  return {
+    html: hdr('Stop trip', esc(v.reg) + ' · stop ' + (breakCount(act) + 1) + ' on this trip') + '<div class="scr" style="gap:14px">' +
+      '<fieldset style="border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px"><legend class="b" style="font-size:13.5px;padding:0 0 8px">1. Reason for stopping <span style="color:var(--red)">*</span></legend><div class="catgrid">' + STOP_REASONS.filter(r => ev ? r !== 'Refuelling' : r !== 'Charging').map(r => '<button type="button" class="' + (F.reason === r ? 'on' : '') + '" aria-pressed="' + (F.reason === r) + '" onclick="DS.ui.stop.reason=\'' + r + '\';render()">' + r + '</button>').join('') + '</div></fieldset>' +
+      (ev ? photoField('stopPhoto', '2. Battery % photo', 'soc', F.soc) + '<div class="box"><div class="grid" style="grid-template-columns:1fr 1fr;gap:10px"><label class="fld">Battery SOC (%)<input class="in" id="s_soc" inputmode="numeric" value="' + esc(F.soc) + '" oninput="DS.ui.stop.soc=this.value" style="font-size:18px;font-weight:500"></label><label class="fld">Odometer (km)<input class="in" id="s_odo" inputmode="decimal" value="' + esc(F.odo) + '" oninput="DS.ui.stop.odo=this.value" style="font-size:18px;font-weight:500"></label></div></div>' :
+        photoField('stopPhoto', '2. Odometer photo', 'odo', F.odo) + '<div class="box"><label class="fld">Odometer reading (km) <span class="xs muted" style="font-weight:400">Trip started at ' + fmt(act.startOdo, 1) + '</span><input class="in" id="s_odo" inputmode="decimal" value="' + esc(F.odo) + '" oninput="DS.ui.stop.odo=this.value" style="font-size:19px;font-weight:500"></label></div>') +
+      '<label class="fld">3. Details (optional)<textarea class="in" id="s_notes" rows="2" placeholder="Where you stopped, anything to note" oninput="DS.ui.stop.notes=this.value">' + esc(F.notes) + '</textarea></label>' +
+      '<div class="box" style="gap:6px;font-size:13px"><div class="row"><span class="muted sp">Location (auto)</span><b style="font-weight:500">' + L2.pos[0].toFixed(4) + ', ' + L2.pos[1].toFixed(4) + '</b></div><div class="row"><span class="muted sp">Time (auto)</span><b style="font-weight:500">' + fTime(Date.now()) + '</b></div><div class="row"><span class="muted sp">Driving since last stop</span><b style="font-weight:500">' + hm(driveMin(act)) + '</b></div></div><div id="s_err" class="err" role="alert"></div></div>' +
+      '<div class="foot"><button class="big" onclick="U.doStop()">' + ic('pause', 18, 0) + 'STOP TRIP</button></div>'
+  };
+};
+U.doStop = () => {
+  const act = myActive(), v = J.V(act.vehicleId), ev = isEV(v), F = DS.ui.stop, err = document.getElementById('s_err');
+  F.odo = val('s_odo'); if (ev) F.soc = val('s_soc'); F.notes = val('s_notes');
+  if (!DS.ui.stopPhoto) { err.textContent = 'Add the ' + (ev ? 'battery %' : 'odometer') + ' photo (tap "Use sample photo" for the demo).'; return; }
+  const n = parseFloat(F.odo); if (isNaN(n) || n < act.startOdo) { err.textContent = 'Odometer cannot be lower than the trip start (' + fmt(act.startOdo, 1) + ' km).'; return; }
+  if (ev && (isNaN(parseFloat(F.soc)) || F.soc < 0 || F.soc > 100)) { err.textContent = 'Enter battery SOC between 0 and 100.'; return; }
+  const d = me();
+  J.tx(s => {
+    const x = s.active[act.vehicleId]; x.pause = { from: Date.now(), reason: F.reason, odo: n, soc: ev ? parseInt(F.soc) : null, photo: DS.ui.stopPhoto, notes: F.notes, pos: J.live(v).pos };
+    if (/Breakdown|Vehicle issue/.test(F.reason)) J.addAlert(s, 'Unusual Stoppage', v.id, v.reg + ' stopped · ' + F.reason + ' · ' + d.name, 'High');
+    J.notify(s, 'role:sup', 'Trip stopped · ' + v.reg, d.name + ' stopped: ' + F.reason, 'live', 'car');
+  });
+  DS.ui.stopPhoto = null; DS.ui.stop = null; toast('Trip stopped · ' + F.reason + '. Tap Resume when ready.', 'ok'); location.replace('#/trip');
+};
+U.resume = () => {
+  const act = myActive(); if (!act || !act.pause) return; let mins = 0;
+  J.tx(s => { const x = s.active[act.vehicleId]; const p = x.pause; p.to = Date.now(); mins = Math.round((p.to - p.from) / 60e3); x.pausedMs = (x.pausedMs || 0) + (p.to - p.from); x.stops = x.stops || []; x.stops.push(p); delete x.pause; x.driveOffset = 0; });
+  DS.brkShown = null; toast('Trip resumed after ' + (mins < 1 ? 'under a minute' : mins + ' min') + '. Drive safe.', 'ok'); render();
+};
+
+U.sos = () => { const d = me(); modal('<h2 style="color:var(--red)">Emergency / SOS</h2><p class="small" style="margin:0">This alerts your supervisor, project manager and plant security at once with your live location, and opens an Accident ticket. For police or ambulance call 112.</p><label class="fld">What happened? (optional)<input class="in" id="sos_t" value="Accident on test route. Need help."></label><div class="row" style="justify-content:flex-end"><button class="btn" onclick="U.closeModal()">Cancel</button><button class="btn" style="background:var(--red);border-color:var(--red);color:#fff" onclick="U.sosSend()">Send SOS</button></div><div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><a class="btn" href="tel:112">' + ic('phone', 16) + 'Call 112</a><a class="btn" href="tel:' + J.SITES[d.site].supPhone.replace(/\s/g, '') + '">' + ic('phone', 16) + 'Call ' + esc(d.sup.split(' ')[0]) + '</a></div>'); };
+U.sosSend = () => { const txt = val('sos_t'); const v = myVeh(); if (!v) { closeModal(); toast('No vehicle linked. Call 112 or your supervisor.', 'bad'); return; } const id = raiseTicket('Accident', txt || 'Emergency raised from driver app', 'High', null); J.tx(s => { J.addAlert(s, 'Emergency', v.id, 'SOS from ' + me().name + ' on ' + v.reg + ' · ' + id, 'Critical'); }); closeModal(); toast('SOS sent. Ticket ' + id + '. Supervisor, PM and security alerted.', 'bad'); };
+
+/* ---------- charging log (EV) / fuel entry (ICE) ---------- */
+SC.fuel = () => {
+  const act = myActive(), v = myVeh(); if (!v) return { html: hdr('Fuel & energy') + '<div class="scr"><div class="box empty">No vehicle today.</div></div>' };
+  const L2 = act ? J.live(v) : { dist: 0 };
+  if (isEV(v)) return SC.charge(v, act, L2);
+  if (!DS.ui.fuel || DS.ui.fuel.ev) DS.ui.fuel = { type: v.fuel, qty: '32.5', rate: v.fuel === 'Petrol' ? '104.60' : v.fuel === 'CNG' ? '89.00' : '92.40', station: 'HP fuel station, ' + J.SITES[v.site].short, odo: ((act ? act.startOdo : v.odo) + L2.dist).toFixed(1), since: (214 + L2.dist).toFixed(1) };
+  const F = DS.ui.fuel;
+  return {
+    html: hdr('Fuel entry', esc(v.reg) + ' · ' + esc(v.maker + ' ' + v.model)) + '<div class="scr"><p class="xs muted" style="margin:0">Filled in from your live trip. Adjust if needed.</p>' +
+      '<div class="box"><label class="fld">Fuel type<input class="in" value="' + esc(v.fuel) + '" readonly style="background:#fafaf9;color:var(--mute)"></label><div class="grid" style="grid-template-columns:1fr 1fr;gap:10px"><label class="fld">Quantity (' + (F.type === 'CNG' ? 'kg' : 'L') + ')<input class="in" inputmode="decimal" value="' + F.qty + '" oninput="DS.ui.fuel.qty=this.value;U.fcalc()"></label><label class="fld">Rate (₹)<input class="in" inputmode="decimal" value="' + F.rate + '" oninput="DS.ui.fuel.rate=this.value;U.fcalc()"></label><label class="fld">Odometer now<input class="in" inputmode="decimal" value="' + F.odo + '" oninput="DS.ui.fuel.odo=this.value"></label><label class="fld">Km since last fill<input class="in" inputmode="decimal" value="' + F.since + '" oninput="DS.ui.fuel.since=this.value;U.fcalc()"></label></div><label class="fld">Fuel station / location<input class="in" value="' + esc(F.station) + '" oninput="DS.ui.fuel.station=this.value"></label><div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><div class="stat" style="background:#fff7ed"><span class="k">Fuel cost</span><span class="v" id="f_cost"></span></div><div class="stat" style="background:#fff7ed"><span class="k">Mileage</span><span class="v" id="f_eff"></span></div></div></div>' +
+      photoField('fuelPhoto', 'Pump bill / meter photo', 'issue', 'FUEL BILL') + '</div><div class="foot"><button class="big" onclick="U.saveFuel()">Save entry</button></div>',
+    mount: () => U.fcalc()
+  };
+};
+U.fcalc = () => { const F = DS.ui.fuel; const e = document.getElementById('f_eff'); if (!e || !F || F.ev) return; e.textContent = num(F.qty) ? (num(F.since) / num(F.qty)).toFixed(1) + ' km/' + (F.type === 'CNG' ? 'kg' : 'L') : '—'; document.getElementById('f_cost').textContent = '₹' + fmt(num(F.qty) * num(F.rate)); };
+U.saveFuel = () => { const act = myActive(); const F = DS.ui.fuel; if (!DS.ui.fuelPhoto) { toast('Add the bill / meter photo (sample is fine for the demo).', 'warn'); return; } if (act) J.tx(s => { if (s.active[act.vehicleId]) s.active[act.vehicleId].energy = { qty: F.qty, rate: F.rate, type: F.type }; }); DS.ui.fuelPhoto = null; toast('Fuel entry saved to this trip', 'ok'); U.back(); };
+
+SC.charge = (v, act, L2) => {
+  if (!DS.ui.chg || DS.ui.chg.v !== v.id) { const b = act ? curSoc(act, L2) : 34, now = Date.now(); const af = Math.min(100, Math.max(95, b + 5)); DS.ui.chg = { v: v.id, type: 'DC Fast', socB: String(b), socA: String(af), start: toHM(now), end: toHM(now + Math.round((af - b) * 0.9 + 6) * 60e3), charger: CHARGERS[0], kwh: ((af - b) * 0.42).toFixed(1), loc: 'Tata Power EZ Charge, Chakan', remark: '' }; }
+  const F = DS.ui.chg, d = me(), sh = myShift();
+  const tot = Math.max(0, num(F.socA) - num(F.socB)); let durm = hmToMin(F.end) - hmToMin(F.start); if (durm < 0) durm += 1440;
+  const hist = J.S.charging.filter(c => c.vehicleId === v.id).slice(0, 3);
+  const ro = (k, val2) => '<label class="fld">' + k + '<input class="in" value="' + esc(val2) + '" readonly style="background:#fafaf9;color:var(--mute)"></label>';
+  return {
+    html: hdr('Charging log', esc(v.reg) + ' · EV charging record') + '<div class="scr"><p class="xs muted" style="margin:0">Grey fields fill on their own. Check the rest before saving.</p>' +
+      '<div class="box"><span class="lbl">VEHICLE &amp; SHIFT</span><div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">' + ro('Date', fDate(Date.now())) + ro('Shift', sh.name) + ro('Vehicle', v.reg) + ro('EP no. / Chassis no.', v.epi + ' / …' + String(v.vin || '').slice(-6)) + '</div></div>' +
+      '<div class="box"><span class="lbl">CHARGING TYPE</span>' + chipSel('chg', 'type', ['DC Fast', 'AC Slow', 'AC Normal']) + '</div>' +
+      '<div class="box"><span class="lbl">STATE OF CHARGE</span><div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:10px"><label class="fld">SOC before (%)<input class="in" id="c_b" inputmode="numeric" value="' + esc(F.socB) + '" onchange="DS.ui.chg.socB=this.value;render()"></label><label class="fld">SOC after (%)<input class="in" id="c_a" inputmode="numeric" value="' + esc(F.socA) + '" onchange="DS.ui.chg.socA=this.value;render()"></label>' + ro('Total SOC charge', tot + '%') + '</div></div>' +
+      photoField('chgPhoto', 'SOC photo (before charging)', 'soc', F.socB) +
+      '<div class="box"><span class="lbl">TIME</span><div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:10px"><label class="fld">Start time<input class="in" type="time" value="' + esc(F.start) + '" onchange="DS.ui.chg.start=this.value;render()"></label><label class="fld">End time<input class="in" type="time" value="' + esc(F.end) + '" onchange="DS.ui.chg.end=this.value;render()"></label>' + ro('Duration', Math.floor(durm / 60) + ' h ' + (durm % 60) + ' min') + '</div></div>' +
+      '<div class="box"><span class="lbl">CHARGER &amp; METER</span><label class="fld">Charger make &amp; capacity (kW)<select class="in" onchange="DS.ui.chg.charger=this.value">' + CHARGERS.map(c => '<option' + (c === F.charger ? ' selected' : '') + '>' + c + '</option>').join('') + '</select></label><label class="fld">Meter units (kWh)<input class="in" inputmode="decimal" value="' + esc(F.kwh) + '" oninput="DS.ui.chg.kwh=this.value"></label><label class="fld">Charger location / remark<input class="in" id="c_loc" value="' + esc(F.loc) + '" oninput="DS.ui.chg.loc=this.value"></label></div>' +
+      (hist.length ? '<div class="box"><span class="lbl">LAST CHARGES ON THIS VEHICLE</span>' + hist.map(c => '<div class="row small" style="border-bottom:1px solid #f5f5f4;padding-bottom:6px"><span class="sp">' + fDay(c.ts) + ' · ' + esc(c.type) + '</span><span class="muted">' + c.socB + '% → ' + c.socA + '% · ' + c.kwh + ' kWh</span></div>').join('') + '</div>' : '') +
+      '</div><div class="foot"><button class="big" onclick="U.saveChg()">Save charging log</button></div>'
+  };
+};
+U.saveChg = () => {
+  const F = DS.ui.chg, v = myVeh(), act = myActive(), d = me();
+  if (!DS.ui.chgPhoto) { toast('Add the SOC photo (sample is fine for the demo).', 'warn'); return; }
+  if (num(F.socA) <= num(F.socB)) { toast('SOC after must be higher than SOC before.', 'warn'); return; }
+  const day0 = J.today0().getTime(), st = day0 + hmToMin(F.start) * 60e3; let en = day0 + hmToMin(F.end) * 60e3; if (en < st) en += 864e5;
+  const kw = parseFloat((F.charger.match(/([\d.]+) kW/) || [])[1]) || 0;
+  const id = J.tx(s => { const id = 'CHG-' + String(++s.seq.chg).padStart(4, '0'); s.charging.unshift({ id, vehicleId: v.id, driverId: d.id, ts: Date.now(), shift: myShift().id, type: F.type, socB: num(F.socB), socA: num(F.socA), start: st, end: en, charger: F.charger, kw, kwh: num(F.kwh), loc: F.loc, remark: '', photoB: DS.ui.chgPhoto, tripId: act ? act.tripId : null }); if (act && s.active[act.vehicleId]) { const x = s.active[act.vehicleId]; x.charges = (x.charges || 0) + 1; x.socAdd = (x.socAdd || 0) + (num(F.socA) - num(F.socB)); } return id; });
+  DS.ui.chg = null; DS.ui.chgPhoto = null; toast('Charging log ' + id + ' saved', 'ok'); U.back();
+};
+
+/* ---------- battery inspection (EV) ---------- */
+SC.batt = () => {
+  const v = myVeh(); if (!v || !isEV(v)) return { html: hdr('Battery inspection') + '<div class="scr"><div class="box empty">Battery inspection is for EV vehicles only.</div></div>' };
+  const act = myActive(), L2 = act ? J.live(v) : null;
+  if (!DS.ui.bi || DS.ui.bi.v !== v.id) DS.ui.bi = { v: v.id, soc: String(act ? curSoc(act, L2) : 96), soh: '97', temp: '32', volt: '351', damage: 'None', connector: 'OK', coolant: 'OK', warn: 'None', remarks: 'Pack looks clean. No warning lights.' };
+  const F = DS.ui.bi, last = J.S.inspections.filter(i => i.vehicleId === v.id).sort((a, b) => b.ts - a.ts)[0];
+  const bad = F.damage !== 'None' || F.connector !== 'OK' || F.coolant !== 'OK' || F.warn !== 'None' || num(F.temp) > 45 || num(F.soh) < 85;
+  return {
+    html: hdr('Battery inspection', esc(v.reg) + ' · ' + esc(v.model)) + '<div class="scr">' +
+      (last ? '<div class="box" style="flex-direction:row;align-items:center"><span class="sp small"><span class="muted">Last inspection</span><br><b>' + fDay(last.ts) + ' · SOC ' + last.soc + '% · SOH ' + last.soh + '%</b></span>' + pill(last.result, { Pass: ['#15803d', '#ecfdf3'], 'Needs attention': ['#b45309', '#fef6e7'] }) + '</div>' : '') +
+      '<div class="box"><span class="lbl">READINGS</span><div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">' + [['soc', 'SOC (%)'], ['soh', 'SOH (%)'], ['temp', 'Pack temp (°C)'], ['volt', 'Pack voltage (V)']].map(x => '<label class="fld">' + x[1] + '<input class="in" inputmode="decimal" value="' + esc(F[x[0]]) + '" onchange="DS.ui.bi.' + x[0] + '=this.value;render()"></label>').join('') + '</div></div>' +
+      '<div class="box"><span class="lbl">VISUAL CHECK</span><span class="small b">Pack damage</span>' + chipSel('bi', 'damage', ['None', 'Minor scratch', 'Dent', 'Leak']) + '<span class="small b">Charging connector</span>' + chipSel('bi', 'connector', ['OK', 'Loose', 'Damaged']) + '<span class="small b">Coolant level</span>' + chipSel('bi', 'coolant', ['OK', 'Low']) + '<span class="small b">Battery warning light</span>' + chipSel('bi', 'warn', ['None', 'On']) + '</div>' +
+      photoField('biPhoto1', 'Battery pack photo', 'issue', 'BATTERY PACK') + photoField('biPhoto2', 'Cluster SOC photo', 'soc', F.soc) +
+      '<label class="fld">Remarks<textarea class="in" id="bi_rem" rows="2" oninput="DS.ui.bi.remarks=this.value">' + esc(F.remarks) + '</textarea></label>' +
+      '<div class="row" style="padding:12px;border-radius:12px;background:' + (bad ? '#fef6e7' : 'var(--greenw)') + '"><span class="sp small">Result (auto)</span><b style="color:' + (bad ? '#b45309' : 'var(--green)') + '">' + (bad ? 'Needs attention' : 'Pass') + '</b></div></div>' +
+      '<div class="foot"><button class="big" onclick="U.saveBi()">Save inspection</button></div>'
+  };
+};
+U.saveBi = () => {
+  const F = DS.ui.bi, v = myVeh(), d = me(); F.remarks = val('bi_rem');
+  if (!DS.ui.biPhoto1 || !DS.ui.biPhoto2) { toast('Add both photos (samples are fine for the demo).', 'warn'); return; }
+  const bad = F.damage !== 'None' || F.connector !== 'OK' || F.coolant !== 'OK' || F.warn !== 'None' || num(F.temp) > 45 || num(F.soh) < 85;
+  const id = J.tx(s => { const id = 'BI-' + (++s.seq.insp); s.inspections.unshift({ id, vehicleId: v.id, driverId: d.id, ts: Date.now(), soc: num(F.soc), soh: num(F.soh), temp: num(F.temp), voltage: num(F.volt), damage: F.damage, connector: F.connector, coolant: F.coolant, warn: F.warn, photos: [DS.ui.biPhoto1, DS.ui.biPhoto2], remarks: F.remarks, result: bad ? 'Needs attention' : 'Pass' }); if (bad) J.addAlert(s, 'Battery Inspection', v.id, v.reg + ' battery check needs attention · ' + id, 'Medium'); return id; });
+  DS.ui.bi = null; DS.ui.biPhoto1 = null; DS.ui.biPhoto2 = null; toast('Inspection ' + id + ' saved · ' + (bad ? 'supervisor alerted' : 'Pass'), bad ? 'warn' : 'ok'); U.back();
+};
+
+/* ---------- fuel / CNG / EV station locator ---------- */
+SC.stations = () => {
+  const v = myVeh(), act = myActive(), d = me();
+  const pos = act ? J.live(v).pos : v ? v.park : J.SITES[d.site].center;
+  const routePts = act ? J.route(v.site, act.route).pts : v ? J.route(v.site, (asg() || {}).route || 'track').pts : [];
+  const ev = v ? isEV(v) : false;
+  if (!DS.ui.st || DS.ui.st.ev !== ev) DS.ui.st = { ev, tab: 'near', fuel: ev ? 'EV charging' : (v && v.fuel !== 'EV' ? v.fuel : 'All'), brand: 'All' };
+  const F = DS.ui.st, fuels = ev ? [] : ['All', 'Petrol', 'Diesel', 'CNG'];
+  const brands = ev ? ['All', 'Tata Power', 'Statiq', 'ChargeZone', 'Indian Oil', 'Jio-bp'] : ['All', 'HP', 'Indian Oil', 'Bharat Petroleum', 'Others'];
+  const MAJOR = ['HP', 'Indian Oil', 'Bharat Petroleum'];
+  let list = J.S.stations.filter(s => ev ? s.fuels.indexOf('EV charging') >= 0 : s.fuels.some(f => f !== 'EV charging')).map(s => Object.assign({}, s, { fuels: ev ? ['EV charging'] : s.fuels.filter(f => f !== 'EV charging'), km: kmBetween(pos, s.pos), rd: routePts.length ? Math.min.apply(null, routePts.map(p => kmBetween(p, s.pos))) : 99 }));
+  list = list.filter(s => (ev || F.fuel === 'All' || s.fuels.indexOf(F.fuel) >= 0) && (F.brand === 'All' || (F.brand === 'Others' ? MAJOR.indexOf(s.brand) < 0 : s.brand === F.brand)));
+  list = F.tab === 'near' ? list.filter(s => s.km < 25).sort((a, b) => a.km - b.km) : list.filter(s => s.rd < 4).sort((a, b) => a.rd - b.rd);
+  DS._stList = list;
+  const BC = { HP: ['#1d4ed8', '#eef3fe'], 'Indian Oil': ['#c2410c', '#fff1e6'], 'Bharat Petroleum': ['#a16207', '#fef9c3'], MNGL: ['#15803d', '#ecfdf3'], 'Tata Power': ['#0f766e', '#ecfdf5'], Statiq: ['#6d28d9', '#f3effe'], ChargeZone: ['#15803d', '#ecfdf3'], 'Jio-bp': ['#1d4ed8', '#eef3fe'] };
+  return {
+    html: hdr(ev ? 'Charging stations' : 'Fuel stations', ev ? 'EV chargers for ' + esc(v.reg) : 'Petrol · Diesel · CNG pumps' + (v ? ' for ' + esc(v.reg) : '')) + '<div class="scr" style="gap:10px">' +
+      '<div class="seg" style="display:grid;grid-template-columns:1fr 1fr" role="tablist">' + [['near', 'Nearby'], ['route', 'On your route']].map(x => '<button role="tab" aria-selected="' + (F.tab === x[0]) + '" class="' + (F.tab === x[0] ? 'on' : '') + '" onclick="DS.ui.st.tab=\'' + x[0] + '\';render()">' + x[1] + '</button>').join('') + '</div>' +
+      (fuels.length ? '<div class="hscroll">' + fuels.map(f => '<button class="chip ' + (F.fuel === f ? 'on' : '') + '" onclick="DS.ui.st.fuel=\'' + f + '\';render()">' + f + '</button>').join('') + '</div>' : '') +
+      '<div class="hscroll">' + brands.map(b => '<button class="chip ' + (F.brand === b ? 'on' : '') + '" onclick="DS.ui.st.brand=\'' + b + '\';render()">' + b + '</button>').join('') + '</div>' +
+      '<div id="smap" style="height:200px;border-radius:14px;overflow:hidden;border:1px solid var(--line);flex:0 0 auto"></div>' +
+      '<span class="xs muted">' + list.length + (ev ? ' charger' : ' pump') + (list.length === 1 ? '' : 's') + ' · ' + (F.tab === 'near' ? 'sorted by distance from you' : 'within 4 km of today\'s route') + '</span>' +
+      (list.map((s, i) => '<div class="listbtn" style="gap:8px"><div class="row" style="flex-wrap:nowrap;align-items:flex-start"><span class="snum">' + (i + 1) + '</span><span class="sp" style="min-width:0"><b style="font-size:14px">' + esc(s.name) + '</b><br><span class="xs muted">' + s.fuels.join(' · ') + (s.open24 ? ' · Open 24 h' : ' · 06:00–23:00') + '</span></span>' + pill(s.brand, BC) + '</div><div class="row small"><span class="sp"><b>' + s.km.toFixed(1) + ' km</b> <span class="muted">· about ' + Math.max(2, Math.round(s.km / 35 * 60)) + ' min</span></span><a class="btn sm pri" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + s.pos[0] + ',' + s.pos[1] + '">' + ic('route', 14) + 'Navigate</a></div></div>').join('') || '<div class="box empty">No ' + (ev ? 'chargers' : 'pumps') + ' match these filters.</div>') + '</div>',
+    mount: () => {
+      const m = mkMap(document.getElementById('smap'), pos, 12); DS.map = m; if (!m) return;
+      if (routePts.length) L.polyline(routePts, { color: '#fdba8c', weight: 4, dashArray: '4 6' }).addTo(m);
+      const b = L.latLngBounds([pos]);
+      L.marker(pos, { icon: L.divIcon({ className: '', iconSize: [0, 0], html: '<div class="vm"><span class="c" style="background:#0f1c36">' + ic('car', 14, 2) + '</span></div>' }) }).addTo(m);
+      list.forEach((s, i) => { L.marker(s.pos, { icon: L.divIcon({ className: '', iconSize: [0, 0], html: '<div class="stm">' + (i + 1) + '</div>' }) }).addTo(m).bindPopup('<b>' + esc(s.name) + '</b><br>' + s.km.toFixed(1) + ' km'); b.extend(s.pos); });
+      m.fitBounds(b, { padding: [24, 24], maxZoom: 14 });
+    }
+  };
+};
+
+/* ---------- map tab: project vehicles ---------- */
+const VST = { Running: '#15803d', Idle: '#b45309', Stopped: '#57534e', Offline: '#a8a29e', 'Under Maintenance': '#1d4ed8' };
+const vst = v => { const s = J.status(v); return s === 'Maintenance' ? 'Under Maintenance' : s === 'Completed' ? 'Stopped' : s; };
+SC.fleet = () => {
+  const d = me(), mv = myVeh();
+  if (!DS.ui.fl) DS.ui.fl = { scope: mv ? 'project' : 'all', area: 'All', st: 'All' };
+  const F = DS.ui.fl;
+  let vs = J.S.vehicles.filter(v => (F.scope === 'project' && mv ? v.project === mv.project : true) && (F.area === 'All' || v.site === F.area));
+  const counts = {}; Object.keys(VST).forEach(k => counts[k] = vs.filter(v => vst(v) === k).length);
+  const shown = vs.filter(v => F.st === 'All' || vst(v) === F.st);
+  DS._flList = shown;
+  const p = mv ? J.P(mv.project) : null;
+  return {
+    html: topHdr('Vehicle map') + '<div class="scr" style="gap:10px">' +
+      '<div class="seg" style="display:grid;grid-template-columns:1fr 1fr" role="tablist">' + [['project', mv ? 'My project' : 'My project'], ['all', 'All Pune']].map(x => '<button role="tab" aria-selected="' + (F.scope === x[0]) + '" class="' + (F.scope === x[0] ? 'on' : '') + '" ' + (x[0] === 'project' && !mv ? 'disabled' : '') + ' onclick="DS.ui.fl.scope=\'' + x[0] + '\';render()">' + x[1] + '</button>').join('') + '</div>' +
+      (F.scope === 'project' && p ? '<span class="xs muted">' + p.id + ' · ' + esc(p.name) + '</span>' : '') +
+      '<div class="hscroll">' + [['All', 'All areas'], ['CHK', 'Chakan'], ['TLG', 'Talegaon'], ['RNJ', 'Ranjangaon']].map(a => '<button class="chip ' + (F.area === a[0] ? 'on' : '') + '" onclick="DS.ui.fl.area=\'' + a[0] + '\';render()">' + ic('pin', 13) + a[1] + '</button>').join('') + '</div>' +
+      '<div class="snap">' + [['All', vs.length, '#1c1917']].concat(Object.keys(VST).map(k => [k, counts[k], VST[k]])).map(x => '<button class="' + (F.st === x[0] ? 'on' : '') + '" onclick="DS.ui.fl.st=\'' + x[0] + '\';render()"><b style="color:' + x[2] + '">' + x[1] + '</b><span>' + (x[0] === 'Under Maintenance' ? 'Maintenance' : x[0]) + '</span></button>').join('') + '</div>' +
+      '<div id="fmap" style="height:230px;border-radius:14px;overflow:hidden;border:1px solid var(--line);flex:0 0 auto"></div>' +
+      '<span class="lbl">DRIVER MAPPING · VIEW ONLY</span>' +
+      (shown.map(v => { const dr = J.D(v.driverId), s = vst(v); return '<div class="listbtn" style="flex-direction:row;align-items:center;gap:10px' + (mv && v.id === mv.id ? ';border-color:var(--or)' : '') + '"><span class="dot" style="background:' + VST[s] + ';flex:0 0 8px"></span><span class="sp" style="min-width:0"><b style="font-size:13.5px">' + esc(v.reg) + (mv && v.id === mv.id ? ' · yours' : '') + '</b><br><span class="xs muted">' + esc(v.model) + ' · ' + esc(v.epi) + ' · ' + J.SITES[v.site].short + '</span><br><span class="xs">' + ic('user', 12) + ' ' + esc(dr ? dr.name : 'No driver mapped') + '</span></span>' + pill(s, J.STATUS_C) + '</div>'; }).join('') || '<div class="box empty">No vehicles here.</div>') + '</div>',
+    nav: 'fleet',
+    mount: () => {
+      const m = mkMap(document.getElementById('fmap'), F.area === 'All' ? [18.765, 73.96] : J.SITES[F.area].center, F.area === 'All' ? 9 : 12); DS.map = m; if (!m) return;
+      DS.fmk = {}; const b = []; shown.forEach(v => { const L2 = J.live(v); b.push(L2.pos); DS.fmk[v.id] = L.marker(L2.pos, { icon: vIcon(v, VST[vst(v)]) }).addTo(m).bindPopup('<b>' + esc(v.reg) + '</b><br>' + vst(v) + ' · ' + L2.speed + ' km/h'); });
+      if (b.length > 1) m.fitBounds(b, { padding: [20, 20], maxZoom: 13 });
+    },
+    tick: () => { if (!DS.fmk) return; (DS._flList || []).forEach(v => { const mk = DS.fmk[v.id]; if (mk && vst(v) === 'Running') mk.setLatLng(J.live(J.V(v.id)).pos); }); }
+  };
+};
+
+/* ---------- end trip: full daily trip log ---------- */
+SC.end = () => {
+  const act = myActive(); if (!act && !DS.ui.endDone) return { html: hdr('End trip') + '<div class="scr"><div class="box empty">No trip in progress.</div></div>' };
+  if (DS.ui.endDone) return endSummary();
+  const v = J.V(act.vehicleId), L2 = J.live(v), ev = isEV(v), d = me(), p = J.P(v.project) || {};
+  if (!DS.ui.end || DS.ui.end.trip !== act.tripId) {
+    const prev = J.S.trips.filter(t => t.vehicleId === v.id && t.log).sort((a, b) => b.startTs - a.startTs)[0];
+    const pl = (prev && prev.log) || {};
+    DS.ui.end = { trip: act.tripId, odo: (act.startOdo + L2.dist).toFixed(1), soc: ev ? String(curSoc(act, L2)) : '', energy: ev ? (L2.dist / 6.8).toFixed(1) : (act.energy && act.energy.qty) || (L2.dist / (v.fuel === 'Petrol' ? 14.5 : 9.5)).toFixed(1), regen: ev ? (pl.regen && pl.regen !== 'NA' ? pl.regen : 'Medium') : 'NA', ac: pl.ac || 'On · Eco', load: pl.load || 'Half load', mode: pl.mode || 'Normal', anc: 'OK', remarks: J.S.tickets.some(t => t.tripId === act.tripId) ? 'Issue reported during trip (see ticket). Completed remaining run.' : 'Normal run. No issues.', corr: false };
+  }
+  const F = DS.ui.end; const n = parseFloat(F.odo); let err = '';
+  if (isNaN(n)) err = 'Enter the end odometer reading.'; else if (n < act.startOdo && !F.corr) err = 'End reading cannot be lower than the start ' + fmt(act.startOdo, 1) + ' km.';
+  const stops = (act.stops || []).concat(act.pause ? [Object.assign({ to: Date.now() }, act.pause)] : []);
+  const auto = [['Date', fDate(act.startTs)], ['Model', v.maker + ' ' + v.model], ['EP no.', v.epi], ['Trade plate', v.temp], ['Driver name', d.name], ['Shift', shiftTxt()], ['Route', act.routeName || (asg() || {}).routeName || J.SITES[v.site].short + ' track'], ['Start date', fDate(act.startTs)], ['Start time', fTime(act.startTs)], ['End date', fDate(Date.now())], ['End time', fTime(Date.now())], ['Start ODO', fmt(act.startOdo, 1) + ' km']].concat(ev ? [['Start SOC', (act.startSoc || 96) + '%']] : []);
+  const kmC = isNaN(n) ? 0 : n - act.startOdo;
+  return {
+    html: hdr('End trip', 'Daily trip log · ' + esc(v.reg)) + '<div class="scr">' +
+      '<div class="box"><div class="row"><span class="lbl sp">FILLED AUTOMATICALLY</span><span class="xs muted">' + act.tripId + '</span></div><dl class="kv">' + auto.map(x => '<dt>' + x[0] + '</dt><dd>' + esc(x[1]) + '</dd>').join('') + '</dl></div>' +
+      photoField('endPhoto', '1. End odometer photo', 'odo', F.odo) +
+      '<div class="box"><label class="fld">2. End ODO (km)<input class="in" id="e_odo" inputmode="decimal" value="' + esc(F.odo) + '" onchange="DS.ui.end.odo=this.value;render()" style="font-size:19px;font-weight:500"></label>' + (err ? '<span class="err" role="alert">' + err + '</span>' : '<div class="row" style="padding:10px 12px;border-radius:10px;background:#fff7ed"><span class="sp small muted">KM covered (auto)</span><b style="font-family:var(--head);font-size:20px;color:var(--or2)">' + fmt(kmC, 1) + ' km</b></div>') + (n < act.startOdo ? '<label class="ck"><input type="checkbox" ' + (F.corr ? 'checked' : '') + ' onchange="DS.ui.end.corr=this.checked;render()">Authorised correction by ' + esc(d.sup) + '</label>' : '') + '</div>' +
+      (ev ? photoField('endSocPhoto', '3. End battery % photo', 'soc', F.soc) + '<div class="box"><div class="grid" style="grid-template-columns:1fr 1fr;gap:10px"><label class="fld">End SOC (%)<input class="in" id="e_soc" inputmode="numeric" value="' + esc(F.soc) + '" oninput="DS.ui.end.soc=this.value" style="font-size:18px;font-weight:500"></label><label class="fld">Energy used (kWh)<input class="in" id="e_en" inputmode="decimal" value="' + esc(F.energy) + '" oninput="DS.ui.end.energy=this.value"></label></div></div>' :
+        '<div class="box"><label class="fld">3. Fuel used (' + (v.fuel === 'CNG' ? 'kg' : 'L') + ')<input class="in" id="e_en" inputmode="decimal" value="' + esc(F.energy) + '" oninput="DS.ui.end.energy=this.value"></label></div>') +
+      '<div class="box"><span class="lbl">4. TEST CONDITIONS</span>' + (ev ? '<span class="small b">Regen mode</span>' + chipSel('end', 'regen', LOGOPT.regen) : '') + '<span class="small b">AC mode</span>' + chipSel('end', 'ac', LOGOPT.ac) + '<span class="small b">Load condition</span>' + chipSel('end', 'load', LOGOPT.load) + '<span class="small b">Drive mode</span>' + chipSel('end', 'mode', LOGOPT.mode) + '<span class="small b">A&amp;C check</span>' + chipSel('end', 'anc', LOGOPT.anc) + '<span class="xs muted">Pre-selected from this vehicle\'s last trip.</span></div>' +
+      '<div class="box"><span class="lbl">STOPS ON THIS TRIP (' + stops.length + ')</span>' + (stops.map(s => '<div class="row small" style="flex-wrap:nowrap;align-items:flex-start;border-bottom:1px solid #f5f5f4;padding-bottom:6px"><span class="sp"><b>' + esc(s.reason) + '</b><br><span class="xs muted">' + fTime(s.from) + '–' + fTime(s.to) + ' · ' + (s.soc != null ? 'SOC ' + s.soc + '% · ' : '') + 'ODO ' + fmt(s.odo, 1) + '</span></span><span class="muted">' + Math.max(0, Math.round((s.to - s.from) / 60e3)) + ' min</span></div>').join('') || '<span class="small muted">No stops</span>') + '</div>' +
+      '<label class="fld">5. Remark<textarea class="in" id="e_rem" rows="2" oninput="DS.ui.end.remarks=this.value">' + esc(F.remarks) + '</textarea></label><div id="e_err" class="err" role="alert"></div></div>' +
+      '<div class="foot"><button class="big dark" onclick="U.endTrip()">SUBMIT &amp; END TRIP</button></div>'
+  };
+};
+U.endTrip = () => {
+  const F = DS.ui.end, act = myActive(); F.odo = val('e_odo'); F.energy = val('e_en'); F.remarks = val('e_rem'); if (document.getElementById('e_soc')) F.soc = val('e_soc');
+  const v = J.V(act.vehicleId), ev = isEV(v), n = parseFloat(F.odo), err = document.getElementById('e_err');
+  if (!DS.ui.endPhoto) { err.textContent = 'Add the end odometer photo (tap "Use sample photo" for the demo).'; return; }
+  if (ev && !DS.ui.endSocPhoto) { err.textContent = 'Add the end battery % photo.'; return; }
+  if (isNaN(n) || (n < act.startOdo && !F.corr)) { err.textContent = 'Fix the odometer reading.'; render(); return; }
+  const d = me(), now = Date.now();
+  const km = Math.max(0, Math.round((n - act.startOdo) * 10) / 10), mins = Math.max(1, Math.round((now - act.startTs) / 60e3));
+  const energy = Math.max(0.1, parseFloat(F.energy) || (ev ? km / 6.8 : km / 10));
+  const stops = (act.stops || []).concat(act.pause ? [Object.assign({}, act.pause, { to: now })] : []);
+  const id = J.tx(s => {
+    const id = act.tripId || ('TRP-26-' + String(s.seq.trip).padStart(5, '0')); s.seq.trip++;
+    const p = s.projects.find(x => x.id === v.project);
+    s.trips.push({ id, vehicleId: v.id, driverId: d.id, project: v.project, type: (s.assignments[d.id] || {}).type || (p || {}).type, site: v.site, startTs: act.startTs, endTs: now, odoS: act.startOdo, odoE: n, km, mins, avg: Math.round(km / mins * 60) || 55, max: Math.max(act.maxSp || 0, 72), idle: Math.round(mins * J.SPEEDUP * 0.06), energy: Math.round(energy * 10) / 10, unit: ev ? 'kWh' : v.fuel === 'CNG' ? 'kg' : 'L', battS: ev ? (act.startSoc || 96) : null, battE: ev ? parseInt(F.soc) || null : null, cost: ev ? null : Math.round(energy * (v.fuel === 'Petrol' ? 104.6 : 92.4)), route: act.route, routeName: act.routeName, status: 'Completed', tickets: s.tickets.filter(t => t.tripId === id).map(t => t.id), remarks: F.remarks + (F.corr ? ' (odometer correction authorised by ' + d.sup + ')' : ''), photoS: act.photo, photoE: DS.ui.endPhoto, socPhotoE: DS.ui.endSocPhoto || null, shift: act.shift || 'A', breaks: stops.length, stops: stops.map(x => ({ from: x.from, to: x.to, reason: x.reason, odo: x.odo, soc: x.soc, notes: x.notes })), log: { regen: ev ? F.regen : 'NA', ac: F.ac, load: F.load, mode: F.mode, anc: F.anc } });
+    const vv = s.vehicles.find(x => x.id === v.id); vv.odo = n; vv.done += km; vv.status = 'Idle'; vv.history.push({ t: now, x: 'Trip ' + id + ' completed · ' + km + ' km · odometer ' + n, by: d.name });
+    if (p) p.achieved = Math.round((p.achieved + km) * 10) / 10;
+    const dd = s.drivers.find(x => x.id === d.id); dd.avail = 'Available'; dd.km = Math.round(dd.km + km); dd.trips++;
+    if (s.assignments[d.id]) s.assignments[d.id].status = 'Completed';
+    delete s.active[v.id];
+    return id;
+  });
+  DS.ui.endPhoto = null; DS.ui.endSocPhoto = null; DS.ui.end = null; DS.ui.fuel = null; DS.ui.endDone = id; toast('Trip submitted · ' + fmt(km, 1) + ' km', 'ok'); render();
+};
+function endSummary() {
+  const t = J.S.trips.find(x => x.id === DS.ui.endDone); const v = J.V(t.vehicleId), p = J.P(t.project) || {};
+  return { html: hdr('Trip summary', esc(v.reg)) + '<div class="scr"><section style="background:var(--navy);color:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:4px"><span class="small" style="color:var(--navtext)">KM covered</span><span style="font-family:var(--head);font-size:44px;font-weight:500;letter-spacing:-1px;line-height:1.1">' + fmt(t.km, 1) + ' km</span><span class="small" style="color:var(--navtext)">End ODO ' + fmt(t.odoE, 1) + ' − start ODO ' + fmt(t.odoS, 1) + '</span></section><div class="grid" style="grid-template-columns:1fr 1fr;gap:8px">' + [['Duration', dur(t.mins)], ['Breaks / stops', t.breaks], t.battS != null ? ['SOC', t.battS + '% → ' + t.battE + '%'] : ['Fuel', fmt(t.energy, 1) + ' ' + t.unit], ['Avg speed', t.avg + ' km/h']].map(s => '<div class="stat" style="background:#fff;border-color:var(--line)"><span class="k">' + s[0] + '</span><span class="v">' + s[1] + '</span></div>').join('') + '</div><div class="box"><div class="row small" style="justify-content:space-between"><span class="muted">Target vs covered</span><b>' + fmt(v.done) + ' / ' + fmt(v.target) + ' km</b></div><div class="prog" style="height:8px"><i style="width:' + Math.min(100, v.done / v.target * 100) + '%"></i></div><span class="xs muted">' + p.id + ' total: ' + fmt(p.achieved) + ' / ' + fmt(p.target) + ' km</span></div><p role="status" class="small" style="margin:0;padding:12px;border-radius:10px;background:var(--greenw);color:#14532d">Trip log ' + t.id + ' submitted. It is in the Daily Trip Log on the web portal.</p></div><div class="foot"><a class="big ghost" href="#/tripd/' + t.id + '" onclick="DS.ui.endDone=null">View trip log</a><button class="big dark" onclick="DS.ui.endDone=null;U.go(\'home\')">Done</button></div>' };
+}
+
+/* ---------- alerts: vehicle alerts + notifications ---------- */
+SC.alerts = () => {
+  const d = me(), v = myVeh(); if (!DS.ui.alTab) DS.ui.alTab = 'veh';
+  const notes = J.S.notifications.filter(n => n.to === d.id).sort((a, b) => b.ts - a.ts);
+  const va = v ? J.S.alerts.filter(a => a.vehicleId === v.id).sort((a, b) => b.ts - a.ts).slice(0, 30) : [];
+  const AIC = { Overspeed: 'act', 'Geofence Exit': 'geo', 'Geofence Entry': 'geo', 'Break Overdue': 'cal', Emergency: 'warn', 'Unusual Stoppage': 'pause', 'Battery Inspection': 'ev' };
+  const tabs = '<div class="seg" style="display:grid;grid-template-columns:1fr 1fr" role="tablist">' + [['veh', 'Vehicle alerts (' + va.filter(a => !a.ack).length + ')'], ['notes', 'Messages (' + notes.filter(n => !n.read).length + ')']].map(x => '<button role="tab" aria-selected="' + (DS.ui.alTab === x[0]) + '" class="' + (DS.ui.alTab === x[0] ? 'on' : '') + '" onclick="DS.ui.alTab=\'' + x[0] + '\';render()">' + x[1] + '</button>').join('') + '</div>';
+  const body = DS.ui.alTab === 'veh' ?
+    (v ? '<span class="xs muted">' + esc(v.reg) + ' · overspeed, geofence, status and break alerts. Your supervisor and PM see these too.</span>' + (myActive() ? '<button class="btn sm" style="align-self:flex-start" onclick="U.simGeo()">Demo: simulate geofence exit</button>' : '') : '<div class="box empty">No vehicle linked today.</div>') +
+    va.map(a => '<div class="listbtn" style="flex-direction:row;gap:12px;align-items:flex-start"><span style="width:38px;height:38px;flex:0 0 38px;border-radius:999px;background:' + J.PRI_C[a.priority][1] + ';color:' + J.PRI_C[a.priority][0] + ';display:flex;align-items:center;justify-content:center">' + ic(AIC[a.type] || 'bell', 18) + '</span><span style="flex:1;min-width:0"><span class="row" style="flex-wrap:nowrap"><b class="sp" style="font-size:13.5px">' + esc(a.type) + '</b><span class="xs muted" style="white-space:nowrap">' + ago(a.ts) + '</span></span><span class="small" style="color:var(--mute)">' + esc(a.text) + '</span><span class="row" style="gap:6px;margin-top:4px">' + pill(a.priority, J.PRI_C) + '<span class="xs muted">' + (a.ack ? 'Seen by supervisor' : 'Sent to ' + ['Supervisor', 'Project Manager', 'Plant Manager'][Math.min(2, a.level || 0)]) + '</span></span></span></div>').join('')
+    : (notes.some(n => !n.read) ? '<button class="btn sm" style="align-self:flex-end" onclick="U.readAll()">Mark all read</button>' : '') + (notes.map(n => '<button class="listbtn" style="flex-direction:row;gap:12px;align-items:flex-start;' + (n.read ? 'background:transparent' : 'border-color:var(--orl)') + '" onclick="U.openN(\'' + n.id + '\')"><span style="width:38px;height:38px;flex:0 0 38px;border-radius:999px;background:' + (n.read ? '#f1f0ef' : 'var(--orw)') + ';color:' + (n.read ? 'var(--mute)' : 'var(--or2)') + ';display:flex;align-items:center;justify-content:center">' + ic({ car: 'car', msg: 'msg', warn: 'warn', ticket: 'ticket', swap: 'swap' }[n.kind] || 'bell', 18) + '</span><span style="flex:1;min-width:0"><span class="row" style="flex-wrap:nowrap"><b class="sp" style="font-size:13.5px">' + esc(n.title) + '</b><span class="xs muted" style="white-space:nowrap">' + ago(n.ts) + '</span></span><span class="small" style="color:var(--mute)">' + esc(n.body) + '</span></span></button>').join('') || '<div class="box empty">No messages yet.</div>');
+  return { html: topHdr('Alerts') + '<div class="scr" style="gap:8px">' + tabs + body + '</div>', nav: 'alerts' };
+};
+U.simGeo = () => { const act = myActive(); if (!act) return; const v = J.V(act.vehicleId); J.tx(s => { J.addAlert(s, 'Geofence Exit', v.id, v.reg + ' left the ' + J.SITES[v.site].short + ' testing zone', 'High'); J.notify(s, me().id, 'Geofence exit', 'You left the approved test area. Return to the route. PM notified.', 'alerts', 'warn'); }); toast('Geofence exit: PM and supervisor notified', 'bad'); render(); };
+U.openN = id => { let link; J.tx(s => { const n = s.notifications.find(x => x.id === id); n.read = true; link = n.link; }); if (link) U.go(link); else render(); };
+U.readAll = () => { const d = me(); J.tx(s => s.notifications.forEach(n => { if (n.to === d.id) n.read = true; })); render(); };
+
+/* ---------- profile ---------- */
+SC.profile = () => {
+  const d = me(), site = J.SITES[d.site], tk = J.S.tickets.filter(t => t.driverId === d.id && t.status !== 'Closed').length;
+  const wk = []; for (let k = 0; k < 7; k++) { const day = dayISO(k); const s = J.shiftOf(d.id, day); wk.push([new Date(Date.now() + k * 864e5).toLocaleDateString('en-IN', { weekday: 'short' }), s ? s.id : '–']); }
+  return {
+    html: topHdr('Profile') + '<div class="scr"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:8px 0"><span style="width:80px;height:80px;border-radius:999px;background:#1c1917;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-size:28px">' + esc(d.name.split(' ').map(w => w[0]).slice(0, 2).join('')) + '</span><h2 style="font-size:23px">' + esc(d.name) + '</h2><span class="small muted">Test Driver · ' + d.emp + '</span><div class="row" style="gap:6px;justify-content:center">' + pill(d.avail, { 'On trip': ['#15803d', '#ecfdf3'], Available: ['#1d4ed8', '#eef3fe'], 'Off duty': ['#57534e', '#f1f0ef'], 'On leave': ['#b45309', '#fef6e7'] }) + '<span class="pill" style="background:var(--orw);color:var(--or2)">' + d.score + ' ★ score</span></div></div>' +
+      '<div class="box"><span class="lbl">LANGUAGE PREFERENCE</span><div class="seg" style="display:grid;grid-template-columns:1fr 1fr 1fr">' + I18N.LANGS.map(l => '<button class="' + (I18N.lang === l[0] ? 'on' : '') + '" onclick="U.lang(\'' + l[0] + '\')">' + l[1] + '</button>').join('') + '</div></div>' +
+      '<div class="box"><span class="lbl">MY SHIFTS · NEXT 7 DAYS</span><div class="wk">' + wk.map(x => '<span><i>' + x[0] + '</i><b class="s' + x[1] + '">' + x[1] + '</b></span>').join('') + '</div><span class="xs muted">Today: ' + shiftTxt() + '. Set by your supervisor in the web portal.</span></div>' +
+      '<a class="listbtn" href="#/tickets" style="flex-direction:row;align-items:center"><span class="sp"><b>My tickets</b><br><span class="xs muted">' + tk + ' active</span></span>' + ic('chev', 18) + '</a>' +
+      '<div class="box"><dl class="kv"><dt>Employee ID</dt><dd>' + d.emp + '</dd><dt>Contact number</dt><dd>' + d.phone + '</dd><dt>Assigned location</dt><dd>' + site.name + '</dd><dt>Supervisor</dt><dd>' + esc(d.sup) + ' · <a href="tel:' + site.supPhone.replace(/\s/g, '') + '">' + site.supPhone + '</a></dd><dt>Licence</dt><dd>' + esc(d.lic) + '</dd><dt>Licence class</dt><dd>' + d.licClass + '</dd><dt>Valid till</dt><dd>' + fDate(d.licValid) + '</dd><dt>Total km</dt><dd>' + fmt(d.km) + '</dd></dl></div>' +
+      '<div class="box"><span class="lbl">EMERGENCY CONTACT</span><span>' + esc(d.emergency) + '</span></div>' +
+      '<div class="box"><span class="lbl">DEMO · SWITCH CASE</span><div class="grid" style="grid-template-columns:1fr 1fr;gap:8px">' + CASES.map(c => '<button class="btn" style="height:44px' + (findDrv(c[0]).id === d.id ? ';border-color:var(--or);color:var(--or2)' : '') + '" onclick="U.switchCase(\'' + c[0] + '\')">' + ic(c[2], 15) + c[1].replace(' case', '') + '</button>').join('') + '</div></div>' + '<button class="big red" style="height:50px" onclick="U.logout()">' + ic('logout', 18) + 'Log out</button><button class="btn sm" style="align-self:center" onclick="U.reset()">Reset demo data</button><span class="xs muted" style="text-align:center">App v1.1 prototype · GPS is simulated</span></div>', nav: 'profile'
+  };
+};
+U.lang = l => { I18N.set(l); render(); };
+U.cycleLang = () => { const ls = I18N.LANGS.map(x => x[0]); U.lang(ls[(ls.indexOf(I18N.lang) + 1) % ls.length]); };
+
+SC.assignment = () => {
+  const a = asg(), d = me(); if (!a) return { html: hdr('Assignment') + '<div class="scr"><div class="box empty">No assignment today.</div></div>' };
+  const v = J.V(a.vehicleId), p = J.P(a.project) || {}, site = J.SITES[v.site];
+  const ack = a.status !== 'Assigned';
+  return {
+    html: hdr('Assignment details', esc(v.reg) + ' · ' + p.id) + '<div class="scr">' +
+      '<section class="box"><span class="lbl">VEHICLE</span><div style="font-family:var(--head);font-size:22px;font-weight:600">' + esc(v.reg) + '</div><dl class="kv"><dt>Temp. reg.</dt><dd>' + esc(v.temp) + '</dd><dt>Model</dt><dd>' + esc(v.maker + ' ' + v.model) + '</dd><dt>Category</dt><dd>' + esc(v.cat) + '</dd><dt>Fuel type</dt><dd>' + v.fuel + '</dd><dt>Start odometer</dt><dd class="b">' + fmt(v.odo, 1) + ' km (last trip)</dd><dt>GPS device</dt><dd class="mono xs">' + v.gps + '</dd></dl></section>' +
+      '<section class="box"><span class="lbl">PROJECT &amp; TEST</span><dl class="kv"><dt>Project</dt><dd>' + p.id + ' · ' + esc(p.name) + '</dd><dt>Client</dt><dd>' + esc(p.client) + '</dd><dt>Testing type</dt><dd>' + esc(a.type) + '</dd><dt>Today\'s target</dt><dd class="b">' + a.target + ' km</dd><dt>Overall</dt><dd>' + fmt(v.done) + ' of ' + fmt(v.target) + ' km done</dd></dl></section>' +
+      '<section class="box"><span class="lbl">ROUTE / TEST AREA</span><div id="amap" style="height:150px;border-radius:10px;overflow:hidden;position:relative;background:#eeefe9"></div><span class="small">' + esc(a.routeName) + '</span></section>' +
+      '<section class="box"><span class="lbl">INSTRUCTIONS</span><ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:13.5px">' + a.instructions.split('\n').filter(Boolean).map(x => '<li>' + esc(x) + '</li>').join('') + '</ol><span class="xs muted">Allocated by ' + esc(a.createdBy) + ' at ' + fTime(a.createdAt) + '</span></section>' +
+      '<section class="box" style="flex-direction:row;align-items:center"><span class="sp"><b>' + esc(d.sup) + '</b><br><span class="xs muted">Supervisor · ' + site.supPhone + '</span></span><a class="btn" href="tel:' + site.supPhone.replace(/\s/g, '') + '">' + ic('phone', 16) + 'Call</a></section></div>' +
+      '<div class="foot">' + (ack ? '<span class="small" style="color:var(--green);text-align:center">✓ Acknowledged · supervisor notified</span><a class="big" href="#/pretrip">Continue to pre-trip check</a>' : '<button class="big dark" onclick="U.ack()">I\'ve read this · Acknowledge</button>') + '</div>',
+    mount: () => { const m = mkMap(document.getElementById('amap'), site.center, 12); DS.map = m; if (!m) return; const r = J.route(v.site, a.route || 'track'); const pl = L.polyline(r.pts, { color: '#c2410c', weight: 4 }).addTo(m); m.fitBounds(pl.getBounds(), { padding: [10, 10] }); }
+  };
+};
+U.ack = () => { const d = me(); J.tx(s => { const a = s.assignments[d.id]; if (a && a.status === 'Assigned') { a.status = 'Acknowledged'; a.ackTs = Date.now(); } }); toast('Acknowledged. Your supervisor can see it.', 'ok'); render(); };
+function raiseTicket(cat, desc, prio, photo) {
+  const d = me(), act = myActive(), v = act ? J.V(act.vehicleId) : myVeh(); const pos = act ? J.live(v).pos : v.park;
+  return J.tx(s => {
+    const n = ++s.seq.ticket; const id = 'JAY-TKT-2026-' + String(n).padStart(4, '0'); const p = s.projects.find(x => x.id === v.project) || {};
+    s.tickets.unshift({ id, cat, desc, vehicleId: v.id, driverId: d.id, project: v.project, created: Date.now(), prio: prio || (/Accident|Battery|Engine/.test(cat) ? 'High' : 'Medium'), status: 'Open', sup: null, loc: pos, place: J.SITES[v.site].short + ' · ' + pos[0].toFixed(4) + ', ' + pos[1].toFixed(4), photo, tripId: act ? act.tripId : null, timeline: [{ t: Date.now(), x: 'Ticket raised from driver app' + (photo ? ' · photo + GPS attached' : ' · GPS attached'), by: d.name }, { t: Date.now() + 1000, x: 'Project manager ' + (p.pm || '') + ' notified (email + dashboard)', by: 'System' }], resolution: null });
+    J.addAlert(s, 'New Ticket', v.id, id + ' · ' + cat + ' raised by ' + d.name);
+    return id;
+  });
+}
+SC.issue = () => {
+  const v = myVeh(); if (!v) return { html: hdr('Report an issue') + '<div class="scr"><div class="box empty">No vehicle today.</div></div>' };
+  if (DS.ui.issueDone) { const id = DS.ui.issueDone; const t = J.S.tickets.find(x => x.id === id); return { html: hdr('Issue reported', esc(v.reg)) + '<div class="scr" style="gap:16px"><div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding-top:24px"><span style="width:72px;height:72px;border-radius:999px;background:var(--greenw);color:var(--green);display:flex;align-items:center;justify-content:center">' + ic('check', 36, 2.2) + '</span><span class="small muted">Ticket created</span><span style="font-family:var(--head);font-size:26px;font-weight:600">' + id + '</span><span class="small muted">' + esc(t.cat) + ' · sent to your project manager ' + esc((J.P(t.project) || {}).pm || '') + '</span></div><ol class="box" style="list-style:none;margin:0" aria-label="Ticket progress">' + J.TICKET_STATUS.map((s, i) => '<li class="row" style="gap:10px;font-size:14px;color:' + (i === 0 ? 'var(--ink)' : 'var(--mute2)') + '"><span style="width:12px;height:12px;border-radius:999px;background:' + (i === 0 ? 'var(--or)' : '#fff') + ';border:2px solid ' + (i === 0 ? 'var(--or)' : 'var(--line2)') + '"></span>' + s + (i === 0 ? ' · just now' : '') + '</li>').join('') + '</ol></div><div class="foot">' + (myActive() ? '<button class="big dark" onclick="DS.ui.issueDone=null;U.go(\'trip\')">Back to trip</button>' : '<button class="big dark" onclick="DS.ui.issueDone=null;U.go(\'home\')">Back to home</button>') + '<a class="big ghost" href="#/ticket/' + id + '" onclick="DS.ui.issueDone=null">View ticket</a></div>' }; }
+  if (!DS.ui.issue) { const cat = v.fuel === 'EV' ? 'Battery Issue' : 'Engine / Motor Issue'; DS.ui.issue = { cat, desc: J.DESC_TEMPLATES[cat], edited: false }; }
+  const F = DS.ui.issue, act = myActive(), pos = act ? J.live(v).pos : v.park;
+  return {
+    html: hdr('Report an issue', esc(v.reg) + (act ? ' · trip in progress' : '')) + '<div class="scr" style="gap:14px"><fieldset style="border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:8px"><legend class="b" style="font-size:13.5px;padding:0 0 8px">Issue category <span style="color:var(--red)">*</span></legend><div class="catgrid">' + J.TICKET_CATS.map(c => '<button type="button" class="' + (F.cat === c ? 'on' : '') + '" aria-pressed="' + (F.cat === c) + '" onclick="U.cat(\'' + c + '\')">' + c + '</button>').join('') + '</div></fieldset>' +
+      '<label class="fld">What happened? <span class="xs muted" style="font-weight:400">Pre-filled for this category. Edit as needed.</span><textarea class="in" id="i_desc" rows="3" oninput="DS.ui.issue.desc=this.value;DS.ui.issue.edited=true">' + esc(F.desc) + '</textarea></label>' +
+      photoField('issuePhoto', 'Photo', 'issue', F.cat.toUpperCase()) +
+      '<div class="box" style="gap:6px;font-size:13px"><div class="row"><span class="muted sp">Location (auto)</span><b style="font-weight:500">' + pos[0].toFixed(4) + ', ' + pos[1].toFixed(4) + '</b></div><div class="row"><span class="muted sp">Date &amp; time (auto)</span><b style="font-weight:500">' + fDate(Date.now()) + ' · ' + fTime(Date.now()) + '</b></div></div><div id="i_err" class="err" role="alert"></div></div>' +
+      '<div class="foot"><button class="big" onclick="U.submitIssue()">Submit issue</button></div>'
+  };
+};
+U.cat = c => { const F = DS.ui.issue; F.cat = c; if (!F.edited) F.desc = J.DESC_TEMPLATES[c]; render(); };
+U.submitIssue = () => { const F = DS.ui.issue; F.desc = val('i_desc'); const miss = []; if (!F.desc.trim()) miss.push('description'); if (!DS.ui.issuePhoto) miss.push('photo'); if (miss.length) { document.getElementById('i_err').textContent = 'Please add: ' + miss.join(', ') + '. Tap "Use sample photo" for the demo.'; return; } const id = raiseTicket(F.cat, F.desc, null, DS.ui.issuePhoto); DS.ui.issuePhoto = null; DS.ui.issue = null; DS.ui.issueDone = id; toast('Ticket ' + id + ' created', 'ok'); render(); };
+SC.trips = () => {
+  const d = me(), S = J.S, act = myActive();
+  const list = S.trips.filter(t => t.driverId === d.id).sort((a, b) => b.startTs - a.startTs);
+  const m0 = new Date(); m0.setDate(1); m0.setHours(0, 0, 0, 0); const month = list.filter(t => t.startTs >= m0.getTime());
+  return {
+    html: topHdr('My trips') + '<div class="scr"><div class="grid" style="grid-template-columns:repeat(3,1fr);gap:8px"><div class="stat" style="background:#fff;border-color:var(--line)"><span class="k">This month</span><span class="v">' + month.length + ' trips</span></div><div class="stat" style="background:#fff;border-color:var(--line)"><span class="k">Distance</span><span class="v">' + fmt(month.reduce((a, t) => a + t.km, 0)) + ' km</span></div><div class="stat" style="background:#fff;border-color:var(--line)"><span class="k">Score</span><span class="v">' + d.score + ' ★</span></div></div>' +
+      (act ? '<a class="listbtn" href="#/trip" style="border-color:#a7e3bd"><span class="row"><b class="sp">Today · in progress</b>' + pill('Running') + '</span><span class="small muted">' + esc(J.V(act.vehicleId).reg) + ' · started ' + fTime(act.startTs) + '</span></a>' : '') +
+      (list.map(t => '<a class="listbtn" href="#/tripd/' + t.id + '"><span class="row"><b class="sp">' + fDay(t.startTs) + '</b>' + pill('Completed', { Completed: ['#57534e', '#f1f0ef'] }) + '</span><span class="small muted">' + esc(J.V(t.vehicleId).reg) + ' · ' + t.project + '</span><span class="row small"><span class="muted sp">' + fTime(t.startTs) + ' – ' + fTime(t.endTs) + '</span><b>' + fmt(t.km, 1) + ' km</b></span></a>').join('') || '<div class="box empty">No trips yet.</div>') + '</div>', nav: 'trips'
+  };
+};
+SC.tripd = () => {
+  const t = J.S.trips.find(x => x.id === DS.params[0]); if (!t) return { html: hdr('Trip') + '<div class="scr"><div class="box empty">Trip not found.</div></div>', nav: 'trips' };
+  const v = J.V(t.vehicleId); const tks = J.S.tickets.filter(k => t.tickets.indexOf(k.id) >= 0 || k.tripId === t.id);
+  return {
+    html: hdr(fDay(t.startTs) + ' trip', t.id) + '<div class="scr"><div class="box"><dl class="kv"><dt>Vehicle</dt><dd class="b">' + esc(v.reg) + '</dd><dt>Project</dt><dd>' + t.project + '</dd><dt>Testing type</dt><dd>' + esc(t.type) + '</dd><dt>Time</dt><dd>' + fTime(t.startTs) + ' – ' + fTime(t.endTs) + ' (' + dur(t.mins) + ')</dd><dt>Odometer</dt><dd>' + fmt(t.odoS, 1) + ' → ' + fmt(t.odoE, 1) + '</dd><dt>Distance</dt><dd class="b">' + fmt(t.km, 1) + ' km</dd><dt>' + (t.unit === 'kWh' ? 'Energy' : 'Fuel') + '</dt><dd>' + fmt(t.energy, 1) + ' ' + t.unit + '</dd><dt>Avg / max speed</dt><dd>' + t.avg + ' / ' + t.max + ' km/h</dd><dt>Remarks</dt><dd>' + esc(t.remarks || '—') + '</dd></dl></div>' +
+      (t.log ? '<div class="box"><span class="lbl">TRIP LOG</span><dl class="kv"><dt>Shift</dt><dd>' + (t.shift || 'A') + '</dd><dt>EP no.</dt><dd>' + esc(v.epi) + '</dd><dt>Trade plate</dt><dd>' + esc(v.temp) + '</dd>' + (t.battS != null ? '<dt>SOC</dt><dd>' + t.battS + '% → ' + t.battE + '%</dd><dt>Regen mode</dt><dd>' + esc(t.log.regen) + '</dd>' : '') + '<dt>AC mode</dt><dd>' + esc(t.log.ac) + '</dd><dt>Load</dt><dd>' + esc(t.log.load) + '</dd><dt>Drive mode</dt><dd>' + esc(t.log.mode) + '</dd><dt>A&amp;C</dt><dd>' + esc(t.log.anc) + '</dd><dt>Breaks</dt><dd>' + (t.breaks || 0) + '</dd></dl></div>' : '') +
+      ((t.stops || []).length ? '<div class="box"><span class="lbl">STOPS</span>' + t.stops.map(s => '<div class="row small"><span class="sp"><b>' + esc(s.reason) + '</b> <span class="muted">' + fTime(s.from) + '–' + fTime(s.to) + '</span></span><span class="muted">' + (s.soc != null ? s.soc + '% · ' : '') + fmt(s.odo, 1) + '</span></div>').join('') + '</div>' : '') +
+      '<div class="box"><span class="lbl">ODOMETER PHOTOS</span><div class="grid" style="grid-template-columns:1fr 1fr;gap:8px"><img class="photo" style="height:96px" alt="Start odometer" src="' + (t.photoS || J.samplePhoto('odo', fmt(t.odoS, 1).replace(/,/g, ''))) + '"><img class="photo" style="height:96px" alt="End odometer" src="' + (t.photoE || J.samplePhoto('odo', fmt(t.odoE, 1).replace(/,/g, ''))) + '"></div></div>' +
+      '<div class="box"><span class="lbl">ISSUES ON THIS TRIP</span>' + (tks.map(k => '<a href="#/ticket/' + k.id + '" class="row" style="color:var(--ink)"><b class="sp small">' + k.id + ' · ' + k.cat + '</b>' + pill(k.status, J.TSTATUS_C) + '</a>').join('') || '<span class="small muted">None</span>') + '</div></div>', nav: 'trips'
+  };
+};
+SC.tickets = () => {
+  const d = me(); if (!DS.ui.tkTab) DS.ui.tkTab = 'all';
+  const all = J.S.tickets.filter(t => t.driverId === d.id).sort((a, b) => b.created - a.created);
+  const list = all.filter(t => DS.ui.tkTab === 'all' ? true : DS.ui.tkTab === 'active' ? t.status !== 'Closed' : t.status === 'Closed');
+  return {
+    html: hdr('My tickets', 'Issues you raised', myVeh() ? '<a class="btn sm pri" href="#/issue">' + ic('plus', 14) + 'New</a>' : '') + '<div class="scr"><div class="seg" style="display:grid;grid-template-columns:1fr 1fr 1fr" role="tablist">' + [['all', 'All (' + all.length + ')'], ['active', 'Active (' + all.filter(t => t.status !== 'Closed').length + ')'], ['closed', 'Closed (' + all.filter(t => t.status === 'Closed').length + ')']].map(x => '<button role="tab" aria-selected="' + (DS.ui.tkTab === x[0]) + '" class="' + (DS.ui.tkTab === x[0] ? 'on' : '') + '" onclick="DS.ui.tkTab=\'' + x[0] + '\';render()">' + x[1] + '</button>').join('') + '</div>' +
+      (list.map(t => { const i = J.TICKET_STATUS.indexOf(t.status); return '<a class="listbtn" href="#/ticket/' + t.id + '"><span class="row"><b class="sp">' + t.id + '</b>' + pill(t.status, J.TSTATUS_C) + '</span><span><span style="font-weight:500">' + t.cat + '</span><br><span class="xs muted">' + esc(J.V(t.vehicleId).reg) + ' · raised ' + fDay(t.created) + (t.sup ? ' · ' + esc(t.sup) : '') + '</span></span><span class="grid" style="grid-template-columns:repeat(5,1fr);gap:4px;width:100%">' + J.TICKET_STATUS.map((s, k) => '<i style="height:4px;border-radius:999px;background:' + (k <= i ? 'var(--or)' : 'var(--line)') + '"></i>').join('') + '</span>' + (t.resolution ? '<span class="small" style="padding:8px 10px;border-radius:8px;background:var(--greenw);color:#14532d"><b>Resolution:</b> ' + esc(t.resolution.remarks) + '</span>' : '') + '</a>'; }).join('') || '<div class="box empty">No tickets here.</div>') + '</div>', nav: 'profile'
+  };
+};
+SC.ticket = () => {
+  const t = J.S.tickets.find(x => x.id === DS.params[0]); if (!t) return { html: hdr('Ticket') + '<div class="scr"><div class="box empty">Ticket not found.</div></div>', nav: 'profile' };
+  const i = J.TICKET_STATUS.indexOf(t.status);
+  return {
+    html: hdr(t.id, t.cat) + '<div class="scr"><div class="box"><div class="row">' + pill(t.status, J.TSTATUS_C) + '<span class="sp"></span><span class="xs muted">' + fDay(t.created) + ' · ' + fTime(t.created) + '</span></div><ol style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:4px">' + J.TICKET_STATUS.map((s, k) => '<li style="display:flex;flex-direction:column;gap:4px"><i style="height:4px;border-radius:999px;background:' + (k <= i ? 'var(--or)' : 'var(--line)') + '"></i><span style="font-size:10.5px;color:' + (k <= i ? 'var(--ink)' : 'var(--mute2)') + '">' + s + '</span></li>').join('') + '</ol><p style="margin:0">' + esc(t.desc) + '</p>' + (t.photo ? '<img class="photo" style="height:150px" alt="Issue photo" src="' + t.photo + '">' : '') + '<dl class="kv"><dt>Vehicle</dt><dd>' + esc(J.V(t.vehicleId).reg) + '</dd><dt>Supervisor</dt><dd>' + esc(t.sup || 'Not assigned yet') + '</dd><dt>Location</dt><dd>' + esc(t.place) + '</dd></dl></div>' +
+      (t.resolution ? '<div class="box" style="background:var(--greenw);border-color:#a7e3bd"><span class="lbl" style="color:#14532d">RESOLUTION</span><dl class="kv"><dt>Root cause</dt><dd>' + esc(t.resolution.cause) + '</dd><dt>Part replaced</dt><dd>' + esc(t.resolution.part) + '</dd><dt>Remarks</dt><dd>' + esc(t.resolution.remarks) + '</dd></dl>' + (t.resolution.photo ? '<img class="photo" style="height:130px" alt="Resolution photo" src="' + t.resolution.photo + '">' : '') + '</div>' : '') +
+      '<div class="box"><span class="lbl">PROGRESS</span>' + t.timeline.slice().reverse().map(e => '<div class="row" style="align-items:flex-start;flex-wrap:nowrap"><span class="dot" style="margin-top:6px;background:var(--or)"></span><span><span style="font-size:13.5px;font-weight:500">' + esc(e.x) + '</span><br><span class="xs muted">' + fDay(e.t) + ' ' + fTime(e.t) + ' · ' + esc(e.by) + '</span></span></div>').join('') + '</div></div>', nav: 'profile'
+  };
+};
+U.logout = () => { if (myActive()) { toast('End your trip before logging out.', 'warn'); return; } DS.me = null; try { localStorage.removeItem(DKEY); } catch (e) { } DS.ui = {}; location.hash = '#/login'; render(); };
+U.reset = () => modal('<h2>Reset demo data?</h2><p class="small" style="margin:0">Every vehicle, trip and ticket goes back to the starting sample. This also resets the web portal.</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="U.closeModal()">Cancel</button><button class="btn danger" onclick="U.doReset()">Reset</button></div>');
+U.doReset = () => { closeModal(); J.reset(); DS.ui = {}; toast('Demo data reset', 'ok'); U.go('home'); render(); };
+
+/* live updates from the web portal */
+let lastN = null;
+J.on(src => {
+  if (src !== 'remote' || !DS.me) return;
+  const d = me(); if (!d) return;
+  const n = J.S.notifications.filter(x => x.to === d.id).length;
+  if (lastN !== null && n > lastN) { const nn = J.S.notifications.find(x => x.to === d.id); toast('<b>' + esc(nn.title) + '</b><br>' + esc(nn.body), 'warn'); try { navigator.vibrate && navigator.vibrate(200); } catch (e) { } }
+  lastN = n;
+  if (DS.route === 'trip') return;
+  if (document.getElementById('modal')) return;
+  const ae = document.activeElement; if (ae && /INPUT|SELECT|TEXTAREA/.test(ae.tagName)) return;
+  render();
+});
+(() => { const d = me(); lastN = d ? J.S.notifications.filter(x => x.to === d.id).length : 0; })();
+const CASES = [['JAY-DR-0142', 'Battery (EV) case', 'ev'], ['JAY-DR-0145', 'Fuel (diesel) case', 'fuel']];
+function caseBar() { const el = document.getElementById('casebar'); if (!el) return; const cur = me(); el.innerHTML = '<span class="cbl">Demo</span>' + CASES.map(c => { const d = findDrv(c[0]); const on = cur && d && cur.id === d.id; return '<button type="button" class="' + (on ? 'on' : '') + '" aria-pressed="' + on + '" onclick="U.switchCase(\'' + c[0] + '\')">' + ic(c[2], 15) + c[1] + '</button>'; }).join(''); }
+U.switchCase = emp => { const d = findDrv(emp); if (!d) return; if (DS.me && DS.me.id === d.id) { U.go('home'); return; } closeModal(); DS.me = { id: d.id }; DS.ui = {}; lastN = J.S.notifications.filter(x => x.to === d.id).length; try { localStorage.setItem(DKEY, JSON.stringify(DS.me)); } catch (e) { } location.hash = '#/home'; render(); toast('Switched to ' + esc(d.name) + ' · ' + (isEV(myVeh()) ? 'EV' : 'fuel') + ' vehicle', 'ok'); };
+window.render = render;
+render();
+
+(function sb() { const e = document.getElementById('sbtime'); if (e) e.textContent = fTime(Date.now()); setTimeout(sb, 15000); })();
+
+/* phone mockup: scale to fit any window */
+function fitPhone() { const st = document.getElementById('stage'), ph = document.getElementById('phone'); if (!st || !ph) return; if (document.body.classList.contains('native')) { st.style.width = ''; st.style.height = ''; ph.style.transform = ''; return; } const pad = 32, info = 0, bar = 58; const s = Math.min(1, (window.innerWidth - pad - info) / 402, (window.innerHeight - pad - bar) / 860); ph.style.transform = 'scale(' + s + ')'; st.style.width = (402 * s) + 'px'; st.style.height = (860 * s) + 'px'; if (DS.map) setTimeout(() => DS.map.invalidateSize(), 50); }
+(function () { const native = matchMedia('(pointer:coarse)').matches && Math.min(screen.width, screen.height) < 520 && window.self === window.top; if (native) document.body.classList.add('native'); fitPhone(); window.addEventListener('resize', fitPhone); })();
+</script></body></html>

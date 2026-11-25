@@ -1,0 +1,410 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1180,
+      "title": "Web · Dashboard (role views)",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Tracking.dc.html",
+      "x": 1520,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "title": "Web · Vehicle Tracking",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-LiveTrips.dc.html",
+      "x": 3040,
+      "y": 0,
+      "w": 1440,
+      "h": 1000,
+      "title": "Web · Live Trips",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Vehicles.dc.html",
+      "x": 4560,
+      "y": 0,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Vehicle Management",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Drivers.dc.html",
+      "x": 0,
+      "y": 1300,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Driver Management",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Projects.dc.html",
+      "x": 1520,
+      "y": 1300,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Project Management",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Allocation.dc.html",
+      "x": 3040,
+      "y": 1300,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Vehicle Allocation",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Trips.dc.html",
+      "x": 4560,
+      "y": 1300,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Trip Management",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-TripDetail.dc.html",
+      "x": 0,
+      "y": 2600,
+      "w": 1440,
+      "h": 1150,
+      "title": "Web · Trip Details",
+      "expand": "fill",
+      "page": "web"
+    },
+    {
+      "file": "Web-Tickets.dc.html",
+      "x": 1520,
+      "y": 2600,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Issues & Tickets",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-TicketDetail.dc.html",
+      "x": 3040,
+      "y": 2600,
+      "w": 1440,
+      "h": 1150,
+      "title": "Web · Ticket Details (workflow)",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Fuel.dc.html",
+      "x": 4560,
+      "y": 2600,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Fuel & Energy",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Geofence.dc.html",
+      "x": 0,
+      "y": 3900,
+      "w": 1440,
+      "h": 900,
+      "title": "Web · Geofence & Routes",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Reports.dc.html",
+      "x": 1520,
+      "y": 3900,
+      "w": 1440,
+      "h": 1150,
+      "title": "Web · Reports & Analytics",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Alerts.dc.html",
+      "x": 3040,
+      "y": 3900,
+      "w": 1440,
+      "h": 1000,
+      "title": "Web · Alerts & Notifications",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Users.dc.html",
+      "x": 4560,
+      "y": 3900,
+      "w": 1440,
+      "h": 1000,
+      "title": "Web · User Management",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Roles.dc.html",
+      "x": 0,
+      "y": 5200,
+      "w": 1440,
+      "h": 1100,
+      "title": "Web · Roles & Permissions",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Settings.dc.html",
+      "x": 1520,
+      "y": 5200,
+      "w": 1440,
+      "h": 1000,
+      "title": "Web · Settings",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Web-Login.dc.html",
+      "x": 3040,
+      "y": 5200,
+      "w": 1440,
+      "h": 900,
+      "title": "Web · Login (demo credentials)",
+      "expand": "fill",
+      "page": "web",
+      "is_interactive": true
+    },
+    {
+      "file": "Sidebar.dc.html",
+      "x": 4560,
+      "y": 5200,
+      "w": 248,
+      "h": 1100,
+      "title": "Component · Sidebar",
+      "page": "web"
+    },
+    {
+      "file": "Topbar.dc.html",
+      "x": 4888,
+      "y": 5200,
+      "w": 1192,
+      "h": 68,
+      "title": "Component · Top bar",
+      "page": "web"
+    },
+    {
+      "file": "Driver-Login.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 1 Login",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-NoAssignment.dc.html",
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 2b No assignment",
+      "page": "driver"
+    },
+    {
+      "file": "Driver-Home.dc.html",
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 2 Home",
+      "page": "driver"
+    },
+    {
+      "file": "Driver-Assignment.dc.html",
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 3 Assignment details",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-PreTrip.dc.html",
+      "x": 1880,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 4 Pre-trip inspection",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-Trip.dc.html",
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 5 Active trip",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-Fuel.dc.html",
+      "x": 2820,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 6 Fuel & energy",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-Issue.dc.html",
+      "x": 0,
+      "y": 964,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 7 Report issue",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-EndTrip.dc.html",
+      "x": 470,
+      "y": 964,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 8 End trip",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-MyTrips.dc.html",
+      "x": 940,
+      "y": 964,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 9 My trips",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-MyTickets.dc.html",
+      "x": 1410,
+      "y": 964,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 10 My tickets",
+      "page": "driver",
+      "is_interactive": true
+    },
+    {
+      "file": "Driver-Notifications.dc.html",
+      "x": 1880,
+      "y": 964,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 11 Notifications",
+      "page": "driver"
+    },
+    {
+      "file": "Driver-Profile.dc.html",
+      "x": 2350,
+      "y": 964,
+      "w": 390,
+      "h": 844,
+      "title": "Driver · 12 Profile",
+      "page": "driver"
+    },
+    {
+      "file": "DriverNav.dc.html",
+      "x": 2820,
+      "y": 964,
+      "w": 390,
+      "h": 76,
+      "title": "Component · Driver bottom nav",
+      "page": "driver"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "webTitle",
+      "x": 0,
+      "y": -300,
+      "w": 240,
+      "maxW": 6000,
+      "text": "Management web portal",
+      "kind": "title1",
+      "page": "web"
+    },
+    {
+      "id": "driverTitle",
+      "x": 0,
+      "y": -300,
+      "w": 240,
+      "maxW": 3210,
+      "text": "Driver mobile app",
+      "kind": "title1",
+      "page": "driver"
+    },
+    {
+      "id": "styleNote",
+      "x": 3290,
+      "y": 0,
+      "w": 420,
+      "text": "Style: Seline Analytics (refero, light). Stone canvas #FAFAF9, white cards, 1px #E8E6E5 hairlines, Inter Tight headings at 400–500, Inter body, compact 4px grid, pill buttons.\n\nBrief overrides: navy sidebar #0F1C36 and orange accent #C2410C replace Seline's single cyan. Fleet status colours added (running, idle, stopped, offline, maintenance) because tracking needs them.",
+      "fill": "orange",
+      "page": "driver"
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "web"
+  },
+  "pages": [
+    {
+      "id": "web",
+      "name": "Web portal"
+    },
+    {
+      "id": "driver",
+      "name": "Driver app"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portal sidebar</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<nav aria-label="Main" style="width: 100%; min-height: 1100px; background: #0f1c36; color: #c3cad8; padding: 20px 14px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+  <a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 8px; text-decoration: none">
+    <span style="width: 34px; height: 34px; border-radius: 8px; background: #c2410c; display: flex; align-items: center; justify-content: center; color: #ffffff; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px">J</span>
+    <span style="display: flex; flex-direction: column">
+      <span style="font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 16px; color: #ffffff; letter-spacing: -0.2px">Jayem Automotives</span>
+      <span style="font-size: 11px; color: #8592ab; letter-spacing: 0.4px">TESTING &amp; FLEET PORTAL</span>
+    </span>
+  </a>
+  <sc-for list="{{groups}}" as="g" hint-placeholder-count="5">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <button type="button" onClick="{{g.toggle}}" aria-expanded="{{g.expanded}}" style="display: flex; align-items: center; justify-content: space-between; padding: 0 10px 6px; border: 0; background: transparent; font-family: inherit; font-size: 11px; font-weight: 500; letter-spacing: 0.6px; color: #8592ab; cursor: pointer">
+        <span>{{g.label}}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8592ab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{g.chev}}"></path></svg>
+      </button>
+      <sc-if value="{{g.open}}" hint-placeholder-val="{{true}}">
+        <sc-for list="{{g.items}}" as="i" hint-placeholder-count="3">
+          <a href="{{i.href}}" style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; text-decoration: none; font-size: 13.5px; color: {{i.color}}; background: {{i.bg}}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{i.d}}"></path></svg>
+            <span style="flex: 1">{{i.label}}</span>
+            <sc-if value="{{i.badge}}" hint-placeholder-val="{{false}}">
+              <span style="font-size: 11px; font-weight: 600; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 1px 7px">{{i.badge}}</span>
+            </sc-if>
+          </a>
+        </sc-for>
+      </sc-if>
+    </div>
+  </sc-for>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"active":{"editor":"enum","default":"Dashboard","options":["Dashboard","Vehicle Tracking","Live Trips","Vehicle Management","Driver Management","Project Management","Vehicle Allocation","Trip Management","Issues & Tickets","Fuel & Energy","Geofence & Routes","Alerts & Notifications","Reports & Analytics","User Management","Roles & Permissions","Settings"]},"$preview":{"width":248,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { closed: {} }; }
+  renderVals() {
+    const active = this.props.active ?? 'Dashboard';
+    const P = {
+      dash: 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z',
+      pin: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+      act: 'M3 12h4l3-8 4 16 3-8h4',
+      car: 'M3 12l2-6h14l2 6v4H3zM5 16v3h2v-3M17 16v3h2v-3M7.5 12.5h.01M16.5 12.5h.01',
+      user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+      folder: 'M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
+      cal: 'M4 5h16v16H4zM4 10h16M8 3v4M16 3v4M9 15l2 2 4-4',
+      route: 'M6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 15V9a4 4 0 0 1 4-4h6M18 9v6a4 4 0 0 1-4 4H8',
+      ticket: 'M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4zM10 5v14',
+      fuel: 'M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M4 10h10M14 8h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V9l-3-3',
+      geo: 'M12 3l8 4.5v9L12 21l-8-4.5v-9z',
+      chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+      bell: 'M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8zM10 20a2 2 0 0 0 4 0',
+      users: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M22 21a7 7 0 0 0-4-6.3',
+      shield: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z',
+      set: 'M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4'
+    };
+    const it = (label, d, href, badge) => {
+      const on = label === active;
+      return { label, d, href, badge: badge || null, color: on ? '#ffffff' : '#c3cad8', bg: on ? '#1d2f55' : 'transparent' };
+    };
+    const raw = [
+      ['OVERVIEW', [it('Dashboard', P.dash, 'Main.dc.html'), it('Vehicle Tracking', P.pin, 'Web-Tracking.dc.html'), it('Live Trips', P.act, 'Web-LiveTrips.dc.html', '96')]],
+      ['OPERATIONS', [it('Vehicle Management', P.car, 'Web-Vehicles.dc.html'), it('Driver Management', P.user, 'Web-Drivers.dc.html'), it('Project Management', P.folder, 'Web-Projects.dc.html'), it('Vehicle Allocation', P.cal, 'Web-Allocation.dc.html'), it('Trip Management', P.route, 'Web-Trips.dc.html')]],
+      ['MONITORING', [it('Issues & Tickets', P.ticket, 'Web-Tickets.dc.html', '12'), it('Fuel & Energy', P.fuel, 'Web-Fuel.dc.html'), it('Geofence & Routes', P.geo, 'Web-Geofence.dc.html'), it('Alerts & Notifications', P.bell, 'Web-Alerts.dc.html', '7')]],
+      ['INSIGHTS', [it('Reports & Analytics', P.chart, 'Web-Reports.dc.html')]],
+      ['ADMINISTRATION', [it('User Management', P.users, 'Web-Users.dc.html'), it('Roles & Permissions', P.shield, 'Web-Roles.dc.html'), it('Settings', P.set, 'Web-Settings.dc.html')]]
+    ];
+    const closed = this.state.closed;
+    const groups = raw.map(([label, items]) => {
+      const open = !closed[label];
+      return { label, items, open, expanded: open ? 'true' : 'false', chev: open ? 'M6 9l6 6 6-6' : 'M9 6l6 6-6 6', toggle: () => this.setState({ closed: Object.assign({}, closed, { [label]: open }) }) };
+    });
+    return { groups };
+  }
+}
+</script>
+</body>
+</html>

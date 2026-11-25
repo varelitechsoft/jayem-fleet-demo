@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Fuel &amp; Energy</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button{font-family:inherit;cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Fuel &amp; Energy" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Monitoring · November 2026 · from driver entries and trip data</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Fuel &amp; energy</h1>
+        </div>
+        <div role="tablist" aria-label="Powertrain" style="display: flex; gap: 4px; padding: 3px; border: 1px solid #e8e6e5; border-radius: 9999px; background: #ffffff">
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+            <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="border: 0; border-radius: 9999px; padding: 6px 16px; font-size: 13px; font-weight: 500; background: {{t.bg}}; color: {{t.color}}">{{t.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px">
+        <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+          <div style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px">
+            <span style="font-size: 12.5px; color: #78716c">{{k.l}}</span>
+            <span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 28px; font-weight: 500; letter-spacing: -0.6px">{{k.v}}</span>
+            <span style="font-size: 12px; color: {{k.dc}}">{{k.d}}</span>
+          </div>
+        </sc-for>
+      </section>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; align-items: start">
+        <section style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">{{trendTitle}}</h2>
+          <div style="display: flex; align-items: flex-end; gap: 10px; height: 190px; border-bottom: 1px solid #e8e6e5">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="8">
+              <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px">
+                <span style="font-size: 11px; color: #57534e">{{b.v}}</span>
+                <div style="width: 100%; max-width: 40px; height: {{b.h}}; background: {{b.c}}; border-radius: 5px 5px 0 0"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 10px">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="8"><span style="flex: 1; text-align: center; font-size: 11.5px; color: #78716c">{{b.w}}</span></sc-for>
+          </div>
+        </section>
+
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 20px 8px; display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">{{tableTitle}}</h2>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; min-width: 620px; font-size: 13px">
+              <thead><tr style="text-align: left; color: #78716c; font-size: 12px">
+                <sc-for list="{{cols}}" as="c" hint-placeholder-count="6"><th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">{{c}}</th></sc-for>
+              </tr></thead>
+              <tbody>
+                <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+                  <tr>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee; font-weight: 600; white-space: nowrap">{{r.a}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee; color: #57534e">{{r.b}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee">{{r.c}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee">{{r.d}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee">{{r.e}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee; font-weight: 600; color: {{r.fc}}">{{r.f}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { tab: 'fuel' }; }
+  renderVals() {
+    const ev = this.state.tab === 'ev';
+    const G = '#15803d', R = '#b91c1c', M = '#78716c';
+    const tabs = [['fuel', 'Petrol / Diesel'], ['ev', 'Electric (EV)']].map(([id, label]) => ({ label, sel: this.state.tab === id ? 'true' : 'false', bg: this.state.tab === id ? '#1c1917' : 'transparent', color: this.state.tab === id ? '#ffffff' : '#57534e', pick: () => this.setState({ tab: id }) }));
+    const kpis = ev
+      ? [{ l: 'Energy used', v: '38,920 kWh', d: '+6% vs Oct', dc: M }, { l: 'Avg efficiency', v: '6.8 km/kWh', d: '+0.3 vs Oct', dc: G }, { l: 'Charging sessions', v: '1,146', d: '74% DC fast', dc: M }, { l: 'EV km driven', v: '2,64,650', d: '42 EVs active', dc: M }]
+      : [{ l: 'Fuel used', v: '21,480 L', d: 'Diesel 17,920 · Petrol 3,560', dc: M }, { l: 'Fuel cost', v: '₹20.6 L', d: 'Avg ₹95.8 / L', dc: M }, { l: 'Avg mileage', v: '11.6 km/L', d: '−0.4 vs Oct', dc: R }, { l: 'Refuel entries', v: '1,382', d: '12 flagged for review', dc: R }];
+    const wv = ev ? [6.4, 6.5, 6.3, 6.6, 6.7, 6.9, 6.8, 6.9] : [12.2, 12.0, 11.9, 12.1, 11.8, 11.5, 11.7, 11.6];
+    const mx = Math.max.apply(null, wv), mn = Math.min.apply(null, wv) - 0.6;
+    const bars = wv.map((v, i) => ({ v: v.toFixed(1), w: 'W' + (40 + i), h: Math.round((v - mn) / (mx - mn) * 140 + 10) + 'px', c: i === 7 ? '#c2410c' : '#fdba8c' }));
+    const rows = ev
+      ? [['TN 09 AB 4521', 'Nexon EV Max', '3,412 km', '498 kWh', '22 sessions', '6.9 km/kWh', G], ['MH 14 TC 6120', 'Nexon EV', '2,960 km', '452 kWh', '19 sessions', '6.5 km/kWh', M], ['MH 12 TMP 6612', 'Ace EV', '1,120 km', '221 kWh', '11 sessions', '5.1 km/kWh', R], ['TS 07 TMP 2276', 'Ace EV', '1,844 km', '318 kWh', '14 sessions', '5.8 km/kWh', M], ['MH 14 TMP 0459', 'Punch EV', '2,210 km', '296 kWh', '13 sessions', '7.5 km/kWh', G], ['MH 14 TC 4402', 'Curvv EV', '12 km', '2 kWh', '0 sessions', '—', M]]
+      : [['MH 14 TC 2087', 'Ecomet 1615 · Diesel', '6,120 km', '1,190 L', '₹1.07 L', '5.1 km/L', M], ['TS 08 TC 4410', 'Boss 1215 · Diesel', '5,480 km', '1,170 L', '₹1.05 L', '4.7 km/L', R], ['TS 07 TR 1193', 'Bolero Pik-Up · Diesel', '3,060 km', '262 L', '₹23,580', '11.7 km/L', G], ['MH 14 TC 3310', 'XUV 3XO · Petrol', '3,990 km', '276 L', '₹28,420', '14.5 km/L', G], ['TN 22 TR 8841', 'Harrier · Diesel', '2,890 km', '231 L', '₹20,790', '12.5 km/L', M], ['TN 09 TR 5512', 'Thar Roxx · Diesel', '1,860 km', '178 L', '₹16,020', '10.4 km/L', M]];
+    return {
+      tabs, kpis, bars,
+      trendTitle: ev ? 'EV efficiency trend (km/kWh, weekly)' : 'Mileage trend (km/L, weekly)',
+      tableTitle: ev ? 'Energy by vehicle · November' : 'Fuel by vehicle · November',
+      cols: ev ? ['Vehicle', 'Model', 'Distance', 'Energy', 'Charging', 'Efficiency'] : ['Vehicle', 'Model', 'Distance', 'Fuel', 'Cost', 'Mileage'],
+      rows: rows.map(r => ({ a: r[0], b: r[1], c: r[2], d: r[3], e: r[4], f: r[5], fc: r[6] === M ? '#0c0a09' : r[6] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

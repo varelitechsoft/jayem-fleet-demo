@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Vehicle Allocation</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,select,input,textarea{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Vehicle Allocation" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" user-name="Suresh Kumar" user-role="Supervisor · Pune Chakan" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Thu, 19 Nov 2026 · Shift A · Pune · Chakan</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Daily vehicle allocation</h1>
+        </div>
+        <span style="font-size: 13px; color: #57534e">{{allocCount}} allocated · {{freeDrivers}} drivers free · {{freeVehicles}} vehicles free</span>
+      </div>
+
+      <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+        <div role="status" style="display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 8px; background: #ecfdf3; border: 1px solid #a7e3bd; color: #14532d; font-size: 13px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
+          <span style="flex: 1">{{toast}}</span>
+          <a href="Driver-Home.dc.html" style="font-weight: 600; color: #14532d">See driver's app →</a>
+        </div>
+      </sc-if>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px; align-items: start">
+        <!-- form -->
+        <section aria-label="New allocation" style="min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">New allocation</h2>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 12px; font-weight: 600; color: #57534e">1. Driver</span>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{drivers}}" as="d" hint-placeholder-count="6">
+                <button type="button" onClick="{{d.pick}}" aria-pressed="{{d.pressed}}" style="text-align: left; border: 1px solid {{d.border}}; background: {{d.bg}}; border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; color: #0c0a09"><span style="font-weight: 600; font-size: 13px">{{d.name}}</span><span style="font-size: 11.5px; color: #78716c">{{d.meta}}</span></button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 12px; font-weight: 600; color: #57534e">2. Vehicle</span>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{vehicles}}" as="v" hint-placeholder-count="4">
+                <button type="button" onClick="{{v.pick}}" aria-pressed="{{v.pressed}}" style="text-align: left; border: 1px solid {{v.border}}; background: {{v.bg}}; border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; color: #0c0a09"><span style="font-weight: 600; font-size: 13px">{{v.reg}}</span><span style="font-size: 11.5px; color: #78716c">{{v.meta}}</span></button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #57534e">3. Project
+              <select onChange="{{onProject}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 400; color: #0c0a09; background: #ffffff">
+                <option>EV-2026-014 · EV Endurance</option><option>MH-2026-011 · XUV 3XO Mileage</option><option>CV-2026-007 · Ecomet Durability</option><option>CV-2026-009 · Ace EV Gradeability</option>
+              </select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #57534e">Testing type
+              <select style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 400; color: #0c0a09; background: #ffffff">
+                <option>Road Performance Testing</option><option>Endurance Testing</option><option>Mileage Testing</option><option>EV Testing</option><option>Wheel / Tyre Testing</option>
+              </select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #57534e">4. Target km (today)
+              <input type="number" value="{{target}}" onInput="{{onTarget}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 400; color: #0c0a09">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #57534e">Route / test area
+              <select style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 400; color: #0c0a09; background: #ffffff"><option>Chakan oval + NH 60 loop</option><option>Chakan oval only</option><option>Endurance Corridor B</option></select>
+            </label>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #57534e">Instructions for driver
+            <textarea rows="2" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 8px; font-size: 13px; font-weight: 400; color: #0c0a09; resize: vertical">Keep 60–80 km/h on NH 60. Log battery % at every charge. Report any warning lights.</textarea>
+          </label>
+          <sc-if value="{{error}}" hint-placeholder-val="{{false}}">
+            <span role="alert" style="font-size: 12.5px; color: #b91c1c">{{error}}</span>
+          </sc-if>
+          <button type="button" onClick="{{save}}" style="height: 44px; border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; font-size: 14px; font-weight: 600">Save allocation &amp; notify driver</button>
+        </section>
+
+        <!-- today -->
+        <section aria-label="Today's allocations" style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 20px 20px 8px; display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">Today's allocations</h2>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; min-width: 640px; font-size: 13px">
+              <thead>
+                <tr style="text-align: left; color: #78716c; font-size: 12px">
+                  <th style="font-weight: 500; padding: 8px 8px 8px 0; border-bottom: 1px solid #e8e6e5">Driver</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Vehicle</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Project</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5; text-align: right">Target</th>
+                  <th style="font-weight: 500; padding: 8px; border-bottom: 1px solid #e8e6e5">Status</th>
+                  <th style="font-weight: 500; padding: 8px 0 8px 8px; border-bottom: 1px solid #e8e6e5"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{allocs}}" as="a" hint-placeholder-count="6">
+                  <tr style="background: {{a.bg}}">
+                    <td style="padding: 10px 8px 10px 0; border-bottom: 1px solid #f0efee; font-weight: 500">{{a.driver}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee">{{a.reg}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee; color: #57534e">{{a.project}}</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee; text-align: right">{{a.target}} km</td>
+                    <td style="padding: 10px 8px; border-bottom: 1px solid #f0efee"><span style="font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: {{a.wash}}; color: {{a.c}}">{{a.status}}</span></td>
+                    <td style="padding: 10px 0 10px 8px; border-bottom: 1px solid #f0efee; text-align: right"><button type="button" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 3px 10px; font-size: 12px">Change</button></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    this.state = { d: null, v: null, target: '320', project: 'EV-2026-014 · EV Endurance', error: '', toast: '', made: [] };
+  }
+  renderVals() {
+    const s = this.state;
+    const DR = [['Rahul Kumar', 'JAY-DR-0142 · 4.6 ★'], ['Prakash Naidu', 'JAY-DR-0163 · 4.4 ★'], ['Yogesh Shinde', 'JAY-DR-0188 · 4.2 ★'], ['Arjun Gaikwad', 'JAY-DR-0201 · 4.7 ★'], ['Balaji Iyer', 'JAY-DR-0219 · 4.1 ★'], ['Kiran Chavan', 'JAY-DR-0230 · 4.5 ★']];
+    const VE = [['TN 09 AB 4521', 'Nexon EV Max · EV · 18,432 km'], ['MH 14 TC 3310', 'XUV 3XO · Petrol · 8,890 km'], ['MH 14 TC 6120', 'Nexon EV · EV · 12,060 km'], ['MH 12 TC 9014', 'XUV 3XO · Petrol · 9,412 km']];
+    const usedD = s.made.map(m => m.driver), usedV = s.made.map(m => m.reg);
+    const freeD = DR.filter(d => usedD.indexOf(d[0]) < 0), freeV = VE.filter(v => usedV.indexOf(v[0]) < 0);
+    const drivers = freeD.map(d => ({ name: d[0], meta: d[1], pressed: s.d === d[0] ? 'true' : 'false', bg: s.d === d[0] ? '#fff7ed' : '#ffffff', border: s.d === d[0] ? '#c2410c' : '#e8e6e5', pick: () => this.setState({ d: d[0], error: '' }) }));
+    const vehicles = freeV.map(v => ({ reg: v[0], meta: v[1], pressed: s.v === v[0] ? 'true' : 'false', bg: s.v === v[0] ? '#fff7ed' : '#ffffff', border: s.v === v[0] ? '#c2410c' : '#e8e6e5', pick: () => this.setState({ v: v[0], error: '' }) }));
+    const ST = { Started: ['#15803d', '#ecfdf3'], Acknowledged: ['#1d4ed8', '#eef3fe'], 'Sent to app': ['#9a3412', '#fff1e6'] };
+    const existing = [
+      ['Imran Shaikh', 'MH 14 TC 2087', 'CV-2026-007', 400, 'Started'], ['Nikhil Patil', 'MH 12 TC 9015', 'MH-2026-011', 350, 'Started'],
+      ['Amol Kale', 'MH 12 TC 7720', 'CV-2026-007', 300, 'Acknowledged'], ['Ganesh Pawar', 'MH 12 TMP 6612', 'CV-2026-009', 150, 'Started'], ['Sachin Jadhav', 'MH 14 TC 3311', 'MH-2026-011', 280, 'Acknowledged']
+    ].map(r => ({ driver: r[0], reg: r[1], project: r[2], target: r[3], status: r[4] }));
+    const allocs = s.made.map(m => Object.assign({ fresh: true }, m)).reverse().concat(existing).map(a => ({ driver: a.driver, reg: a.reg, project: a.project, target: a.target, status: a.status, c: ST[a.status][0], wash: ST[a.status][1], bg: a.fresh ? '#fff7ed' : '#ffffff' }));
+    return {
+      drivers, vehicles, allocs, target: s.target, error: s.error, toast: s.toast,
+      allocCount: 36 + s.made.length, freeDrivers: freeD.length, freeVehicles: freeV.length,
+      onTarget: e => this.setState({ target: e.target.value }),
+      onProject: e => this.setState({ project: e.target.value }),
+      save: () => {
+        if (!s.d || !s.v) return this.setState({ error: 'Pick a driver and a vehicle first.' });
+        const t = parseInt(s.target, 10);
+        if (!t || t <= 0) return this.setState({ error: 'Enter target kilometres greater than 0.' });
+        this.setState({ made: s.made.concat([{ driver: s.d, reg: s.v, project: s.project.split(' · ')[0], target: t, status: 'Sent to app' }]), toast: s.v + ' allocated to ' + s.d + ' for ' + s.project.split(' · ')[0] + ' (' + t + ' km). The driver has been notified on the mobile app.', d: null, v: null, error: '' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

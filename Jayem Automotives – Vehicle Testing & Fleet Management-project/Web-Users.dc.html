@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – User Management</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button{font-family:inherit;cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="User Management" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 12px; color: #78716c">Administration · web portal users (drivers are managed in Driver Management)</span>
+          <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">User management</h1>
+        </div>
+        <button type="button" onClick="{{invite}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 16px; font-size: 13px; font-weight: 500">+ Invite user</button>
+      </div>
+      <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+        <div role="status" style="padding: 10px 14px; border-radius: 8px; background: #ecfdf3; border: 1px solid #a7e3bd; color: #14532d; font-size: 13px">{{toast}}</div>
+      </sc-if>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+          <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.pressed}}" style="border: 1px solid {{t.border}}; background: {{t.bg}}; color: {{t.color}}; border-radius: 9999px; padding: 5px 12px; font-size: 12.5px; font-weight: 500">{{t.label}} <span style="opacity: 0.7">{{t.n}}</span></button>
+        </sc-for>
+      </div>
+      <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; overflow-x: auto">
+        <table style="width: 100%; border-collapse: collapse; min-width: 900px; font-size: 13px">
+          <thead><tr style="text-align: left; color: #78716c; font-size: 12px; background: #fafaf9">
+            <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5">User</th>
+            <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Role</th>
+            <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Scope</th>
+            <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Last active</th>
+            <th style="font-weight: 500; padding: 10px; border-bottom: 1px solid #e8e6e5">Status</th>
+            <th style="font-weight: 500; padding: 10px 14px; border-bottom: 1px solid #e8e6e5; text-align: right">Access</th>
+          </tr></thead>
+          <tbody>
+            <sc-for list="{{rows}}" as="u" hint-placeholder-count="12">
+              <tr>
+                <td style="padding: 10px 14px; border-bottom: 1px solid #f0efee"><span style="display: flex; gap: 10px; align-items: center"><span style="width: 30px; height: 30px; border-radius: 9999px; background: #f5f5f4; color: #44403c; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600">{{u.ini}}</span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: #78716c">{{u.email}}</span></span></span></td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee"><span style="font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 9999px; background: {{u.rw}}; color: {{u.rc}}">{{u.role}}</span></td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{u.scope}}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee; color: #57534e">{{u.last}}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #f0efee"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px"><span style="width: 7px; height: 7px; border-radius: 9999px; background: {{u.sc}}"></span>{{u.status}}</span></td>
+                <td style="padding: 10px 14px; border-bottom: 1px solid #f0efee; text-align: right"><button type="button" onClick="{{u.toggle}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 4px 12px; font-size: 12px; font-weight: 500; color: {{u.tc}}">{{u.tl}}</button></td>
+              </tr>
+            </sc-for>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { role: 'All', off: { 11: true }, toast: '', invited: false }; }
+  renderVals() {
+    const s = this.state;
+    const R = { 'Super Admin': ['#0f1c36', '#e8ecf4'], 'Project Manager': ['#9a3412', '#fff1e6'], Supervisor: ['#1d4ed8', '#eef3fe'], 'Management / Client': ['#7e22ce', '#f6effe'] };
+    const U = [
+      ['Arvind Raman', 'arvind.raman@jayem.in', 'Super Admin', 'All locations', 'Online now'],
+      ['Meera Subramanian', 'meera.s@jayem.in', 'Super Admin', 'All locations', 'Today 09:10'],
+      ['Priya Deshmukh', 'priya.d@jayem.in', 'Project Manager', 'EV-2026-014, CV-2026-007, MH-2026-011', 'Online now'],
+      ['Karthikeyan R', 'karthik.r@jayem.in', 'Project Manager', 'TT-2026-003, CV-2026-009, CV-2026-004', 'Today 10:42'],
+      ['Anita Sharma', 'anita.sharma@jayem.in', 'Project Manager', 'CV-2026-012, MH-2026-015', 'Yesterday'],
+      ['Suresh Kumar', 'suresh.k@jayem.in', 'Supervisor', 'Pune · Chakan', 'Online now'],
+      ['Vikram Joshi', 'vikram.j@jayem.in', 'Supervisor', 'Pune · Talegaon', 'Today 08:15'],
+      ['Sunil Bhosale', 'sunil.b@jayem.in', 'Supervisor', 'Pune · Ranjangaon', 'Today 07:58'],
+      ['Senthil Murugan', 'senthil.m@jayem.in', 'Supervisor', 'Chennai HO', 'Today 11:20'],
+      ['Ravi Teja', 'ravi.teja@jayem.in', 'Supervisor', 'Hyderabad', 'Online now'],
+      ['Tata Motors – Viewer', 'ev.validation@tatamotors.com', 'Management / Client', 'EV-2026-014, TT-2026-003 (read-only)', 'Today 09:30'],
+      ['Ashok Leyland – Viewer', 'cv.testing@ashokleyland.com', 'Management / Client', 'CV-2026-007 (read-only)', '12 Nov']
+    ].concat(s.invited ? [['Deepak Menon', 'deepak.m@jayem.in', 'Supervisor', 'Pune · Chakan (Shift B)', 'Invite sent']] : []);
+    const rows = U.map((u, i) => [u, i]).filter(([u]) => s.role === 'All' || u[2] === s.role).map(([u, i]) => {
+      const off = !!s.off[i];
+      const pending = u[4] === 'Invite sent';
+      return { name: u[0], email: u[1], role: u[2], scope: u[3], last: u[4], ini: u[0].split(' ').map(w => w[0]).slice(0, 2).join(''), rc: R[u[2]][0], rw: R[u[2]][1], status: pending ? 'Pending' : (off ? 'Deactivated' : 'Active'), sc: pending ? '#b45309' : (off ? '#a8a29e' : '#15803d'), tl: off ? 'Reactivate' : 'Deactivate', tc: off ? '#15803d' : '#b91c1c', toggle: () => this.setState({ off: Object.assign({}, s.off, { [i]: !off }), toast: u[0] + (off ? ' reactivated.' : ' deactivated. They can no longer sign in.') }) };
+    });
+    const tabs = ['All'].concat(Object.keys(R)).map(k => ({ label: k === 'All' ? 'All users' : k, n: k === 'All' ? U.length : U.filter(u => u[2] === k).length, pressed: s.role === k ? 'true' : 'false', bg: s.role === k ? '#1c1917' : '#ffffff', color: s.role === k ? '#ffffff' : '#0c0a09', border: s.role === k ? '#1c1917' : '#e8e6e5', pick: () => this.setState({ role: k }) }));
+    return { rows, tabs, toast: s.toast, invite: () => this.setState({ invited: true, toast: 'Invite sent to deepak.m@jayem.in as Supervisor · Pune Chakan.' }) };
+  }
+}
+</script>
+</body>
+</html>

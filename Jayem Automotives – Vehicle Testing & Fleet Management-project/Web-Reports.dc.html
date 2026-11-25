@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Reports &amp; Analytics</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,select,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <div style="flex: 1 1 248px; max-width: 100%; background: #0f1c36"><dc-import name="Sidebar" active="Reports &amp; Analytics" hint-size="100%,1100px"></dc-import></div>
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+    <dc-import name="Topbar" user-name="Tata Motors – Viewer" user-role="Management / Client · read-only" hint-size="100%,68px"></dc-import>
+    <div style="padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 1400px; width: 100%; box-sizing: border-box">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 12px; color: #78716c">Insights · 13 standard reports · PDF and Excel</span>
+        <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 30px; letter-spacing: -0.8px; line-height: 1.2">Reports &amp; analytics</h1>
+      </div>
+
+      <!-- analytics -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px">
+        <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 16px">Project target vs achieved km</h2>
+          <sc-for list="{{proj}}" as="p" hint-placeholder-count="5">
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <div style="display: flex; justify-content: space-between; font-size: 12px"><span>{{p.id}}</span><span style="color: #57534e">{{p.label}}</span></div>
+              <div style="position: relative; height: 10px; border-radius: 9999px; background: #f0efee"><div style="position: absolute; left: 0; top: 0; bottom: 0; width: {{p.pct}}; background: #c2410c; border-radius: 9999px"></div></div>
+            </div>
+          </sc-for>
+        </section>
+        <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 16px">Monthly trips</h2>
+          <div style="display: flex; align-items: flex-end; gap: 10px; height: 150px; border-bottom: 1px solid #e8e6e5">
+            <sc-for list="{{months}}" as="m" hint-placeholder-count="6">
+              <div style="flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px"><span style="font-size: 11px; color: #57534e">{{m.v}}</span><div style="width: 100%; max-width: 34px; height: {{m.h}}; background: {{m.c}}; border-radius: 5px 5px 0 0"></div></div>
+            </sc-for>
+          </div>
+          <div style="display: flex; gap: 10px"><sc-for list="{{months}}" as="m" hint-placeholder-count="6"><span style="flex: 1; text-align: center; font-size: 11.5px; color: #78716c">{{m.m}}</span></sc-for></div>
+        </section>
+        <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 16px">Tickets by category · 90 days</h2>
+          <sc-for list="{{cats}}" as="c" hint-placeholder-count="6">
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 12.5px"><span style="width: 150px">{{c.l}}</span><div style="flex: 1; height: 8px; background: #f0efee; border-radius: 9999px; overflow: hidden"><div style="height: 100%; width: {{c.w}}; background: #0f1c36"></div></div><span style="width: 24px; text-align: right; font-weight: 600">{{c.n}}</span></div>
+          </sc-for>
+          <div style="display: flex; gap: 16px; padding-top: 8px; border-top: 1px solid #f0efee; font-size: 12.5px; color: #57534e">
+            <span>Utilisation · Chennai <strong style="color: #0c0a09">74%</strong></span><span>Pune <strong style="color: #0c0a09">82%</strong></span><span>Hyderabad <strong style="color: #0c0a09">77%</strong></span>
+          </div>
+        </section>
+      </div>
+
+      <!-- generator -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start">
+        <section aria-label="Report types" style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 2px">
+          <sc-for list="{{reports}}" as="r" hint-placeholder-count="13">
+            <button type="button" onClick="{{r.pick}}" aria-pressed="{{r.pressed}}" style="text-align: left; border: 0; border-radius: 8px; padding: 8px 12px; background: {{r.bg}}; color: {{r.color}}; font-size: 13px; font-weight: 500">{{r.n}}. {{r.label}}</button>
+          </sc-for>
+        </section>
+        <section style="grid-column: span 2; min-width: 0; background: #ffffff; border: 1px solid #e8e6e5; border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 18px">{{reportName}}</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end">
+            <label style="display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; color: #78716c">Project<select onChange="{{onProject}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 7px 8px; font-size: 13px; background: #ffffff"><option>EV-2026-014 · EV Endurance</option><option>CV-2026-007 · Ecomet Durability</option><option>MH-2026-011 · XUV 3XO Mileage</option><option>All projects</option></select></label>
+            <label style="display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; color: #78716c">From<input type="date" value="2026-11-01" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 6px 8px; font-size: 13px"></label>
+            <label style="display: flex; flex-direction: column; gap: 3px; font-size: 11.5px; color: #78716c">To<input type="date" value="2026-11-19" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 6px 8px; font-size: 13px"></label>
+            <button type="button" onClick="{{generate}}" style="border: 1px solid #c2410c; background: #c2410c; color: #ffffff; border-radius: 9999px; padding: 8px 18px; font-size: 13px; font-weight: 500">Generate</button>
+          </div>
+
+          <sc-if value="{{loading}}" hint-placeholder-val="{{false}}">
+            <div role="status" style="padding: 40px; text-align: center; color: #57534e; font-size: 13px; border: 1px dashed #d6d3d1; border-radius: 10px">Generating report from trip and GPS records…</div>
+          </sc-if>
+          <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+            <div style="padding: 40px; text-align: center; color: #78716c; font-size: 13px; border: 1px dashed #d6d3d1; border-radius: 10px">Pick a project and dates, then press Generate.</div>
+          </sc-if>
+          <sc-if value="{{ready}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+                <sc-for list="{{sum}}" as="k" hint-placeholder-count="4">
+                  <div style="padding: 10px 12px; border: 1px solid #f0efee; border-radius: 8px; display: flex; flex-direction: column"><span style="font-size: 11.5px; color: #78716c">{{k.l}}</span><span style="font-weight: 600; font-size: 16px">{{k.v}}</span></div>
+                </sc-for>
+              </div>
+              <div style="overflow-x: auto">
+                <table style="width: 100%; border-collapse: collapse; min-width: 560px; font-size: 12.5px">
+                  <thead><tr style="text-align: left; color: #78716c; font-size: 12px"><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Vehicle</th><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Trips</th><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Km</th><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Running h</th><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Idle h</th><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Efficiency</th><th style="font-weight: 500; padding: 7px; border-bottom: 1px solid #e8e6e5">Tickets</th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{table}}" as="t" hint-placeholder-count="5">
+                      <tr><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee; font-weight: 600">{{t.a}}</td><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee">{{t.b}}</td><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee">{{t.c}}</td><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee">{{t.d}}</td><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee">{{t.e}}</td><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee">{{t.f}}</td><td style="padding: 8px 7px; border-bottom: 1px solid #f0efee">{{t.g}}</td></tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+                <button type="button" onClick="{{exportPdf}}" style="border: 1px solid #1c1917; background: #1c1917; color: #ffffff; border-radius: 9999px; padding: 7px 16px; font-size: 13px; font-weight: 500">Export PDF</button>
+                <button type="button" onClick="{{exportXls}}" style="border: 1px solid #e8e6e5; background: #ffffff; border-radius: 9999px; padding: 7px 16px; font-size: 13px; font-weight: 500">Export Excel</button>
+                <sc-if value="{{toast}}" hint-placeholder-val="{{false}}"><span role="status" style="font-size: 12.5px; color: #15803d; font-weight: 500">{{toast}}</span></sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1150}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { r: 4, phase: 'empty', project: 'EV-2026-014 · EV Endurance', toast: '' }; }
+  componentWillUnmount() { clearTimeout(this.t); }
+  renderVals() {
+    const s = this.state;
+    const names = ['Daily Trip Report', 'Vehicle-wise Trip Report', 'Driver Performance Report', 'Project Progress Report', 'Vehicle Performance Report', 'Odometer Report', 'Fuel Consumption Report', 'EV Energy Consumption Report', 'Issue and Ticket Report', 'Overspeed Report', 'Idle Vehicle Report', 'Vehicle Utilisation Report', 'GPS Tracking History'];
+    const reports = names.map((label, i) => ({ n: i + 1, label, pressed: s.r === i ? 'true' : 'false', bg: s.r === i ? '#fff1e6' : 'transparent', color: s.r === i ? '#9a3412' : '#0c0a09', pick: () => this.setState({ r: i, phase: 'empty', toast: '' }) }));
+    const proj = [['EV-2026-014', 38420, 60000], ['CV-2026-007', 81300, 120000], ['MH-2026-011', 31900, 40000], ['TT-2026-003', 9840, 25000], ['CV-2026-009', 14210, 18000]].map(p => ({ id: p[0], pct: Math.round(p[1] / p[2] * 100) + '%', label: p[1].toLocaleString('en-IN') + ' / ' + p[2].toLocaleString('en-IN') }));
+    const mv = [['Jun', 2410], ['Jul', 2680], ['Aug', 2920], ['Sep', 3150], ['Oct', 3390], ['Nov', 2290]];
+    const months = mv.map((m, i) => ({ m: m[0], v: m[1].toLocaleString('en-IN'), h: Math.round(m[1] / 3390 * 120) + 'px', c: i === 5 ? '#c2410c' : '#fdba8c' }));
+    const cv = [['Battery Issue', 9], ['Tyre / Wheel Issue', 8], ['Part Replacement', 7], ['Vehicle Malfunction', 6], ['Engine / Motor Issue', 4], ['Accident', 2]];
+    const cats = cv.map(c => ({ l: c[0], n: c[1], w: Math.round(c[1] / 9 * 100) + '%' }));
+    const code = s.project.split(' · ')[0];
+    const file = names[s.r].replace(/ /g, '_') + '_' + code + '_1-19Nov2026';
+    return {
+      reports, proj, months, cats, reportName: names[s.r],
+      loading: s.phase === 'loading', empty: s.phase === 'empty', ready: s.phase === 'ready', toast: s.toast,
+      onProject: e => this.setState({ project: e.target.value, phase: 'empty' }),
+      generate: () => { this.setState({ phase: 'loading', toast: '' }); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ phase: 'ready' }), 900); },
+      sum: [{ l: 'Trips', v: '214' }, { l: 'Km driven', v: '11,862' }, { l: 'Avg / vehicle / day', v: '287 km' }, { l: 'Open tickets', v: '2' }],
+      table: [['TN 09 AB 4521', 19, '3,412', 61, 4.2, '6.9 km/kWh', 1], ['MH 14 TC 6120', 18, '2,960', 55, 5.1, '6.5 km/kWh', 0], ['MH 12 TC 9014', 17, '3,031', 57, 3.8, '6.6 km/kWh', 0], ['MH 14 TMP 0459', 14, '2,210', 41, 6.4, '7.5 km/kWh', 1], ['MH 14 TC 4402', 1, '12', 0.3, 0.1, '—', 0]].map(r => ({ a: r[0], b: r[1], c: r[2], d: r[3], e: r[4], f: r[5], g: r[6] })),
+      exportPdf: () => this.setState({ toast: file + '.pdf downloaded' }),
+      exportXls: () => this.setState({ toast: file + '.xlsx downloaded' })
+    };
+  }
+}
+</script>
+</body>
+</html>

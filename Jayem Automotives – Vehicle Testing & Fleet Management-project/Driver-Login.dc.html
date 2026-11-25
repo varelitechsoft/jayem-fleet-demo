@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Driver app – Login</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}a{color:#c2410c}a:hover{color:#9a3412}button,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #fafaf9; font-family: Inter, system-ui, sans-serif; color: #0c0a09; font-size: 14px; line-height: 1.5; display: flex; flex-direction: column; overflow: hidden">
+  <div style="background: #0f1c36; color: #ffffff; padding: 56px 24px 40px; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span style="width: 44px; height: 44px; border-radius: 12px; background: #c2410c; display: flex; align-items: center; justify-content: center; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 22px">J</span>
+      <span style="display: flex; flex-direction: column"><span style="font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px">Jayem Automotives</span><span style="font-size: 11.5px; color: #8592ab; letter-spacing: 0.4px">DRIVER APP</span></span>
+    </div>
+    <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 400; font-size: 30px; letter-spacing: -0.8px; line-height: 1.15">Start your shift</h1>
+  </div>
+  <div style="flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 14px; margin-top: -16px; background: #fafaf9; border-radius: 20px 20px 0 0">
+    <div role="tablist" aria-label="Login method" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border: 1px solid #e8e6e5; border-radius: 9999px; background: #ffffff">
+      <sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+        <button type="button" role="tab" aria-selected="{{m.sel}}" onClick="{{m.pick}}" style="border: 0; border-radius: 9999px; padding: 9px; font-size: 13.5px; font-weight: 500; background: {{m.bg}}; color: {{m.color}}">{{m.label}}</button>
+      </sc-for>
+    </div>
+    <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #44403c">Employee ID or mobile number
+      <input value="{{id}}" onInput="{{onId}}" inputmode="text" style="height: 50px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 14px; font-size: 16px; color: #0c0a09; background: #ffffff">
+    </label>
+    <sc-if value="{{isPw}}" hint-placeholder-val="{{true}}">
+      <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #44403c">Password
+        <input type="password" value="{{pw}}" onInput="{{onPw}}" style="height: 50px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 14px; font-size: 16px; color: #0c0a09; background: #ffffff">
+      </label>
+    </sc-if>
+    <sc-if value="{{isOtp}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <sc-if value="{{otpSent}}" hint-placeholder-val="{{false}}">
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #44403c">Enter the 4-digit OTP sent to +91 98410 ••567
+            <input value="{{otp}}" onInput="{{onOtp}}" inputmode="numeric" maxlength="4" style="height: 54px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 14px; font-size: 26px; letter-spacing: 14px; text-align: center; color: #0c0a09; background: #ffffff">
+          </label>
+          <span style="font-size: 12.5px; color: #78716c">Demo OTP: 2026 · Resend in 0:28</span>
+        </sc-if>
+        <sc-if value="{{otpNotSent}}" hint-placeholder-val="{{true}}">
+          <button type="button" onClick="{{sendOtp}}" style="height: 48px; border-radius: 9999px; border: 1px solid #1c1917; background: #ffffff; color: #0c0a09; font-size: 14px; font-weight: 600">Send OTP</button>
+        </sc-if>
+      </div>
+    </sc-if>
+    <div style="display: flex; justify-content: flex-end"><a href="#" style="font-size: 13px; text-decoration: none; font-weight: 500">Forgot password?</a></div>
+    <sc-if value="{{error}}" hint-placeholder-val="{{false}}"><span role="alert" style="font-size: 13px; color: #b91c1c">{{error}}</span></sc-if>
+    <div style="flex: 1"></div>
+    <sc-if value="{{ok}}" hint-placeholder-val="{{false}}">
+      <a href="Driver-Home.dc.html" style="display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 9999px; background: #15803d; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600">Welcome, Rahul · Continue →</a>
+    </sc-if>
+    <sc-if value="{{notOk}}" hint-placeholder-val="{{true}}">
+      <button type="button" onClick="{{login}}" style="height: 54px; border-radius: 9999px; border: 0; background: #c2410c; color: #ffffff; font-size: 15px; font-weight: 600; letter-spacing: 0.3px">LOG IN</button>
+    </sc-if>
+    <button type="button" onClick="{{fillDemo}}" style="border: 1px dashed #d6d3d1; background: #ffffff; border-radius: 10px; padding: 10px; font-size: 12.5px; color: #57534e; text-align: left">Demo login: <strong style="color: #0c0a09">JAY-DR-0142</strong> / <strong style="color: #0c0a09">driver@123</strong> · tap to fill</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mode: 'pw', id: '', pw: '', otp: '', otpSent: false, error: '', ok: false }; }
+  renderVals() {
+    const s = this.state;
+    const modes = [['pw', 'Password'], ['otp', 'OTP']].map(([id, label]) => ({ label, sel: s.mode === id ? 'true' : 'false', bg: s.mode === id ? '#1c1917' : 'transparent', color: s.mode === id ? '#ffffff' : '#57534e', pick: () => this.setState({ mode: id, error: '' }) }));
+    const valid = v => ['jay-dr-0142', '9841023567', '+919841023567'].indexOf(v.trim().toLowerCase().replace(/\s/g, '')) >= 0;
+    return {
+      modes, id: s.id, pw: s.pw, otp: s.otp, error: s.error, ok: s.ok, notOk: !s.ok,
+      isPw: s.mode === 'pw', isOtp: s.mode === 'otp', otpSent: s.otpSent, otpNotSent: !s.otpSent,
+      onId: e => this.setState({ id: e.target.value, error: '' }), onPw: e => this.setState({ pw: e.target.value, error: '' }), onOtp: e => this.setState({ otp: e.target.value, error: '' }),
+      sendOtp: () => valid(s.id) ? this.setState({ otpSent: true, error: '' }) : this.setState({ error: 'Enter a registered employee ID or mobile number.' }),
+      fillDemo: () => this.setState({ mode: 'pw', id: 'JAY-DR-0142', pw: 'driver@123', error: '' }),
+      login: () => {
+        if (!valid(s.id)) return this.setState({ error: 'We could not find that employee ID or mobile number.' });
+        if (s.mode === 'pw' && s.pw !== 'driver@123') return this.setState({ error: 'Wrong password. Try again or use OTP.' });
+        if (s.mode === 'otp' && s.otp !== '2026') return this.setState({ error: s.otpSent ? 'OTP does not match.' : 'Tap "Send OTP" first.' });
+        this.setState({ ok: true, error: '' });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

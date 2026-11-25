@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayem Fleet Portal – Sign in</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0;background:#fafaf9}a{color:#c2410c}a:hover{color:#9a3412}button,input{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0c0a09; background: #fafaf9; min-height: 100vh; display: flex; flex-wrap: wrap; font-size: 14px; line-height: 1.5">
+  <section style="flex: 1 1 420px; background: #0f1c36; color: #ffffff; padding: 48px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-height: 420px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span style="width: 40px; height: 40px; border-radius: 10px; background: #c2410c; display: flex; align-items: center; justify-content: center; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 20px">J</span>
+      <span style="display: flex; flex-direction: column"><span style="font-family: 'Inter Tight', Inter, sans-serif; font-weight: 600; font-size: 18px">Jayem Automotives</span><span style="font-size: 11.5px; color: #8592ab; letter-spacing: 0.4px">TESTING &amp; FLEET PORTAL</span></span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px; max-width: 460px">
+      <h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 400; font-size: 44px; letter-spacing: -1.2px; line-height: 1.1">Every test vehicle, every kilometre, <span style="color: #fdba8c">in one place.</span></h1>
+      <p style="margin: 0; color: #c3cad8; font-size: 15px">Allocation, live tracking, trips, tickets and reports for Chennai, Pune and Hyderabad.</p>
+    </div>
+    <div style="display: flex; gap: 28px; font-size: 13px; color: #c3cad8">
+      <span><strong style="display: block; font-family: 'Inter Tight', Inter, sans-serif; font-size: 24px; font-weight: 500; color: #ffffff">150</strong>test vehicles</span>
+      <span><strong style="display: block; font-family: 'Inter Tight', Inter, sans-serif; font-size: 24px; font-weight: 500; color: #ffffff">400</strong>drivers</span>
+      <span><strong style="display: block; font-family: 'Inter Tight', Inter, sans-serif; font-size: 24px; font-weight: 500; color: #ffffff">5</strong>sites</span>
+    </div>
+  </section>
+  <section style="flex: 1 1 520px; display: flex; align-items: center; justify-content: center; padding: 48px 24px; box-sizing: border-box">
+    <div style="width: 400px; max-width: 100%; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h2 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 28px; letter-spacing: -0.6px">Sign in</h2>
+        <span style="font-size: 13px; color: #78716c">Use your Jayem email. Drivers use the mobile app.</span>
+      </div>
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Email or user ID
+        <input value="{{email}}" onInput="{{onEmail}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 400; color: #0c0a09; background: #ffffff">
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Password
+        <input type="password" value="{{pw}}" onInput="{{onPw}}" style="border: 1px solid #d6d3d1; border-radius: 6px; padding: 10px 12px; font-size: 14px; font-weight: 400; color: #0c0a09; background: #ffffff">
+      </label>
+      <div style="display: flex; justify-content: space-between; font-size: 12.5px"><label style="display: flex; gap: 6px; align-items: center; color: #57534e"><input type="checkbox" style="accent-color: #c2410c">Keep me signed in</label><a href="#" style="text-decoration: none">Forgot password?</a></div>
+      <sc-if value="{{error}}" hint-placeholder-val="{{false}}"><span role="alert" style="font-size: 12.5px; color: #b91c1c">{{error}}</span></sc-if>
+      <sc-if value="{{ok}}" hint-placeholder-val="{{false}}">
+        <a href="Main.dc.html" style="display: flex; align-items: center; justify-content: center; height: 46px; border-radius: 9999px; background: #15803d; color: #ffffff; text-decoration: none; font-weight: 600">Signed in as {{okRole}} · Open dashboard →</a>
+      </sc-if>
+      <sc-if value="{{notOk}}" hint-placeholder-val="{{true}}">
+        <button type="button" onClick="{{login}}" style="height: 46px; border-radius: 9999px; border: 1px solid #c2410c; background: #c2410c; color: #ffffff; font-size: 14px; font-weight: 600">Sign in</button>
+      </sc-if>
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 14px; border: 1px dashed #d6d3d1; border-radius: 10px; background: #ffffff">
+        <span style="font-size: 12px; font-weight: 600; color: #78716c; letter-spacing: 0.4px">DEMO LOGINS · password demo@123</span>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{demos}}" as="d" hint-placeholder-count="4">
+            <button type="button" onClick="{{d.fill}}" style="text-align: left; border: 1px solid #e8e6e5; background: #fafaf9; border-radius: 8px; padding: 7px 10px; display: flex; flex-direction: column; color: #0c0a09"><span style="font-size: 12.5px; font-weight: 600">{{d.role}}</span><span style="font-size: 11.5px; color: #78716c">{{d.email}}</span></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { email: '', pw: '', error: '', ok: '' }; }
+  renderVals() {
+    const s = this.state;
+    const D = [['Super Admin', 'admin@jayem.in'], ['Project Manager', 'pm@jayem.in'], ['Supervisor', 'supervisor@jayem.in'], ['Management', 'viewer@jayem.in']];
+    return {
+      email: s.email, pw: s.pw, error: s.error, ok: !!s.ok, notOk: !s.ok, okRole: s.ok,
+      onEmail: e => this.setState({ email: e.target.value, error: '', ok: '' }),
+      onPw: e => this.setState({ pw: e.target.value, error: '', ok: '' }),
+      demos: D.map(d => ({ role: d[0], email: d[1], fill: () => this.setState({ email: d[1], pw: 'demo@123', error: '', ok: '' }) })),
+      login: () => {
+        const m = D.find(d => d[1] === s.email.trim().toLowerCase());
+        if (!s.email || !s.pw) return this.setState({ error: 'Enter your email and password.' });
+        if (!m || s.pw !== 'demo@123') return this.setState({ error: 'Email or password is incorrect. Try a demo login below.' });
+        this.setState({ ok: m[0] });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

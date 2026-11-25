@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Driver app – Fuel and energy</title>
+<script src="./_runtime/react.js"></script>
+<script src="./_runtime/react-dom.js"></script>
+<script src="./_runtime/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600&amp;display=swap">
+<style>body{margin:0}a{color:#c2410c}a:hover{color:#9a3412}button,input,select{font-family:inherit}button{cursor:pointer}</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #fafaf9; font-family: Inter, system-ui, sans-serif; color: #0c0a09; font-size: 14px; line-height: 1.5; display: flex; flex-direction: column; overflow: hidden">
+  <header style="display: flex; align-items: center; gap: 8px; padding: 14px 10px; background: #ffffff; border-bottom: 1px solid #e8e6e5">
+    <a href="Driver-Trip.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #0c0a09"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></a>
+    <div style="flex: 1; display: flex; flex-direction: column; line-height: 1.25"><h1 style="margin: 0; font-family: 'Inter Tight', Inter, sans-serif; font-weight: 500; font-size: 19px">{{title}}</h1><span style="font-size: 12px; color: #78716c">{{sub}}</span></div>
+  </header>
+  <div style="padding: 10px 16px 0">
+    <div role="tablist" aria-label="Demo powertrain" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 3px; border: 1px dashed #d6d3d1; border-radius: 9999px; background: #ffffff">
+      <sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+        <button type="button" role="tab" aria-selected="{{m.sel}}" onClick="{{m.pick}}" style="border: 0; border-radius: 9999px; padding: 7px; font-size: 12.5px; font-weight: 500; background: {{m.bg}}; color: {{m.color}}">{{m.label}}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 12px">
+    <sc-if value="{{isEv}}" hint-placeholder-val="{{true}}">
+      <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Battery at start (%)<input inputmode="numeric" value="{{bs}}" onInput="{{onBs}}" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 16px"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Battery now (%)<input inputmode="numeric" value="{{be}}" onInput="{{onBe}}" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 16px"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Energy used (kWh)<input inputmode="decimal" value="{{kwh}}" onInput="{{onKwh}}" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 16px"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Distance (km)<input value="128.6" readonly="{{true}}" style="height: 46px; border: 1px solid #e8e6e5; border-radius: 10px; padding: 0 12px; font-size: 16px; background: #fafaf9; color: #57534e"></label>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 10px; background: #fff7ed"><span style="font-size: 13px; color: #57534e">Energy efficiency</span><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 22px; font-weight: 600; color: #9a3412">{{eff}}</span></div>
+      </section>
+      <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-size: 13px; font-weight: 600">Charging sessions</span>
+        <sc-for list="{{sessions}}" as="c" hint-placeholder-count="1">
+          <div style="display: flex; justify-content: space-between; font-size: 13px; padding: 8px 0; border-bottom: 1px solid #f5f5f4"><span>{{c.where}}</span><span style="color: #57534e">{{c.what}}</span></div>
+        </sc-for>
+        <button type="button" onClick="{{addSession}}" style="height: 44px; border: 1px dashed #a8a29e; border-radius: 10px; background: #fafaf9; font-size: 13px; font-weight: 500; color: #0c0a09">+ Add charging session</button>
+      </section>
+    </sc-if>
+    <sc-if value="{{isFuel}}" hint-placeholder-val="{{false}}">
+      <section style="background: #ffffff; border: 1px solid #e8e6e5; border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+        <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Fuel type<select style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 10px; font-size: 15px; background: #ffffff"><option>Petrol</option><option>Diesel</option></select></label>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Quantity (L)<input inputmode="decimal" value="{{qty}}" onInput="{{onQty}}" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 16px"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Cost (₹)<input inputmode="decimal" value="{{cost}}" onInput="{{onCost}}" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 16px"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Odometer now<input inputmode="decimal" value="{{odoNow}}" onInput="{{onOdoNow}}" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 16px"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Last fill odometer<input value="8,612.0" readonly="{{true}}" style="height: 46px; border: 1px solid #e8e6e5; border-radius: 10px; padding: 0 12px; font-size: 16px; background: #fafaf9; color: #57534e"></label>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; color: #44403c">Fuel station / location<input value="HP Petrol Pump, Chakan MIDC" style="height: 46px; border: 1px solid #d6d3d1; border-radius: 10px; padding: 0 12px; font-size: 15px"></label>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <div style="padding: 12px; border-radius: 10px; background: #fff7ed; display: flex; flex-direction: column"><span style="font-size: 12px; color: #57534e">Mileage</span><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 20px; font-weight: 600; color: #9a3412">{{mileage}}</span></div>
+          <div style="padding: 12px; border-radius: 10px; background: #fafaf9; display: flex; flex-direction: column"><span style="font-size: 12px; color: #57534e">Price per litre</span><span style="font-family: 'Inter Tight', Inter, sans-serif; font-size: 20px; font-weight: 600">{{ppl}}</span></div>
+        </div>
+        <button type="button" style="height: 44px; border: 1px dashed #a8a29e; border-radius: 10px; background: #fafaf9; font-size: 13px; font-weight: 500; color: #0c0a09">+ Add fuel bill photo</button>
+      </section>
+    </sc-if>
+  </div>
+  <div style="padding: 12px 16px 16px; background: #ffffff; border-top: 1px solid #e8e6e5; display: flex; flex-direction: column; gap: 6px">
+    <sc-if value="{{saved}}" hint-placeholder-val="{{false}}"><span role="status" style="font-size: 13px; color: #15803d; text-align: center">✓ Saved to this trip</span></sc-if>
+    <button type="button" onClick="{{save}}" style="height: 54px; border-radius: 9999px; border: 0; background: #c2410c; color: #ffffff; font-size: 15px; font-weight: 600">Save entry</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { mode: 'ev', bs: '96', be: '64', kwh: '19.2', sessions: [], qty: '32.5', cost: '3,341', odoNow: '9,084.5', saved: false }; }
+  renderVals() {
+    const s = this.state, ev = s.mode === 'ev';
+    const num = v => parseFloat(String(v).replace(/,/g, ''));
+    const eff = num(s.kwh) > 0 ? (128.6 / num(s.kwh)).toFixed(1) + ' km/kWh' : '—';
+    const dist = num(s.odoNow) - 8612;
+    const mileage = num(s.qty) > 0 && dist > 0 ? (dist / num(s.qty)).toFixed(1) + ' km/L' : '—';
+    const ppl = num(s.qty) > 0 ? '₹' + (num(s.cost) / num(s.qty)).toFixed(2) : '—';
+    const modes = [['ev', 'EV · TN 09 AB 4521'], ['fuel', 'Petrol · MH 14 TC 3310']].map(([id, label]) => ({ label, sel: s.mode === id ? 'true' : 'false', bg: s.mode === id ? '#1c1917' : 'transparent', color: s.mode === id ? '#ffffff' : '#57534e', pick: () => this.setState({ mode: id, saved: false }) }));
+    const sessions = [{ where: 'Chakan DC 60 kW', what: '10:42–11:16 · 58% → 96%' }].concat(s.sessions);
+    return {
+      modes, isEv: ev, isFuel: !ev, title: ev ? 'Battery & charging' : 'Fuel entry', sub: ev ? 'TN 09 AB 4521 · Tata Nexon EV Max' : 'MH 14 TC 3310 · Mahindra XUV 3XO',
+      bs: s.bs, be: s.be, kwh: s.kwh, eff, sessions, qty: s.qty, cost: s.cost, odoNow: s.odoNow, mileage, ppl, saved: s.saved,
+      onBs: e => this.setState({ bs: e.target.value, saved: false }), onBe: e => this.setState({ be: e.target.value, saved: false }), onKwh: e => this.setState({ kwh: e.target.value, saved: false }),
+      onQty: e => this.setState({ qty: e.target.value, saved: false }), onCost: e => this.setState({ cost: e.target.value, saved: false }), onOdoNow: e => this.setState({ odoNow: e.target.value, saved: false }),
+      addSession: () => this.setState({ sessions: s.sessions.concat([{ where: 'Rajgurunagar EV hub 30 kW', what: 'just now · 41% → 80%' }]) }),
+      save: () => this.setState({ saved: true })
+    };
+  }
+}
+</script>
+</body>
+</html>
